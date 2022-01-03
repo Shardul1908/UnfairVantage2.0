@@ -1,0 +1,109 @@
+.column_filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.column_filters_input_name {
+  display: flex;
+  padding: 10px;
+}
+
+.column_filters_select_field {
+  display: flex;
+  padding: 10px;
+}
+
+.column_filters_buttons {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.datatable_main_div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.datatable_buttons {
+  display: flex;
+  align-self: flex-end;
+}
+
+.datatable_container {
+  overflow-x: scroll;
+}
+
+.csv_download_container {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  margin-top: 15px;
+  margin-right: 15px;
+}
+
+.csv_download_button {
+  background-color: #616161;
+  color: white;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 6px 24px;
+  margin-right: 6px;
+}
+.datatable_main_div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.datatable_buttons {
+  display: flex;
+  align-self: flex-end;
+}
+
+.datatable_container {
+  overflow-x: scroll;
+}
+
+.csv_download_container {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  margin-top: 15px;
+  margin-right: 15px;
+}
+
+.csv_download_button {
+  background-color: #616161;
+  color: white;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 6px 24px;
+  margin-right: 6px;
+}
+.syncModal_progress{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.syncModal_progress_icon {
+  display: flex;
+  align-self: center;
+}
+
+.syncModal_progress_text {
+  display: flex;
+  align-self: center;
+  width: fit-content;
+}
+
+.input_column_filtering {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
