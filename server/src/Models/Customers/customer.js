@@ -2,96 +2,100 @@ import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
 const Customer = sequelize.define(`customers`, {
-  sr_no: {
-    type: Sequelize.INTEGER,
+  id: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
     autoIncrement: true,
     allowNull: false,
-    unique: true
+    primaryKey: true,
   },
-  id: {
+  customer_id: {
     type: Sequelize.STRING,
-    allowNull: false,
-    primaryKey: true
+    defaultValue: null,
   },
   firstName: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   lastName: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   phone: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   ordersCount: {
-    type: Sequelize.INTEGER,
-    allowNull: true
+    type: Sequelize.INTEGER(11),
+    allowNull: false,
+    defaultValue: '0'
   },
   state: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   totalSpent: {
-    type: Sequelize.FLOAT,
-    allowNull: true
+    type: Sequelize.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: '0.00',
   },
   acceptsMarketing: {
-    type: Sequelize.STRING,
-    allowNull: true
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
   averageOrderAmountV2_amount: {
-    type: Sequelize.FLOAT,
-    allowNull: true
+    type: Sequelize.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: '0.00',
   },
   averageOrderAmountV2_currencyCode: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   totalSpentV2_amount: {
-    type: Sequelize.STRING,
-    allowNull: true
+    type: Sequelize.DECIMAL(10, 2),
+    allowNull: false,
+    defaultValue: '0.00',
   },
   totalSpentV2_currencyCode: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   tags: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   defaultAddress_city: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   defaultAddress_province: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   defaultAddress_country: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   defaultAddress_zip: {
     type: Sequelize.STRING,
-    allowNull: true
+    defaultValue: null,
   },
   defaultAddress_phone: {
-    type: Sequelize.STRING,
-    allowNull: true
+    type: "VARCHAR(250) COLLATE utf8mb4_unicode_ci",
+    defaultValue: null,
   },
   createdAt: {
-    type: Sequelize.STRING,
-    allowNull: true
+    type: Sequelize.DATE,
+    defaultValue: null,
   },
   updatedAt: {
-    type: Sequelize.STRING,
-    allowNull: true
+    type: Sequelize.DATE,
+    defaultValue: null,
   }
 });
 

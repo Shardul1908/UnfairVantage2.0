@@ -1,11 +1,13 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
+//almost done neede some makeup
 const Charge = sequelize.define(`charges`, {
     id: {
         type: Sequelize.INTEGER(10).UNSIGNED,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     charge_id: {
         type: Sequelize.BIGINT(20),
@@ -17,19 +19,19 @@ const Charge = sequelize.define(`charges`, {
         defaultValue: '0',
     },
     status: {
-        type: "VARCHAR(255) COLLATE utf8mb4_unicode_ci",
+        type: Sequelize.STRING,
         defaultValue: null,
     },
     name: {
-        type: "VARCHAR(255) COLLATE utf8mb4_unicode_ci",
+        type: Sequelize.STRING,
         defaultValue: null,
     },
     terms: {
-        type: "VARCHAR(255) COLLATE utf8mb4_unicode_ci",
+        type: Sequelize.STRING,
         defaultValue: null,
     },
     type: {
-        type: "VARCHAR(255) COLLATE utf8mb4_unicode_ci",
+        type: Sequelize.STRING,
         allowNull: false,
     },
     price: {
@@ -37,7 +39,7 @@ const Charge = sequelize.define(`charges`, {
         allowNull: false,
     },
     interval: {
-        type: "VARCHAR(255) COLLATE utf8mb4_unicode_ci",
+        type: Sequelize.STRING,
         defaultValue: null,
     },
     capped_amount: {
@@ -73,11 +75,19 @@ const Charge = sequelize.define(`charges`, {
         defaultValue: null,
     },
     description: {
-        type: "VARCHAR(255) COLLATE utf8mb4_unicode_ci",
+        type: Sequelize.STRING,
         defaultValue: null,
     },
     reference_charge: {
         type: Sequelize.BIGINT(20),
+        defaultValue: null,
+    },
+    created_at: {
+        type: Sequelize.DATE,
+        defaultValue: null,
+    },
+    updated_at: {
+        type: Sequelize.DATE,
         defaultValue: null,
     },
     deleted_at: {
@@ -88,6 +98,8 @@ const Charge = sequelize.define(`charges`, {
         type: Sequelize.BIGINT(20).UNSIGNED,
         allowNull: false,
     },
+}, {
+    timestamps: false
 });
 
 export default Charge;

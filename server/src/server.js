@@ -10,6 +10,13 @@ import { createShopifyObject, mysql_connection } from "./global.js";
 import Charges from "./Models/Charges/charges.js";
 import Datasync_Status from "./Models/Datasync_Status/Datasync_Status.js";
 import Failed_Jobs from "./Models/Failed_Jobs/Failed_Jobs.js";
+import Customer from "./Models/Customers/customer.js";
+import Migration from "./Models/Migrations/Migrations.js";
+import OrderItem from "./Models/Order_Items/order_item.js";
+import Order from "./Models/Orders/order.js";
+import Password_Resets from "./Models/Password_Resets/Password_Reset.js";
+import Plan from "./Models/Plans/plans.js";
+import User from "./Models/Users/user.js";
 
 //express init
 const app = express();
@@ -102,6 +109,13 @@ app.listen(port, () => {
 
 
 //temp
-Charges.sync();
-Datasync_Status.sync();
-Failed_Jobs.sync();
+Charges.sync({force: true});
+Customer.sync({force:true});
+Datasync_Status.sync({force: true});
+Failed_Jobs.sync({force: true});
+Migration.sync({force: true});
+OrderItem.sync({force: true});
+Order.sync({force: true});
+Password_Resets.sync({force: true});
+Plan.sync({force: true});
+User.sync({force: true});

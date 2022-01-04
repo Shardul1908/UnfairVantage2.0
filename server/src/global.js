@@ -11,20 +11,10 @@ const sequelize = new Sequelize(process.env.DB_SCHEMA, process.env.DB_USER, proc
   dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
   define: {
-    timestamps: false,
     charset: "utf8mb4",
     collate: "utf8mb4_unicode_ci"
   }
 });
-
-sequelize
-  .sync()
-  .then(result => {
-    // console.log(result);
-  })
-  .catch(err => {
-    console.log(err);
-  });
 
 function createShopifyObject(name, accessToken) {
   return new Shopify({

@@ -2,20 +2,17 @@ import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
 const OrderItem = sequelize.define(`order_items`, {
-  sr_no: {
-    type: Sequelize.INTEGER,
+  id: {
+    type: Sequelize.INTEGER(10).UNSIGNED,
     autoIncrement: true,
     allowNull: false,
-    unique: true
+    primaryKey: true
   },
   order_id: {
     type: Sequelize.STRING,
-    allowNull: false
   },
   product_id: {
     type: Sequelize.STRING,
-    allowNull: false,
-    primaryKey: true
   },
   sku: {
     type: Sequelize.STRING,
@@ -27,11 +24,13 @@ const OrderItem = sequelize.define(`order_items`, {
   },
   quantity: {
     type: Sequelize.INTEGER,
-    allowNull: true
+    allowNull: false,
+    defaultValue: '0'
   },
   currentQuantity: {
     type: Sequelize.INTEGER,
-    allowNull: true
+    allowNull: false,
+    defaultValue: '0'
   },
   product_type: {
     type: Sequelize.STRING,
@@ -53,6 +52,8 @@ const OrderItem = sequelize.define(`order_items`, {
     type: Sequelize.STRING,
     allowNull: true
   },
+}, {
+  timestamps: false,
 });
 
 export default OrderItem;

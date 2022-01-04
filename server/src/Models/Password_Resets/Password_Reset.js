@@ -14,6 +14,8 @@ const Password_Resets = sequelize.define('password_resets', {
         type: Sequelize.DATE,
         defaultValue: null,
     }
+}, {
+    timestamps: false
 });
 
 export default Password_Resets;

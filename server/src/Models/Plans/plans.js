@@ -5,6 +5,8 @@ const Plan = sequelize.define('plans', {
     id: {
         type: Sequelize.INTEGER(10).UNSIGNED,
         allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
     }, 
     type: {
         type: Sequelize.STRING,
@@ -44,4 +46,14 @@ const Plan = sequelize.define('plans', {
         allowNull: false,
         defaultValue: '0',
     }, 
+    created_at: {
+        type: Sequelize.DATE,
+    },
+    updated_at: {
+        type: Sequelize.DATE,
+    }
+}, {
+    timestamps: false,
 });
+
+export default Plan;

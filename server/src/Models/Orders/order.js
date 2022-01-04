@@ -2,120 +2,102 @@ import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
 const Order = sequelize.define(`orders`, {
-    sr_no: {
-        type: Sequelize.INTEGER,
+    id: {
+        type: Sequelize.INTEGER(10).UNSIGNED,
         autoIncrement: true,
         allowNull: false,
-        unique: true
+        primaryKey: true
     },
-    id: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        primaryKey: true    
+    order_id: {
+        type: Sequelize.STRING,    
     },
     name: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     customer_id: {
         type: Sequelize.STRING,
-        allowNull: false
     },
     email: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     phone: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     fullyPaid: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true
+        type: Sequelize.TINYINT(4),
+        allowNull: false,
+        defaultValue: '0'
     },
     closed: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true
+        type: Sequelize.TINYINT(4),
+        allowNull: false,
+        defaultValue: '0'
     },
     currencyCode: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     discountCode: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     tags: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     paymentGatewayNames: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     subtotalPriceSet_shopMoney_amount: {
-        type: Sequelize.FLOAT,
-        allowNull: true
+        type: Sequelize.DECIMAL(10,2),
+        allowNull: false,
+        defaultValue: '0.00'
     },
     totalPriceSet_shopMoney_amount: {
-        type: Sequelize.FLOAT,
-        allowNull: true
+        type: Sequelize.DECIMAL(10,2),
+        allowNull: false,
+        defaultValue: '0.00'
     },
     originalTotalPriceSet_shopMoney_amount: {
-        type: Sequelize.FLOAT,
-        allowNull: true
+        type: Sequelize.DECIMAL(10,2),
+        allowNull: false,
+        defaultValue: '0.00'
     },
     riskLevel: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     billingAddress_city: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     billingAddress_province: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     billingAddress_country: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     billingAddress_zip: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     billingAddress_phone: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     shippingAddress_city: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     shippingAddress_province: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     shippingAddress_country: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     shippingAddress_zip: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     shippingAddress_phone: {
         type: Sequelize.STRING,
-        allowNull: true
     },
     createdAt: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.DATE,
     },
     updatedAt: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.DATE,
     }
 });
 

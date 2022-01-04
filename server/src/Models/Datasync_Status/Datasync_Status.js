@@ -5,7 +5,8 @@ const Datasync_Status = sequelize.define('datasync_status', {
     id: {
         type: Sequelize.INTEGER(11),
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     shopid: {
         type: Sequelize.STRING,
@@ -36,9 +37,11 @@ const Datasync_Status = sequelize.define('datasync_status', {
     },
     start_time: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
     },
     end_time: {
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     },
 }, {
     timestamps: false,
