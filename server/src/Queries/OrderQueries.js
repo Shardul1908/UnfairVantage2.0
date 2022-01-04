@@ -1,4 +1,4 @@
-import Order from "../Classes/Orders/order.js";
+import Order from "../Models/Orders/order.js";
 import {
   getId,
   isBool,
@@ -6,7 +6,7 @@ import {
   isObj,
   isString,
   mysql_connection,
-} from "../Global/global.js";
+} from "../global.js";
 import { shopId } from "./RegisterShop.js";
 
 async function queryOrdersGRAPHQL(shopify) {

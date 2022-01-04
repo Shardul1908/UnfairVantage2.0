@@ -1,5 +1,4 @@
-import { getId, mysql_connection } from "../Global/global.js";
-import { isString } from "../Global/global.js";
+import { getId, mysql_connection, isString } from "../global.js";
 
 var shopId = "60558573822";
 var shopEmail = "";

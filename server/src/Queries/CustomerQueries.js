@@ -1,4 +1,4 @@
-import Customer from "../Classes/Customers/customer.js";
+import Customer from "../Models/Customers/customer.js";
 import {
   getId,
   isFloat,
@@ -7,7 +7,7 @@ import {
   isString,
   mysql_connection,
   isBool,
-} from "../Global/global.js";
+} from "../global.js";
 import { shopId } from "./RegisterShop.js";
 
 async function queryCustomersGRAPHQL(shopify) {

@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import { sequelize } from "../../Global/global.js";
+import { sequelize } from "../../global.js";
 
 const Order = sequelize.define(`orders`, {
     sr_no: {

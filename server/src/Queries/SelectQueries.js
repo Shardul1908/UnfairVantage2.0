@@ -1,4 +1,4 @@
-import Customer from "../Classes/Customers/customer.js";
+import Customer from "../Models/Customers/customer.js";
 import { Op } from "sequelize";
 
 export async function fetch_customers_using_filters(filters, columnFilters, pageSize, pageIndex, res) {

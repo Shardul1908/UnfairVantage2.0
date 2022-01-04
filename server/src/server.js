@@ -1,21 +1,15 @@
 import express from "express";
 import cors from "cors";
-import {
-  deleteCustomers,
-  queryCustomersGRAPHQL,
-} from "./Queries/CustomerQueries.js";
-import { deleteOrders, queryOrdersGRAPHQL } from "./Queries/OrderQueries.js";
-import {
-  deleteOrderItems,
-  queryOrderItemsGRAPHQL,
-} from "./Queries/OrderItemsQueries.js";
-import {
-  fetch_customers_using_filters,
-  fetch_customers_all,
-} from "./Queries/SelectQueries.js";
 
+import { queryCustomersGRAPHQL } from "./Queries/CustomerQueries.js";
+import { queryOrdersGRAPHQL } from "./Queries/OrderQueries.js";
+import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
+import { fetch_customers_using_filters, fetch_customers_all } from "./Queries/SelectQueries.js";
 import { registerShop, shopId } from "./Queries/RegisterShop.js";
-import { createShopifyObject, mysql_connection } from "./Global/global.js";
+import { createShopifyObject, mysql_connection } from "./global.js";
+import Charges from "./Models/Charges/charges.js";
+import Datasync_Status from "./Models/Datasync_Status/Datasync_Status.js";
+import Failed_Jobs from "./Models/Failed_Jobs/Failed_Jobs.js";
 
 //express init
 const app = express();
@@ -105,3 +99,9 @@ app.post("/registerShop", (req, res) => {
 app.listen(port, () => {
   console.log(`\nConnected to express server at port ${port}!!`.green);
 });
+
+
+//temp
+Charges.sync();
+Datasync_Status.sync();
+Failed_Jobs.sync();
