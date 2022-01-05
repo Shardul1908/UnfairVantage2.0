@@ -8,7 +8,7 @@ import {
   isBool,
 } from "../global.js";
 
-async function queryCustomersGRAPHQL(shopify) {
+async function queryCustomersGRAPHQL(shopify, io) {
   let counter_customers = 0;
   let graphql_customers_query = `query {
     customers(first: 25) {
@@ -215,6 +215,7 @@ async function queryCustomersGRAPHQL(shopify) {
       .bulkCreate(customers)
       .then((result) => {
         counter_customers += result.length;
+        io.emit('CustomerCount', counter_customers);
         console.log(`Successfully ran the query ${counter_customers}`);
       })
       .catch((err) => {

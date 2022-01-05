@@ -17,14 +17,39 @@ import Order from "./Models/Orders/order.js";
 import Password_Resets from "./Models/Password_Resets/Password_Reset.js";
 import Plan from "./Models/Plans/plans.js";
 import User from "./Models/Users/user.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { queryTotalCount } from "./Queries/TotalCount.js";
 
 //express init
 const app = express();
 const port = 9000;
 
+//socket
+const httpServer = createServer(app);
+const io = new Server(httpServer, { cors: { origin: "*" } });
+
+io.on("connection", (socket) => {
+  console.log("Connected with socket id " + socket.id);
+
+  socket.on("testevent", (payload) => {
+    console.log("This is the payload: ", payload);
+  })
+});
+
+httpServer.listen(4444, function () {
+  console.log("Listening for incoming connections on 4444...");
+});
+
 //middleware
 app.use(express.json());
 app.use(cors());
+
+app.post("/count_data", async function (req, res){
+  const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
+  const total_count = await queryTotalCount(shopify);
+  res.status(200).send(total_count + "");
+});
 
 app.post("/customers/fetch/with_filters", function (req, res) {
   const filters = req.body.filters;
@@ -51,7 +76,7 @@ app.post("/sync_data_customers", async function (req, res) {
   Customer.sync({force:true});
 
   const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
-  await queryCustomersGRAPHQL(shopify);
+  await queryCustomersGRAPHQL(shopify, io);
   res.status(200).send("Customers Data Synced.");
 });
 
@@ -64,7 +89,7 @@ app.post("/sync_data_orders", async function (req, res) {
   Order.sync({force: true});
 
   const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
-  await queryOrdersGRAPHQL(shopify);
+  await queryOrdersGRAPHQL(shopify, io);
   res.status(200).send("Orders Data Synced.");
 });
 
@@ -77,7 +102,7 @@ app.post("/sync_data_order_items", async function (req, res) {
   OrderItem.sync({force: true});
 
   const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
-  await queryOrderItemsGRAPHQL(shopify);
+  await queryOrderItemsGRAPHQL(shopify, io);
   res.status(200).send("Order Items Data Synced.");
 });
 
