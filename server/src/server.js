@@ -4,7 +4,10 @@ import cors from "cors";
 import { queryCustomersGRAPHQL } from "./Queries/CustomerQueries.js";
 import { queryOrdersGRAPHQL } from "./Queries/OrderQueries.js";
 import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
-import { fetch_customers_using_filters, fetch_customers_all } from "./Queries/SelectQueries.js";
+import {
+  fetch_customers_using_filters,
+  fetch_customers_all,
+} from "./Queries/SelectQueries.js";
 import { registerShop, shopId } from "./Queries/RegisterShop.js";
 import { createShopifyObject } from "./global.js";
 import Charges from "./Models/Charges/charges.js";
@@ -32,7 +35,13 @@ app.post("/customers/fetch/with_filters", function (req, res) {
   const pageSize = req.body.pageSize;
   const pageIndex = req.body.pageIndex;
 
-  fetch_customers_using_filters(filters, columnFilters, pageSize, pageIndex, res);
+  fetch_customers_using_filters(
+    filters,
+    columnFilters,
+    pageSize,
+    pageIndex,
+    res
+  );
 });
 
 app.post("/customers/fetch/all", function (req, res) {
@@ -44,11 +53,11 @@ app.post("/customers/fetch/all", function (req, res) {
 
 app.post("/sync_data_customers", async function (req, res) {
   Migration.create({
-    "migration": `${shopId}_customers_data_synced`,
-    "batch": 1
+    migration: `${shopId}_customers_data_synced`,
+    batch: 1,
   });
 
-  Customer.sync({force:true});
+  Customer.sync({ force: true });
 
   const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
   await queryCustomersGRAPHQL(shopify);
@@ -57,11 +66,11 @@ app.post("/sync_data_customers", async function (req, res) {
 
 app.post("/sync_data_orders", async function (req, res) {
   Migration.create({
-    "migration": `${shopId}_orders_data_synced`,
-    "batch": 1
+    migration: `${shopId}_orders_data_synced`,
+    batch: 1,
   });
 
-  Order.sync({force: true});
+  Order.sync({ force: true });
 
   const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
   await queryOrdersGRAPHQL(shopify);
@@ -70,11 +79,11 @@ app.post("/sync_data_orders", async function (req, res) {
 
 app.post("/sync_data_order_items", async function (req, res) {
   Migration.create({
-    "migration": `${shopId}_orderItems_data_synced`,
-    "batch": 1
+    migration: `${shopId}_orderItems_data_synced`,
+    batch: 1,
   });
 
-  OrderItem.sync({force: true});
+  OrderItem.sync({ force: true });
 
   const shopify = createShopifyObject(req.body.shop, req.body.accessToken);
   await queryOrderItemsGRAPHQL(shopify);
@@ -92,12 +101,14 @@ app.listen(port, () => {
   console.log(`\nConnected to express server at port ${port}!!`.green);
 });
 
-
 //temp
-Charges.sync({force: true});
-Datasync_Status.sync({force: true});
-Failed_Jobs.sync({force: true});
-Migration.sync({force: true});
-Password_Resets.sync({force: true});
-Plan.sync({force: true});
-User.sync({force: true});
+Charges.sync({ force: true });
+Datasync_Status.sync({ force: true });
+Failed_Jobs.sync({ force: true });
+Migration.sync({ force: true });
+Password_Resets.sync({ force: true });
+Plan.sync({ force: true });
+User.sync({ force: true });
+Customer.sync({ force: true });
+Order.sync({ force: true });
+OrderItem.sync({ force: true });
