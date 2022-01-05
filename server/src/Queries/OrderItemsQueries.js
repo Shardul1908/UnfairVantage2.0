@@ -1,13 +1,10 @@
 import OrderItem from "../Models/Order_Items/order_item.js";
-
 import {
   getId,
   isInt,
   isString,
-  mysql_connection,
   isObj,
 } from "../global.js";
-import { shopId } from "./RegisterShop.js";
 
 async function queryOrderItemsGRAPHQL(shopify) {
   let counter_orderItems = 0;
@@ -194,14 +191,14 @@ async function queryOrderItemsGRAPHQL(shopify) {
         }
 
         OrderItem
-            .bulkCreate(order_items)
-            .then((result) => {
-              counter_orderItems += result.length;
-              console.log(`Successfully ran the query ${counter_orderItems}`)
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          .bulkCreate(order_items)
+          .then((result) => {
+            counter_orderItems += result.length;
+            console.log(`Successfully ran the query ${counter_orderItems}`)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
         lineItemsHasNextPage = lineItemsResultSet.order.lineItems.pageInfo.hasNextPage;
 
@@ -230,22 +227,4 @@ async function queryOrderItemsGRAPHQL(shopify) {
   }
 }
 
-function deleteOrderItems() {
-  var mysql_customer_delete_query = `DELETE FROM ${shopId}_order_items`;
-  mysql_connection.query(mysql_customer_delete_query, function (err, result) {
-    if (err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
-  });
-
-  let mysql_migration_query = `INSERT INTO migrations(migration,batch) VALUES (?,?)`;
-  mysql_connection.query(
-    mysql_migration_query,
-    [`${shopId}_deleted_orderItmes_table`, 1],
-    function (err, result) {
-      if (err) throw err;
-      console.log("Migration Added");
-    }
-  );
-}
-
-export { queryOrderItemsGRAPHQL, deleteOrderItems };
+export { queryOrderItemsGRAPHQL };

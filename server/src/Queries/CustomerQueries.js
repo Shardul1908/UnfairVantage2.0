@@ -5,10 +5,8 @@ import {
   isInt,
   isObj,
   isString,
-  mysql_connection,
   isBool,
 } from "../global.js";
-import { shopId } from "./RegisterShop.js";
 
 async function queryCustomersGRAPHQL(shopify) {
   let counter_customers = 0;
@@ -129,7 +127,7 @@ async function queryCustomersGRAPHQL(shopify) {
     for (let i = 0; i < resultSet.customers.edges.length; i++) {
       let customer = {};
 
-      customer["id"] = getId(resultSet.customers.edges[i].node.id);
+      customer["customer_id"] = getId(resultSet.customers.edges[i].node.id);
 
       if (isString(resultSet.customers.edges[i].node.firstName)) {
         customer["firstName"] = resultSet.customers.edges[i].node.firstName;
@@ -213,7 +211,7 @@ async function queryCustomersGRAPHQL(shopify) {
       customers.push(customer);
     }
 
-     Customer
+    Customer
       .bulkCreate(customers)
       .then((result) => {
         counter_customers += result.length;
@@ -227,25 +225,8 @@ async function queryCustomersGRAPHQL(shopify) {
 
     let n = resultSet.customers.edges.length;
     cursor = resultSet.customers.edges[n - 1].cursor;
+
   }
 }
 
-function deleteCustomers() {
-  let mysql_customer_delete_query = `DELETE FROM ${shopId}_customers`;
-  mysql_connection.query(mysql_customer_delete_query, function (err, result) {
-    if (err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
-  });
-
-  let mysql_migration_query = `INSERT INTO migrations(migration,batch) VALUES (?,?)`;
-  mysql_connection.query(
-    mysql_migration_query,
-    [`${shopId}_deleted_customers_table`, 1],
-    function (err, result) {
-      if (err) throw err;
-      console.log("Migration Added");
-    }
-  );
-}
-
-export { queryCustomersGRAPHQL, deleteCustomers };
+export { queryCustomersGRAPHQL };

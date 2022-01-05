@@ -5,9 +5,7 @@ import {
   isFloat,
   isObj,
   isString,
-  mysql_connection,
 } from "../global.js";
-import { shopId } from "./RegisterShop.js";
 
 async function queryOrdersGRAPHQL(shopify) {
   let counter_orders = 0;
@@ -167,7 +165,7 @@ async function queryOrdersGRAPHQL(shopify) {
     for (let i = 0; i < resultSet.orders.edges.length; i++) {
       let order = {};
 
-      order["id"] = getId(resultSet.orders.edges[i].node.id);
+      order["order_id"] = getId(resultSet.orders.edges[i].node.id);
 
       if (isString(resultSet.orders.edges[i].node.name)) {
         order["name"] = resultSet.orders.edges[i].node.name;
@@ -299,22 +297,4 @@ async function queryOrdersGRAPHQL(shopify) {
   }
 }
 
-function deleteOrders() {
-  var mysql_orders_delete_query = `DELETE FROM ${shopId}_orders`;
-  mysql_connection.query(mysql_orders_delete_query, function (err, result) {
-    if (err) throw err;
-    console.log("Number of records deleted: " + result.affectedRows);
-  });
-
-  let mysql_migration_query = `INSERT INTO migrations(migration,batch) VALUES (?,?)`;
-  mysql_connection.query(
-    mysql_migration_query,
-    [`${shopId}_deleted_orders_table`, 1],
-    function (err, result) {
-      if (err) throw err;
-      console.log("Migration Added");
-    }
-  );
-}
-
-export { queryOrdersGRAPHQL, deleteOrders };
+export { queryOrdersGRAPHQL };

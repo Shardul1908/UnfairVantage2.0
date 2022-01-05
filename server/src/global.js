@@ -1,5 +1,4 @@
 import Shopify from "shopify-api-node";
-import mysql from "mysql";
 import pkg from 'colors';
 const { Color } = pkg;
 import dotenv from 'dotenv'
@@ -23,25 +22,6 @@ function createShopifyObject(name, accessToken) {
     apiVersion: "2021-10"
   });
 };
-
-var db_config = {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_SCHEMA,
-};
-
-//mysql connection
-const mysql_connection = mysql.createConnection(db_config);
-
-mysql_connection.connect(function (err) {
-  if (err) {
-    throw err;
-  }
-  console.log("\nConnected to MYSQL at port 3306!\n".green);
-});
-//mysql connection
 
 const isString = function (dataField) {
   if (dataField != null) {
@@ -87,4 +67,4 @@ const getId = function (id) {
   return id;
 }
 
-export { isString, isInt, isFloat, isObj, isBool, getId, createShopifyObject, sequelize, mysql_connection, Color };
+export { isString, isInt, isFloat, isObj, isBool, getId, createShopifyObject, sequelize, Color };
