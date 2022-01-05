@@ -94,10 +94,10 @@ app.listen(port, () => {
 
 
 //temp
-Charges.sync();
-Datasync_Status.sync();
-Failed_Jobs.sync();
-Migration.sync();
-Password_Resets.sync();
-Plan.sync();
-User.sync();
+Charges.sync({force: true});
+Datasync_Status.sync({force: true});
+Failed_Jobs.sync({force: true});
+Migration.sync({force: true});
+Password_Resets.sync({force: true});
+Plan.sync({force: true});
+User.sync({force: true});
