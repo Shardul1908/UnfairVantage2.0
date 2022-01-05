@@ -1,10 +1,10 @@
 export const COLUMNS = [
   {
     name: "Sr.No",
-    selector: (row) => `${row.sr_no}`,
+    selector: (row) => `${row.id}`,
     conditionalCellStyles: [
       {
-        when: (row) => row.sr_no % 2 === 1,
+        when: (row) => row.id % 2 === 1,
         style: {
           backgroundColor: "#f1f1f1",
           color: "black",
@@ -15,14 +15,14 @@ export const COLUMNS = [
       },
     ],
     cell: (row, index, column, id) => {
-      row.sr_no = index++;
-      return index++;
+      row.id = index;
+      return index;
     }
   },
   {
     name: "ID",
     sortable: true,
-    selector: (row) => `${row.id}`,
+    selector: (row) => `${row.customer_id}`,
     conditionalCellStyles: [
       {
         when: (row) => row.sr_no % 2 === 0,
