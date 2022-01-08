@@ -4,50 +4,83 @@ import axios from "axios";
 import CsvDownload from "react-json-to-csv";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Modal } from "react-bootstrap";
-import { CircularProgress, LinearProgress, Box, InputLabel, MenuItem, FormControl, Select, TextField } from '@mui/material';
+import {
+  CircularProgress,
+  LinearProgress,
+  Box,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  TextField,
+} from "@mui/material";
 
-import { COLUMNS } from "./columns.js"
+import { COLUMNS } from "./columns.js";
 import styles from "../../styles/datatable.module.css";
+import io from "socket.io-client";
+import Progress_bar from "../ProgressBar/ProgressBar.js";
+import { deepOrange, orange } from "@material-ui/core/colors";
+
+const ENDPOINT = "http://localhost:4444";
+const socket = io(ENDPOINT);
 
 function Datatable(props) {
   const { filters } = props;
-
   const [tableData, setTableData] = useState({});
   const [exportData, setExportData] = useState({});
   const [page, setPage] = useState(1);
   const [progressPending, setProgressPending] = useState(true);
-
   const [show, setShow] = React.useState(false);
+  let result_total = 0;
 
   function handleOpenModal() {
     setShow(true);
   }
 
   function handleCloseModal() {
-    setShow(false)
-  };
+    setShow(false);
+  }
 
   function handleApplyButtonClicked() {
     const newFilters = fillQuery();
-    
+
     let res = {};
 
-    let names = ['firstName','lastName','email','phone','ordersCount','state','totalSpent','acceptsMarketing','averageOrderAmountV2_amount','averageOrderAmountV2_currencyCode','totalSpentV2_amount','totalSpentV2_currencyCode','tags','defaultAddress_city','defaultAddress_province','defaultAddress_country','defaultAddress_zip','defaultAddress_phone','createdAt','updatedAt'];
-    
-    for(let i = 0;i<names.length;i++) {
-      if(columnFilters[names[i]] !== undefined) {
+    let names = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "ordersCount",
+      "state",
+      "totalSpent",
+      "acceptsMarketing",
+      "averageOrderAmountV2_amount",
+      "averageOrderAmountV2_currencyCode",
+      "totalSpentV2_amount",
+      "totalSpentV2_currencyCode",
+      "tags",
+      "defaultAddress_city",
+      "defaultAddress_province",
+      "defaultAddress_country",
+      "defaultAddress_zip",
+      "defaultAddress_phone",
+      "createdAt",
+      "updatedAt",
+    ];
+
+    for (let i = 0; i < names.length; i++) {
+      if (columnFilters[names[i]] !== undefined) {
         res[names[i]] = columnFilters[names[i]];
-      }      
+      }
     }
-    if(dataFromInput === "") {
+    if (dataFromInput === "") {
       res[inputName] = undefined;
-    }
-    else {
+    } else {
       res[inputName] = newFilters[0];
     }
 
     setColumnFilters(res);
-    
   }
 
   function handleResetButtonClicked() {
@@ -64,16 +97,16 @@ function Datatable(props) {
 
   function fillQuery() {
     const filtersFromText = [];
-    if(dataFromInput !== "") {
+    if (dataFromInput !== "") {
       filtersFromText.push({
-        "data": dataFromInput
+        data: dataFromInput,
       });
     }
 
     return filtersFromText;
   }
 
-  const [inputName, setInputName] = React.useState('');
+  const [inputName, setInputName] = React.useState("");
 
   const handleInputName = (event) => {
     setInputName(event.target.value);
@@ -99,11 +132,9 @@ function Datatable(props) {
   const subHeaderComponentMemo = React.useMemo(() => {
     return (
       <div className={styles.column_filters}>
-        <div >
-          {InputTextField()}
-        </div>
+        <div>{InputTextField()}</div>
         <div className={styles.column_filters_select_field}>
-          <Box sx={{ minWidth: 100}}>
+          <Box sx={{ minWidth: 100 }}>
             <FormControl fullWidth>
               <InputLabel id="simple-select-label">Filters</InputLabel>
               <Select
@@ -121,16 +152,34 @@ function Datatable(props) {
                 <MenuItem value={"state"}>Account State</MenuItem>
                 <MenuItem value={"totalSpent"}>Total Spent</MenuItem>
                 <MenuItem value={"acceptsMarketing"}>AcceptsMarketing</MenuItem>
-                <MenuItem value={"averageOrderAmountV2_amount"}>Average Order Amount</MenuItem>
-                <MenuItem value={"averageOrderAmountV2_currencyCode"}>Average Order Amount Currency Code</MenuItem>
-                <MenuItem value={"totalSpentV2_amount"}>Total Spent Amount</MenuItem>
-                <MenuItem value={"totalSpentV2_currencyCode"}>Total Spent Amount Currency Code</MenuItem>
+                <MenuItem value={"averageOrderAmountV2_amount"}>
+                  Average Order Amount
+                </MenuItem>
+                <MenuItem value={"averageOrderAmountV2_currencyCode"}>
+                  Average Order Amount Currency Code
+                </MenuItem>
+                <MenuItem value={"totalSpentV2_amount"}>
+                  Total Spent Amount
+                </MenuItem>
+                <MenuItem value={"totalSpentV2_currencyCode"}>
+                  Total Spent Amount Currency Code
+                </MenuItem>
                 <MenuItem value={"tags"}>Tags</MenuItem>
-                <MenuItem value={"defaultAddress_city"}>Default Address City</MenuItem>
-                <MenuItem value={"defaultAddress_province"}>Default Address Province</MenuItem>
-                <MenuItem value={"defaultAddress_country"}>Default Address Country</MenuItem>
-                <MenuItem value={"defaultAddress_zip"}>Default Address Zip</MenuItem>
-                <MenuItem value={"defaultAddress_phone"}>Default Address Phone</MenuItem>
+                <MenuItem value={"defaultAddress_city"}>
+                  Default Address City
+                </MenuItem>
+                <MenuItem value={"defaultAddress_province"}>
+                  Default Address Province
+                </MenuItem>
+                <MenuItem value={"defaultAddress_country"}>
+                  Default Address Country
+                </MenuItem>
+                <MenuItem value={"defaultAddress_zip"}>
+                  Default Address Zip
+                </MenuItem>
+                <MenuItem value={"defaultAddress_phone"}>
+                  Default Address Phone
+                </MenuItem>
                 <MenuItem value={"createdAt"}>Created At</MenuItem>
                 <MenuItem value={"updatedAt"}>Updated At</MenuItem>
               </Select>
@@ -138,8 +187,32 @@ function Datatable(props) {
           </Box>
         </div>
         <div className={styles.column_filters_buttons}>
-          <Button style={{ color: "#ffffff", borderRadius: "6px", marginTop: "8px", marginBottom: "8px", fontSize: "10px", width: "100%" }} onClick={handleApplyButtonClicked}>Search</Button>
-          <Button style={{ color: "#ffffff", borderRadius: "6px", marginTop: "8px", marginBottom: "8px", fontSize: "10px", width: "100%" }} onClick={handleResetButtonClicked}>Reset</Button>
+          <Button
+            style={{
+              color: "#ffffff",
+              borderRadius: "6px",
+              marginTop: "8px",
+              marginBottom: "8px",
+              fontSize: "10px",
+              width: "100%",
+            }}
+            onClick={handleApplyButtonClicked}
+          >
+            Search
+          </Button>
+          <Button
+            style={{
+              color: "#ffffff",
+              borderRadius: "6px",
+              marginTop: "8px",
+              marginBottom: "8px",
+              fontSize: "10px",
+              width: "100%",
+            }}
+            onClick={handleResetButtonClicked}
+          >
+            Reset
+          </Button>
         </div>
       </div>
     );
@@ -149,27 +222,44 @@ function Datatable(props) {
 
   async function syncData() {
     //show popup
-    handleOpenModal(); 
+    handleOpenModal();
     console.log("Sync Data Clicked");
 
-    let result_customers = await axios.post("http://localhost:9000/sync_data_customers", {
+    result_total = await axios.post("http://localhost:9000/count_data", {
       shop: "onepiecewillbemine",
       accessToken: "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",
     });
+    console.log(result_total);
+
+    setTotal(parseInt(result_total.data));
+
+    let result_customers = await axios.post(
+      "http://localhost:9000/sync_data_customers",
+      {
+        shop: "onepiecewillbemine",
+        accessToken: "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",
+      }
+    );
     console.log(result_customers);
 
     if (result_customers.status === 200) {
-      let result_orders = await axios.post("http://localhost:9000/sync_data_orders", {
-        shop: "onepiecewillbemine",
-        accessToken: "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",
-      });
+      let result_orders = await axios.post(
+        "http://localhost:9000/sync_data_orders",
+        {
+          shop: "onepiecewillbemine",
+          accessToken: "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",
+        }
+      );
       console.log(result_orders);
 
       if (result_orders.status === 200) {
-        let result_orderItems = await axios.post("http://localhost:9000/sync_data_order_items", {
-          shop: "onepiecewillbemine",
-          accessToken: "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",
-        });
+        let result_orderItems = await axios.post(
+          "http://localhost:9000/sync_data_order_items",
+          {
+            shop: "onepiecewillbemine",
+            accessToken: "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",
+          }
+        );
         console.log(result_orderItems);
       }
     }
@@ -178,68 +268,107 @@ function Datatable(props) {
     handleCloseModal();
   }
 
-  useEffect(function () {
-    function getTableList() {
-      setProgressPending(true);
-      axios
-        .post("http://localhost:9000/customers/fetch/with_filters", {
-          filters: filters,
-          columnFilters: columnFilters,
-          pageSize: countPerPage,
-          pageIndex: page,
-        })
-        .then(function (res) {
-          setTableData(res.data);
-          setProgressPending(false);
-          console.log("Recieved data from server");
-        })
-        .catch(function (err) {
-          setTableData({});
-          setProgressPending(false);
-        });
-    };
-    getTableList();
-  }, [page, filters, columnFilters]);
+  //for socket
+  const [total, setTotal] = useState(0);
+  const [count, setCount] = useState(0);
+  const [countCustomers, setCountCustomers] = useState(0);
+  const [countOrders, setCountOrders] = useState(0);
+  const [countOrderItems, setCountOrderItems] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  socket.on("CustomerCount", (data) => {
+    setCountCustomers(data);
+  });
+
+  socket.on("OrderCount", (data) => {
+    setCountOrders(data);
+  });
+
+  socket.on("OrderItemCount", (data) => {
+    setCountOrderItems(data);
+  });
+
+  useEffect(() => {
+    console.log("CUSTOMER COUNT ", countCustomers);
+    console.log("ORDER COUNT ", countOrders);
+    console.log("ORDER ITEM COUNT", countOrderItems);
+    
+    let totalCount = countCustomers + countOrders + countOrderItems;
+    console.log("TOTAL COUNT ", totalCount);
+    setCount(totalCount);
+
+    if (total != 0) {
+      let current_progress = parseInt((count / total) * 100);
+      setProgress(current_progress);
+    }
+
+  }, [countCustomers, countOrders, countOrderItems]);
+
+  useEffect(
+    function () {
+      function getTableList() {
+        setProgressPending(true);
+        axios
+          .post("http://localhost:9000/customers/fetch/with_filters", {
+            filters: filters,
+            columnFilters: columnFilters,
+            pageSize: countPerPage,
+            pageIndex: page,
+          })
+          .then(function (res) {
+            setTableData(res.data);
+            setProgressPending(false);
+            console.log("Recieved data from server");
+          })
+          .catch(function (err) {
+            setTableData({});
+            setProgressPending(false);
+          });
+      }
+      getTableList();
+    },
+    [page, filters, columnFilters]
+  );
 
   //For Exporting CSV
-  useEffect(function () {
-    function getExportList() {
-      axios
-        .post("http://localhost:9000/customers/fetch/all", {
-          filters: filters,
-          columnFilters: columnFilters,
-        })
-        .then(function (res) {
-          setExportData(res.data);
-          console.log("Received export data from server");
-        })
-        .catch(function (err) {
-          setExportData({});
-        });
-    };
-    getExportList();
-  }, [filters, columnFilters]);
-
-  createTheme(
-    "solarized",
-    {
-      rdt_TableFotter: "10px",
-      text: {
-        primary: "#090B14",
-        secondary: "#95ADC0",
-      },
-      background: {
-        default: "#FCFCFC",
-      },
-      context: {
-        background: "#ffffff",
-        text: "#e72b2b",
-      },
-      divider: {
-        default: "#3F3F3F",
-      },
-    }
+  useEffect(
+    function () {
+      function getExportList() {
+        axios
+          .post("http://localhost:9000/customers/fetch/all", {
+            filters: filters,
+            columnFilters: columnFilters,
+          })
+          .then(function (res) {
+            setExportData(res.data);
+            console.log("Received export data from server");
+          })
+          .catch(function (err) {
+            setExportData({});
+          });
+      }
+      getExportList();
+    },
+    [filters, columnFilters]
   );
+
+  createTheme("solarized", {
+    rdt_TableFotter: "10px",
+    text: {
+      primary: "#090B14",
+      secondary: "#95ADC0",
+    },
+    background: {
+      default: "#FCFCFC",
+    },
+    context: {
+      background: "#ffffff",
+      text: "#e72b2b",
+    },
+    divider: {
+      default: "#3F3F3F",
+    },
+  });
 
   const customStyles = {
     rows: {
@@ -286,13 +415,13 @@ function Datatable(props) {
     <div className={styles.datatable_main_div}>
       <div className={styles.datatable_buttons}>
         <CsvDownload
-          data={exportData} filename="ExportedData.csv" className={styles.csv_download_button}>
+          data={exportData}
+          filename="ExportedData.csv"
+          className={styles.csv_download_button}
+        >
           Export CSV
         </CsvDownload>
-        <Button
-          onClick={syncData}>
-          Sync Now
-        </Button>
+        <Button onClick={syncData}>Sync Now</Button>
       </div>
       <div className={styles.datatable_actual_div}>
         <DataTable
@@ -309,7 +438,9 @@ function Datatable(props) {
           paginationComponentOptions={{
             noRowsPerPage: true,
           }}
-          onChangePage={function (page) { setPage(page) }}
+          onChangePage={function (page) {
+            setPage(page);
+          }}
           defaultSortFieldId={2}
           progressPending={progressPending}
           progressComponent={<LinearIndeterminate />}
@@ -320,10 +451,15 @@ function Datatable(props) {
 
       {/*Modal Code*/}
       <div className={styles.syncModal_progress}>
-        <Modal show={show} onHide={handleCloseModal} backdrop="static" keyboard={false}>
+        <Modal
+          show={show}
+          onHide={handleCloseModal}
+          backdrop="static"
+          keyboard={false}
+        >
           <Modal.Body>
             <div className={styles.syncModal_progress_icon}>
-              <CircularProgress />
+            <Progress_bar bgcolor="orange" progress={progress}/>
             </div>
             <div className={styles.syncModal_progress_text}>
               Please wait, syncing data...

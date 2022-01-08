@@ -6,7 +6,7 @@ import {
   isObj,
 } from "../global.js";
 
-async function queryOrderItemsGRAPHQL(shopify) {
+async function queryOrderItemsGRAPHQL(shopify, io) {
   let counter_orderItems = 0;
   let graphql_orders_query = `query {
     orders(first: 30) {
@@ -194,6 +194,7 @@ async function queryOrderItemsGRAPHQL(shopify) {
           .bulkCreate(order_items)
           .then((result) => {
             counter_orderItems += result.length;
+            io.emit('OrderItemCount', counter_orderItems);
             console.log(`Successfully ran the query ${counter_orderItems}`)
           })
           .catch((err) => {
