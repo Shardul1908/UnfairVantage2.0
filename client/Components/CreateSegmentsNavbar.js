@@ -12,7 +12,8 @@ import SaveSegments from "../public/SaveSegments.svg";
 import "rsuite/dist/rsuite.min.css";
 import Image from "next/image";
 
-function CreateSegments() {
+function CreateSegments(props) {
+  const { shop } = props; 
   //Custom Filter Modal show
   const [show, setShow] = React.useState(false);
 
@@ -253,7 +254,7 @@ function CreateSegments() {
 
       {/* <SavedSegments handleCreateToSavedSegments={segmentData} /> */}
       <div className={styles.server_pagination_table_div}>
-        <Datatable filters={filterTagsArray} />
+        <Datatable filters={filterTagsArray} shop={shop}/>
       </div>
     </div>
   );

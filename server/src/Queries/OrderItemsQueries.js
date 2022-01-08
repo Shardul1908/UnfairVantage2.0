@@ -1,4 +1,4 @@
-import OrderItem from "../Models/Order_Items/order_item.js";
+import orderItemTableInit from "../Models/Order_Items/order_item.js";
 import {
   getId,
   isInt,
@@ -6,7 +6,7 @@ import {
   isObj,
 } from "../global.js";
 
-async function queryOrderItemsGRAPHQL(shopify, io) {
+async function queryOrderItemsGRAPHQL(shopify, shop_id, io) {
   let counter_orderItems = 0;
   let graphql_orders_query = `query {
     orders(first: 30) {
@@ -190,6 +190,7 @@ async function queryOrderItemsGRAPHQL(shopify, io) {
 
         }
 
+        const OrderItem = orderItemTableInit(shop_id);
         OrderItem
           .bulkCreate(order_items)
           .then((result) => {

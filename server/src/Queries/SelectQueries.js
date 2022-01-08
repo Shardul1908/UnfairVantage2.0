@@ -1,9 +1,11 @@
-import Customer from "../Models/Customers/customer.js";
+import customerTableInit from "../Models/Customers/customer.js";
 import { Op } from "sequelize";
 
-export async function fetch_customers_using_filters(filters, columnFilters, pageSize, pageIndex, res) {
+export async function fetch_customers_using_filters(filters, columnFilters, pageSize, pageIndex, shop_id) {
     let conditions = createConditions(filters,columnFilters);
     
+    const Customer = customerTableInit(shop_id);
+    await Customer.sync();
     const { count, rows } = await Customer.findAndCountAll({
         where: conditions,
         offset: (pageIndex-1)*pageSize,
@@ -14,13 +16,18 @@ export async function fetch_customers_using_filters(filters, columnFilters, page
         total: `${count}`,
         pageData: rows,
     };
-    res.status(200).send(toSend);
+
+    return toSend;
 }
 
-export async function fetch_customers_all(filters, columnFilters, res) {
+export async function fetch_customers_all(filters, columnFilters, shop_id) {
     let conditions = createConditions(filters,columnFilters);
+
+    const Customer = customerTableInit(shop_id);
+    await Customer.sync();
+    
     const customers = await Customer.findAll({where : conditions});
-    res.status(200).send(customers);
+    return customers;
 }
 
 function createConditions(filters,columnFilters) {

@@ -8,14 +8,22 @@ const User = sequelize.define('users', {
     primaryKey: true,
     autoIncrement: true,
   },
+  shop_id: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
   name: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  email: {
+  shop_email : {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true
+    unique: true,
+  },
+  partner_email: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
   email_verified_at: {
     type: Sequelize.DATE,

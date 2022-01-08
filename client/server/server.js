@@ -6,6 +6,7 @@ import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
+import axios from "axios"
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -40,6 +41,13 @@ app.prepare().then(async () => {
         // Access token and shop available in ctx.state.shopify
         const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
+
+        let res = await axios.post('http://localhost:9000/registerShop', {
+          shopEmail: shop,
+          accessToken: accessToken,
+        });
+        console.log(res.data);
+
         ACTIVE_SHOPIFY_SHOPS[shop] = scope;
 
         const response = await Shopify.Webhooks.Registry.register({

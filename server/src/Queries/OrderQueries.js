@@ -1,4 +1,4 @@
-import Order from "../Models/Orders/order.js";
+import orderTableInit from "../Models/Orders/order.js";
 import {
   getId,
   isBool,
@@ -7,7 +7,7 @@ import {
   isString,
 } from "../global.js";
 
-async function queryOrdersGRAPHQL(shopify, io) {
+async function queryOrdersGRAPHQL(shopify,shop_id) {
   let counter_orders = 0;
   //graphql orders query
   let graphql_orders_query = `query {
@@ -280,6 +280,7 @@ async function queryOrdersGRAPHQL(shopify, io) {
       orders.push(order);
     }
 
+    const Order = orderTableInit(shop_id);
     Order
       .bulkCreate(orders)
       .then((result) => {

@@ -5,14 +5,10 @@ import CreateSegmentsNavbar from "../Components/CreateSegmentsNavbar.js";
 // import styles from "../styles/create_segments.module.css";
 
 
-const Index = () => {
-  
-
+const Index = (props) => {
+  const { shop } = props;
   return (
-    
-      <CreateSegmentsNavbar/>
-      
-
+      <CreateSegmentsNavbar shop={shop} />
   )
 };
 

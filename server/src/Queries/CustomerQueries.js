@@ -1,4 +1,4 @@
-import Customer from "../Models/Customers/customer.js";
+import customerTableInit from "../Models/Customers/customer.js";
 import {
   getId,
   isFloat,
@@ -8,7 +8,7 @@ import {
   isBool,
 } from "../global.js";
 
-async function queryCustomersGRAPHQL(shopify, io) {
+async function queryCustomersGRAPHQL(shopify, shop_id, io) {
   let counter_customers = 0;
   let graphql_customers_query = `query {
     customers(first: 25) {
@@ -211,6 +211,7 @@ async function queryCustomersGRAPHQL(shopify, io) {
       customers.push(customer);
     }
 
+    const Customer = customerTableInit(shop_id);
     Customer
       .bulkCreate(customers)
       .then((result) => {
@@ -231,3 +232,6 @@ async function queryCustomersGRAPHQL(shopify, io) {
 }
 
 export { queryCustomersGRAPHQL };
+
+
+

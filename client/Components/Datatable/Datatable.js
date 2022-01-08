@@ -25,7 +25,7 @@ const ENDPOINT = "http://localhost:4444";
 const socket = io(ENDPOINT);
 
 function Datatable(props) {
-  const { filters } = props;
+  const { filters, shop } = props;
   const [tableData, setTableData] = useState({});
   const [exportData, setExportData] = useState({});
   const [page, setPage] = useState(1);
@@ -226,8 +226,7 @@ function Datatable(props) {
     console.log("Sync Data Clicked");
 
     result_total = await axios.post("http://localhost:9000/count_data", {
-      shop: "onepiecewillbemine",
-      accessToken: "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",
+      shop: shop,
     });
     console.log(result_total);
 
@@ -236,8 +235,7 @@ function Datatable(props) {
     let result_customers = await axios.post(
       "http://localhost:9000/sync_data_customers",
       {
-        shop: "onepiecewillbemine",
-        accessToken: "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",
+        shop: shop,
       }
     );
     console.log(result_customers);
@@ -246,8 +244,7 @@ function Datatable(props) {
       let result_orders = await axios.post(
         "http://localhost:9000/sync_data_orders",
         {
-          shop: "onepiecewillbemine",
-          accessToken: "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",
+          shop: shop,
         }
       );
       console.log(result_orders);
@@ -256,8 +253,7 @@ function Datatable(props) {
         let result_orderItems = await axios.post(
           "http://localhost:9000/sync_data_order_items",
           {
-            shop: "onepiecewillbemine",
-            accessToken: "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",
+            shop: shop,
           }
         );
         console.log(result_orderItems);
@@ -314,6 +310,7 @@ function Datatable(props) {
             columnFilters: columnFilters,
             pageSize: countPerPage,
             pageIndex: page,
+            shop: shop,
           })
           .then(function (res) {
             setTableData(res.data);
@@ -338,6 +335,7 @@ function Datatable(props) {
           .post("http://localhost:9000/customers/fetch/all", {
             filters: filters,
             columnFilters: columnFilters,
+            shop: shop,
           })
           .then(function (res) {
             setExportData(res.data);
