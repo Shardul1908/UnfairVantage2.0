@@ -65,6 +65,7 @@ export default function FilterForms(props) {
     payment_gateway_paytm,
     signed_up_start_date,
     signed_up_end_date;
+  let country = ["Yahallo"];
 
   function radioButtonHandleInput(set) {
     let setName = set.target.name;
@@ -192,15 +193,51 @@ export default function FilterForms(props) {
     }
 
     //Country
-    if (setName === "country_India") {
-      dataFromFilters.country_India = set.target.checked;
-    }
-    if (setName === "country_Sri_Lanka") {
-      dataFromFilters.country_Sri_Lanka = set.target.checked;
-    }
-    if (setName === "country_United_States") {
-      dataFromFilters.country_United_States = set.target.checked;
-    }
+    // if (setName === "country_India") {
+    //   country_India = set.target.checked;
+    // }
+    // if (setName === "country_Sri_Lanka") {
+    //   country_Sri_Lanka = set.target.checked;
+    // }
+    // if (setName === "country_United_States") {
+    //   country_United_States = set.target.checked;
+    // }
+    // if (country_India === true) {
+    //   for (let i = 0; i < country.length; i++) {
+    //     console.log("Yahallo");
+    //     if (country[i] === "Yahallo" || "SRI_LANKA" || "UNITED_STATES") {
+    //       country.push("INDIA");
+    //     }
+    //     console.log(country);
+    //   }
+    // }
+    // if (setName === "country_India") {
+    //   country_India = set.target.checked;
+    //   if (country_India === true) {
+    //     inputData.push({
+    //       query: "country_India =" + country_India,
+    //       display: "India",
+    //     });
+    //   }
+    // }
+    // if (setName === "country_Sri_Lanka") {
+    //   country_Sri_Lanka = set.target.checked;
+    //   if (country_Sri_Lanka === true) {
+    //     inputData.push({
+    //       query: "country_Sri_Lanka =" + country_Sri_Lanka,
+    //       display: "Sri Lanka",
+    //     });
+    //   }
+    // }
+    // if (setName === "country_United_States") {
+    //   country_United_States = set.target.checked;
+    //   if (country_United_States === true) {
+    //     inputData.push({
+    //       query: "country_United_States =" + country_United_States,
+    //       display: "United States",
+    //     });
+    //   }
+    // }
 
     //Payment Status
     if (setName === "payment_status_fully_paid") {
@@ -279,27 +316,6 @@ export default function FilterForms(props) {
       if (query !== "") {
         filters.push(query);
       }
-    }
-
-    //Country
-    if (dataFromFilters.country_India === true) {
-      filters.push({
-        query: "country_India =" + dataFromFilters.country_India,
-        display: "India",
-      });
-    }
-    if (dataFromFilters.country_Sri_Lanka === true) {
-      filters.push({
-        query: "country_Sri_Lanka =" + dataFromFilters.country_Sri_Lanka,
-        display: "Sri Lanka",
-      });
-    }
-    if (dataFromFilters.country_United_States === true) {
-      filters.push({
-        query:
-          "country_United_States =" + dataFromFilters.country_United_States,
-        display: "United States",
-      });
     }
 
     //Payment Gateway

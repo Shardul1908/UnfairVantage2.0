@@ -201,9 +201,6 @@ function CreateSegments() {
               onOk={function (set) {
                 handleDateChange(set);
               }}
-              // value={dateChange}
-              // onChange={setDateChange}
-              // onOk={handleDateChange()}
               appearance="subtle"
               placeholder="Select Date Range"
               ranges={dynamicRanges}
