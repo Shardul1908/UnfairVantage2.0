@@ -19,6 +19,3 @@ config/tunnel.pid
 
 # next build output
 .next/
-
-# yarn lock
-yarn.lock

@@ -38,13 +38,17 @@ io.on("connection", (socket) => {
   })
 });
 
-httpServer.listen(4444, function () {
-  console.log("Listening for incoming connections on 4444...");
+httpServer.listen(9000, function () {
+  console.log("Listening for incoming connections on 9000...");
 });
 
 //middleware
 app.use(express.json());
 app.use(cors());
+
+app.get("/ping",(_,res) => {
+  res.status(200).send("Server ready!!!!");
+}); 
 
 app.post("/count_data", async function (req, res){
   const shop = req.body.shop;
@@ -167,11 +171,6 @@ app.post("/registerShop", async function (req, res) {
   await registerShop(shopEmail, accessToken, io);
 
   res.status(200).send("Welcome 💥💥💥");
-});
-
-//express listen
-app.listen(port, () => {
-  console.log(`\nConnected to express server at port ${port}!!`.green);
 });
 
 //temp
