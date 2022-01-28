@@ -1,23 +1,25 @@
+/* changes the width distribution of the modal */
 .vertical_tabs {
   width: 50%;
-  text-transform: none;
 }
-
+/* right part of the modal*/
 .tab_panel {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  /* font-size: ; */
+  flex-direction: row;
 }
-
+/* right side font */
 .customFilters_span_responsive {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
-
+/* right side font size */
 .tabText {
   text-transform: none !important;
-  /* font-size: medium !important; */
-  font-size: 1rem;
+  font-size: 1.2rem;
+}
+
+.textAlign {
+  text-align: left;
 }
 
 .rounded_input_corners {
