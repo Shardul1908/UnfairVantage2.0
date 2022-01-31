@@ -6,7 +6,28 @@ import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
-import axios from "axios"
+import cors from "@koa/cors";
+import json from "koa-json";
+import koaBody from "koa-body";
+import axios from "axios";
+
+import { queryCustomersGRAPHQL } from "./Queries/CustomerQueries.js";
+import { queryOrdersGRAPHQL } from "./Queries/OrderQueries.js";
+import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
+import { fetch_customers_using_filters, fetch_customers_all } from "./Queries/SelectQueries.js";
+import { registerShop } from "./Queries/RegisterShop.js";
+import { createShopifyObject } from "./global.js";
+// import Charges from "./Models/Charges/charges.js";
+// import Datasync_Status from "./Models/Datasync_Status/Datasync_Status.js";
+// import Failed_Jobs from "./Models/Failed_Jobs/Failed_Jobs.js";
+import Migration from "./Models/Migrations/Migrations.js";
+// import Password_Resets from "./Models/Password_Resets/Password_Reset.js";
+// import Plan from "./Models/Plans/plans.js";
+import User from "./Models/Users/user.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { queryTotalCount } from "./Queries/TotalCount.js";
+import { Op } from "sequelize";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -32,21 +53,42 @@ Shopify.Context.initialize({
 const ACTIVE_SHOPIFY_SHOPS = {};
 
 app.prepare().then(async () => {
-  const server = new Koa();
+  const app = new Koa();
   const router = new Router();
-  server.keys = [Shopify.Context.API_SECRET_KEY];
-  server.use(
+
+  app.keys = [Shopify.Context.API_SECRET_KEY];
+
+  app.use(cors());
+  app.use(json());
+  app.use(koaBody());
+
+  const server = createServer(app.callback());
+  const io = new Server(server,
+    {
+      cors:
+      {
+        origin: "*"
+      }
+    }
+  );
+
+  io.on("connection", (socket) => {
+    console.log("Connected with socket id " + socket.id);
+  
+    socket.on("testevent", (payload) => {
+      console.log("This is the payload: ", payload);
+    })
+  });
+
+  app.use(
     createShopifyAuth({
       async afterAuth(ctx) {
         // Access token and shop available in ctx.state.shopify
         const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
 
-        let res = await axios.post('http://localhost:9000/registerShop', {
-          shopEmail: shop,
-          accessToken: accessToken,
-        });
-        console.log(res.data);
+        await registerShop(shop, accessToken);
+        console.log("Welcome 💥💥💥");
 
         ACTIVE_SHOPIFY_SHOPS[shop] = scope;
 
@@ -96,6 +138,137 @@ app.prepare().then(async () => {
 
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
+
+  router.get("/api/ping", async (ctx) => {
+    ctx.status = 200;
+    ctx.body = { body: "API Ready!!!" };
+  });
+
+  router.post("/api/count_data", async (ctx) => {
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop
+        }
+      }
+    });
+  
+    const shopify = createShopifyObject(shop, result.password);
+    const total_count = await queryTotalCount(shopify);
+    
+    ctx.status = 200;
+    ctx.body = { total: total_count + ""};
+  });
+
+  router.post("/api/customers/fetch/with_filters", async (ctx) => {
+    const filters = ctx.request.body.filters;
+    const columnFilters = ctx.request.body.columnFilters;
+    const pageSize = ctx.request.body.pageSize;
+    const pageIndex = ctx.request.body.pageIndex;
+    const shop = ctx.request.body.shop;
+
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop
+        }
+      }
+    });
+    let shop_id = result.shop_id;
+
+    let customers = await fetch_customers_using_filters(filters, columnFilters, pageSize, pageIndex, shop_id);
+
+    ctx.status = 200;
+    ctx.body = customers;
+  });
+
+  router.post("/api/customers/fetch/all", async (ctx) => {
+    const filters = ctx.request.body.filters;
+    const columnFilters = ctx.request.body.columnFilters;
+    const shop = ctx.request.body.shop;
+
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop
+        }
+      }
+    });
+    console.log(result);
+    let shop_id = result.shop_id;
+
+    let customers = await fetch_customers_all(filters, columnFilters, shop_id);
+
+    ctx.status = 200;
+    ctx.body = customers;
+  });
+
+  router.post("/api/sync_data_customers", async (ctx) => {
+    Migration.create({
+      "migration": `customers_data_synced`,
+      "batch": 1
+    });
+
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop
+        }
+      }
+    });
+
+    const shopify = createShopifyObject(shop, result.password);
+    await queryCustomersGRAPHQL(shopify, result.shop_id, io);
+
+    ctx.status = 200;
+    ctx.body = { body: "Customers Data Synced." };
+  });
+
+  router.post("/api/sync_data_orders", async (ctx) => {
+    Migration.create({
+      "migration": `orders_data_synced`,
+      "batch": 1
+    });
+
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop
+        }
+      }
+    });
+
+    const shopify = createShopifyObject(shop, result.password);
+    await queryOrdersGRAPHQL(shopify, result.shop_id);
+
+    ctx.status = 200;
+    ctx.body = { body: "Orders Data Synced." };
+  });
+
+  router.post("/api/sync_data_order_items", async (ctx) => {
+    Migration.create({
+      "migration": `orderItems_data_synced`,
+      "batch": 1
+    });
+
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop
+        }
+      }
+    });
+
+    const shopify = createShopifyObject(shop, result.password);
+    await queryOrderItemsGRAPHQL(shopify, result.shop_id, io);
+    ctx.status = 200;
+    ctx.body = { body: "Order Items Data Synced." };
+  });
+
   router.get("(.*)", async (ctx) => {
     const shop = ctx.query.shop;
 
@@ -107,11 +280,10 @@ app.prepare().then(async () => {
     }
   });
 
-  server.use(router.allowedMethods());
-  server.use(router.routes());
+  app.use(router.allowedMethods());
+  app.use(router.routes());
+
   server.listen(port, () => {
     console.log(`> Client Ready on http://localhost:${port}`);
   });
 });
-
-//CHANGE FOR TESTING...

@@ -43,12 +43,14 @@ function MyProvider(props) {
   });
 
   const Component = props.Component;
+  // console.log(props.shop);
 
   return (
     <ApolloProvider client={client}>
       <Component shop={props.shop} {...props} />
     </ApolloProvider>
   );
+  
 }
 
 class MyApp extends App {

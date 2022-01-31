@@ -21,7 +21,7 @@ import io from "socket.io-client";
 import Progress_bar from "../ProgressBar/ProgressBar.js";
 import { deepOrange, orange } from "@material-ui/core/colors";
 
-const ENDPOINT = "http://localhost:4444";
+const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
 
 function Datatable(props) {
@@ -225,34 +225,28 @@ function Datatable(props) {
     handleOpenModal();
     console.log("Sync Data Clicked");
 
-    result_total = await axios.post("http://localhost:9000/count_data", {
+    result_total = await axios.post("http://localhost:8081/api/count_data", {
       shop: shop,
     });
     console.log(result_total);
 
-    setTotal(parseInt(result_total.data));
+    setTotal(parseInt(result_total.data.total));
 
-    let result_customers = await axios.post(
-      "http://localhost:9000/sync_data_customers",
-      {
+    let result_customers = await axios.post("http://localhost:8081/api/sync_data_customers", {
         shop: shop,
       }
     );
     console.log(result_customers);
 
     if (result_customers.status === 200) {
-      let result_orders = await axios.post(
-        "http://localhost:9000/sync_data_orders",
-        {
+      let result_orders = await axios.post("http://localhost:8081/api/sync_data_orders", {
           shop: shop,
         }
       );
       console.log(result_orders);
 
       if (result_orders.status === 200) {
-        let result_orderItems = await axios.post(
-          "http://localhost:9000/sync_data_order_items",
-          {
+        let result_orderItems = await axios.post("http://localhost:8081/api/sync_data_order_items", {
             shop: shop,
           }
         );
@@ -305,7 +299,7 @@ function Datatable(props) {
       function getTableList() {
         setProgressPending(true);
         axios
-          .post("http://localhost:9000/customers/fetch/with_filters", {
+          .post("http://localhost:8081/api/customers/fetch/with_filters", {
             filters: filters,
             columnFilters: columnFilters,
             pageSize: countPerPage,
@@ -332,7 +326,7 @@ function Datatable(props) {
     function () {
       function getExportList() {
         axios
-          .post("http://localhost:9000/customers/fetch/all", {
+          .post("http://localhost:8081/api/customers/fetch/all", {
             filters: filters,
             columnFilters: columnFilters,
             shop: shop,

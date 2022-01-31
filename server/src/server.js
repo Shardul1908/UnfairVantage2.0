@@ -4,10 +4,7 @@ import cors from "cors";
 import { queryCustomersGRAPHQL } from "./Queries/CustomerQueries.js";
 import { queryOrdersGRAPHQL } from "./Queries/OrderQueries.js";
 import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
-import {
-  fetch_customers_using_filters,
-  fetch_customers_all,
-} from "./Queries/SelectQueries.js";
+import { fetch_customers_using_filters, fetch_customers_all } from "./Queries/SelectQueries.js";
 import { registerShop } from "./Queries/RegisterShop.js";
 import { createShopifyObject } from "./global.js";
 import Charges from "./Models/Charges/charges.js";
@@ -173,6 +170,11 @@ app.post("/registerShop", async function (req, res) {
   res.status(200).send("Welcome 💥💥💥");
 });
 
+//express listen
+// app.listen(port, () => {
+//   console.log(`\nConnected to express server at port ${port}!!`.green);
+// });
+
 //temp
 Charges.sync({ force: true });
 Datasync_Status.sync({ force: true });
@@ -180,4 +182,4 @@ Failed_Jobs.sync({ force: true });
 Migration.sync({ force: true });
 Password_Resets.sync({ force: true });
 Plan.sync({ force: true });
-User.sync();
+User.sync({force: true});
