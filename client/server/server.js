@@ -242,7 +242,7 @@ app.prepare().then(async () => {
     });
 
     const shopify = createShopifyObject(shop, result.password);
-    await queryOrdersGRAPHQL(shopify, result.shop_id);
+    await queryOrdersGRAPHQL(shopify, result.shop_id, io);
 
     ctx.status = 200;
     ctx.body = { body: "Orders Data Synced." };

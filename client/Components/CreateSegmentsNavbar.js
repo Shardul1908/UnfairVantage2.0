@@ -66,7 +66,6 @@ function CreateSegments(props) {
     }
   }
 
-  //Shantnu's Code
   const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {

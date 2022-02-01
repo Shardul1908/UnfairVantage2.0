@@ -7,7 +7,7 @@ import {
   isString,
 } from "../global.js";
 
-async function queryOrdersGRAPHQL(shopify,shop_id) {
+async function queryOrdersGRAPHQL(shopify, shop_id, io) {
   let counter_orders = 0;
   //graphql orders query
   let graphql_orders_query = `query {
