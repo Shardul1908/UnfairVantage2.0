@@ -497,6 +497,7 @@ export default function FilterForms(props) {
                 </Tabs>
 
                 <TabPanel value={value} index={0} className={styles.tab_panel}>
+                  <div className={styles.textAlign}>
                   <span className={styles.customFilters_span_responsive}>
                     Minimum AOV
                   </span>
@@ -510,8 +511,12 @@ export default function FilterForms(props) {
                     placeholder="Enter Amount"
                     className={styles.rounded_input_corners}
                   />
-                  <hr />
-                  <span>Maximum AOV</span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                  <span className={styles.customFilters_span_responsive}>
+                    Maximum AOV
+                  </span>
                   <br />
                   <input
                     type="text"
@@ -522,10 +527,11 @@ export default function FilterForms(props) {
                     placeholder="Enter Amount"
                     className={styles.rounded_input_corners}
                   />
+                  </div>
                 </TabPanel>
 
                 <TabPanel value={value} index={1} className={styles.tab_panel}>
-                  <div>
+                  <div className={styles.textAlign}>
                     <input
                       type="radio"
                       id="acceptsMarketing"
@@ -535,9 +541,12 @@ export default function FilterForms(props) {
                       }}
                       value="accepted"
                     />
-                    <span>&nbsp;True</span>
-                    <br />
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      &nbsp;True
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="radio"
                       id="acceptsMarketing"
@@ -547,22 +556,14 @@ export default function FilterForms(props) {
                       }}
                       value="notAccepted"
                     />
-                    <span>&nbsp;False</span>
+                    <span className={styles.customFilters_span_responsive}>
+                      &nbsp;False
+                    </span>
                   </div>
                 </TabPanel>
 
                 <TabPanel value={value} index={2} className={styles.tab_panel}>
-                  {/* <form> */}
-                  {/* <input
-                                type="text"
-                                name="search_filter"
-                                placeholder="search filter"
-                                ></input>
-                                &nbsp;&nbsp;
-                                <button>select all</button>&nbsp;&nbsp;
-                                <button>clear</button>
-                                <br /> */}
-                  <div>
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="accountState"
@@ -571,8 +572,12 @@ export default function FilterForms(props) {
                         checkBoxHandleInput(set);
                       }}
                     ></input>
-                    <span>Declined</span>
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      Declined
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="accountState"
@@ -581,8 +586,12 @@ export default function FilterForms(props) {
                         checkBoxHandleInput(set);
                       }}
                     ></input>
-                    <span>Disabled</span>
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      Disabled
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="accountState"
@@ -591,8 +600,12 @@ export default function FilterForms(props) {
                         checkBoxHandleInput(set);
                       }}
                     ></input>
-                    <span>Enabled</span>
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      Enabled
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="accountState"
@@ -601,83 +614,103 @@ export default function FilterForms(props) {
                         checkBoxHandleInput(set);
                       }}
                     ></input>
-                    <span>Invited</span>
+                    <span className={styles.customFilters_span_responsive}>
+                      Invited
+                    </span>
                   </div>
                 </TabPanel>
 
                 <TabPanel value={value} index={3} className={styles.tab_panel}>
-                  <div>
-                    {/* <input
-                                        type="text"
-                                        name="search_filter"
-                                        placeholder="search filter"
-                                    ></input>
-                                    <button>select all</button>
-                                    <button>clear</button>
-                                    <br /> */}
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_customer_imported_from_tidio"
-                        value="Customer imported from Tidio"
-                      ></input>
-                      <span>Customer imported from Tidio</span>
-                      <hr />
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_mitchell_professionals"
-                        value="Mitchell Professionals"
-                      ></input>
-                      <span>Mitchell Professionals</span>
-                      <hr />
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_receiving_updates_in_messenger"
-                        value="Receiving updates in Messenger"
-                      ></input>
-                      <span>Receiving updates in Messenger</span>
-                      <hr />
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_whatsapp_customer"
-                        value="WhatsApp Customer"
-                      ></input>
-                      <span>WhatsApp Customer</span>
-                      <hr />
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_customer_cleaned_email_spam_protect"
-                        value="cleaned-email-spam-protect"
-                      ></input>
-                      <span>cleaned-email-spam-protect</span>
-                      <hr />
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_newsletter"
-                        value="newsletter"
-                      ></input>
-                      <span>newsletter</span>
-                      <hr />
-                      <input
-                        type="checkbox"
-                        id="customerTag"
-                        name="customer_tag_open_signin"
-                        value="open_signin"
-                      ></input>
-                      <span>open_signin</span>
-                    </div>
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_customer_imported_from_tidio"
+                      value="Customer imported from Tidio"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      Customer imported from Tidio
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_mitchell_professionals"
+                      value="Mitchell Professionals"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      Mitchell Professionals
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_receiving_updates_in_messenger"
+                      value="Receiving updates in Messenger"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      Receiving updates in Messenger
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_whatsapp_customer"
+                      value="WhatsApp Customer"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      WhatsApp Customer
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_customer_cleaned_email_spam_protect"
+                      value="cleaned-email-spam-protect"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      Cleaned-email-spam-protect
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_newsletter"
+                      value="newsletter"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      Newsletter
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
+                    <input
+                      type="checkbox"
+                      id="customerTag"
+                      name="customer_tag_open_signin"
+                      value="open_signin"
+                    ></input>
+                    <span className={styles.customFilters_span_responsive}>
+                      Open_signin
+                    </span>
                   </div>
                 </TabPanel>
 
                 <TabPanel value={value} index={4} className={styles.tab_panel}>
-                  <div>
-                    <span>Last Ordered</span>
+                  <div className={styles.textAlign}>
+                    <span className={styles.customFilters_span_responsive}>
+                      Last Ordered
+                    </span>
                     <br />
                     <input
                       type="text"
@@ -692,8 +725,10 @@ export default function FilterForms(props) {
                 </TabPanel>
 
                 <TabPanel value={value} index={5} className={styles.tab_panel}>
-                  <div>
-                    <span>Min. Spend(Total)</span>
+                  <div className={styles.textAlign}>
+                    <span className={styles.customFilters_span_responsive}>
+                      Min.Spend(Total)
+                    </span>
                     <br />
                     <input
                       type="text"
@@ -708,88 +743,97 @@ export default function FilterForms(props) {
                 </TabPanel>
 
                 <TabPanel value={value} index={6} className={styles.tab_panel}>
-                  <div>
-                    {/* <input
-                                        type="text"
-                                        name="search_filter"
-                                        placeholder="search filter"
-                                    ></input>
-                                    <button>select all</button>
-                                    <button>clear</button>
-                                    <br /> */}
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="orderSource"
                       name="order_source_multi_channel"
                       value="multi-channel"
                     ></input>
-                    <span>Multi-channel</span>
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      Multi-channel
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="orderSource"
                       name="order_source_other"
                       value="other"
                     ></input>
-                    <span>Other</span>
-
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      Other
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="orderSource"
                       name="order_source_pos"
                       value="pos"
                     ></input>
-                    <span>Pos</span>
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      Pos
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="orderSource"
                       name="order_source_web"
                       value="web"
                     ></input>
-                    <span>Web</span>
+                    <span className={styles.customFilters_span_responsive}>
+                      Web
+                    </span>
                   </div>
                 </TabPanel>
 
                 <TabPanel value={value} index={7} className={styles.tab_panel}>
-                  <div>
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="ordersTotal"
                       name="orders_total_more_than"
                       value="More than this number"
                     ></input>
-                    <span>More than this number</span>
-                    <br />
+                    <span className={styles.customFilters_span_responsive}>More than this number</span>
+                    <br/>
                     <input
                       type="number"
                       name="orders_total_more_than_input"
                       className={styles.rounded_input_corners}
                     ></input>
-                    <hr />
+                  </div>
+                  <br/>
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="ordersTotal"
                       name="orders_total_less_than"
                       value="Less than this number"
                     ></input>
-                    <span>Less than this number</span>
-                    <br />
+                    <span className={styles.customFilters_span_responsive}>Less than this number</span>
+                    <br/>
                     <input
                       type="number"
                       name="orders_total_less_than_input"
                       className={styles.rounded_input_corners}
                     ></input>
-                    <hr />
+                  </div>
+                  <br/>               
+                  <div className={styles.textAlign}>
                     <input
                       type="checkbox"
                       id="ordersTotal"
                       name="orders_total_exact_number"
                       value="This exact number"
                     ></input>
-                    <span>This exact number</span>
-                    <br />
+                    <span className={styles.customFilters_span_responsive}>This exact number</span>
+                    <br/>
                     <input
                       type="number"
                       name="orders_total_exact_number_input"
@@ -799,8 +843,8 @@ export default function FilterForms(props) {
                 </TabPanel>
 
                 <TabPanel value={value} index={8} className={styles.tab_panel}>
-                  <div>
-                    <span>Start date</span>
+                  <div className={styles.textAlign}>
+                    <span className={styles.customFilters_span_responsive}>Start date</span>
                     <br />
                     <input
                       type="date"
@@ -810,8 +854,9 @@ export default function FilterForms(props) {
                       }}
                       className={styles.rounded_input_corners}
                     ></input>
-                    <hr />
-                    <span>End date</span>
+                    <br />
+                    <br />
+                    <span className={styles.customFilters_span_responsive}>End date</span>
                     <br />
                     <input
                       type="date"
