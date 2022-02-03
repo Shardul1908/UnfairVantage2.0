@@ -1,0 +1,13 @@
+.saved_segments_div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.save_segments_cards {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}

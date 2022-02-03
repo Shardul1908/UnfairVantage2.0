@@ -13,85 +13,96 @@ import "rsuite/dist/rsuite.min.css";
 import Image from "next/image";
 
 function CreateSegments(props) {
-  const { shop } = props; 
+  const { shop } = props;
   //Custom Filter Modal show
   const [show, setShow] = React.useState(false);
 
-  //TBD
-  // const [customFilters, setCustomFilters] = React.useState([]);
-  // function handleFilterToCreate(filters) {
-  //   setCustomFilters(filters);
-  //   // filterTags();
-  // }
+  // filterLengthArray is for Save Segment enable disable
+  // customFilters is the array for data tables
+  // filterDisplayArray is to display applied filters except DateRange
+  const [filterLengthArray, setFilterLengthArray] = React.useState([]);
   const [customFilters, setCustomFilters] = React.useState([]);
-  const [filterTagsArray, setFilterTagsArray] = React.useState([]);
+  const [filterDisplayArray, setFilterDisplayArray] = React.useState([]);
 
   const [inputData, setInputData] = React.useState([]);
   function handleFilterToCreate() {}
-  //TBD
+
+  React.useEffect(() => {
+    console.log(filterLengthArray);
+    console.log(customFilters);
+    console.log(filterDisplayArray);
+  }, [filterLengthArray, customFilters, filterDisplayArray]);
 
   function ResetFilter() {
-    console.log(customFilters);
-    customFilters.splice(0, customFilters.length);
-    filterTagsArray.splice(0, filterTagsArray.length);
-    console.log(customFilters);
+    console.log(filterLengthArray);
+    // filterLengthArray.splice(0, filterLengthArray.length);
+    // customFilters.splice(0, customFilters.length);
+    setFilterLengthArray([]);
+    setCustomFilters([]);
+    setFilterDisplayArray([]);
     if (disabledButton === false) {
-      console.log("Yahallo");
       setDisableButton(true);
     }
   }
 
-  //Save Segment
-  // const [disabledButton, setDisableButton] = React.useState(true);
-  // function handleDisableButton(saveSegmentDisable) {
-  //   setDisableButton(saveSegmentDisable);
-  //   // customFilters.splice(0, customFilters.length);
-  //   console.log("After SaveSegments: " + customFilters);
-  //   // setDisableButton(!disabledButton);
-  // }
-
   const [disabledButton, setDisableButton] = React.useState(true);
   function handleDisableButton() {
-    customFilters.splice(0, customFilters.length);
-    console.log("After SaveSegments: " + customFilters);
+    filterLengthArray.splice(0, filterLengthArray.length);
+    console.log("After SaveSegments Filter Length Array is:- ");
+    console.log(filterLengthArray);
     setDisableButton(true);
-    console.log("FilterTagsArray");
-    console.log(filterTagsArray);
-    // setDisableButton(!disabledButton);
+    console.log("customFilters");
+    console.log(customFilters);
   }
 
   function enableSaveSegmentButton() {
-    if (customFilters.length !== 0) {
+    if (filterLengthArray.length !== 0) {
       setDisableButton(false);
+    }
+    if (filterLengthArray.length === 0) {
+      setDisableButton(true);
     }
   }
 
-  const [users, setUsers] = React.useState([]);
+  //FilterTags Code
 
-  React.useEffect(() => {
-    setUsers(filterTagsArray);
-  }, [filterTagsArray]);
+  function handleFilterTags(indexToRemove) {
+    setCustomFilters(
+      customFilters.filter((_, index) => index !== indexToRemove)
+    );
+    customFilters.splice(indexToRemove, 1);
 
-  function filterTags() {
+    setFilterDisplayArray(
+      filterDisplayArray.filter((_, index) => index !== indexToRemove)
+    );
+    filterDisplayArray.splice(indexToRemove, 1);
+
+    if (filterLengthArray.length !== 0) {
+      setFilterLengthArray(
+        filterLengthArray.filter((_, index) => index !== indexToRemove)
+      );
+      filterLengthArray.splice(indexToRemove, 1);
+    }
+    if (filterLengthArray.length === 0) {
+      for (let i = 0; i < customFilters.length; i++) {
+        filterLengthArray.push(customFilters[i]);
+      }
+    }
+    enableSaveSegmentButton();
+  }
+
+  function filterTagsPop() {
     return (
-      <div className={styles.filterTag - main - div}>
-        {users.map((user) => (
-          <div
-            className={styles.filterTag - text - div}
-            style={{
-              backgroundColor: "#CCCCCC",
-              padding: "5px",
-              fontSize: "12px",
-              border: "1px solid black",
-              width: "fit-content",
-              borderRadius: "5px",
-              margin: "3px",
-            }}
-          >
-            {user.display}
+      <div className={styles.filterTag_main_div}>
+        {filterDisplayArray.map((tags, index) => (
+          <div className={styles.filterTag_text_div} key={index}>
+            {tags.display}
             <AiOutlineCloseSquare
-              className={styles.filterTag - Icon}
+              className={styles.filterTag_Icon}
               size={23}
+              onClick={function () {
+                handleFilterTags(index);
+              }}
             />
           </div>
         ))}
@@ -158,7 +169,6 @@ function CreateSegments(props) {
       Dec: "12",
     };
     if (set != null) {
-      console.log(set);
       let start = set[0].toString();
       let end = set[1].toString();
       let startDate = start.substring(8, 10);
@@ -179,8 +189,38 @@ function CreateSegments(props) {
       end = endYear.concat("-", endMonth, "-", endDate);
       console.log("Start Date: " + start);
       console.log("End Date: " + end);
+      filterLengthArray.push({
+        name: "Date Range",
+        data: { start, end },
+        display: `Start: ${start}, End: ${end}`,
+      });
+      customFilters.push({
+        name: "Date Range",
+        data: { start, end },
+        display: `Start: ${start}, End: ${end}`,
+      });
+      enableSaveSegmentButton();
+      console.log(filterLengthArray);
+      console.log(customFilters);
       // let newStardDate = startDate.replace(/\s/g, "-");
     }
+  }
+
+  function handleCloseDateRange() {
+    console.log("On Colse Date Range");
+    for (let i = 0; i < filterLengthArray.length; i++) {
+      if (filterLengthArray[i].name === "Date Range") {
+        filterLengthArray.splice(i, 1);
+      }
+    }
+    for (let i = 0; i < customFilters.length; i++) {
+      if (customFilters[i].name === "Date Range") {
+        customFilters.splice(i, 1);
+      }
+    }
+    console.log(filterLengthArray);
+    console.log(customFilters);
+    enableSaveSegmentButton();
   }
 
   return (
@@ -206,6 +246,7 @@ function CreateSegments(props) {
               ranges={dynamicRanges}
               format="d MMM yyyy"
               style={{ color: "#ffffff" }}
+              onClean={handleCloseDateRange}
             />
           </div>
         </div>
@@ -235,15 +276,16 @@ function CreateSegments(props) {
           </Link>
         </div>
       </div>
-      {/* <div>{filterTags()}</div> */}
+      <div>{filterTagsPop()}</div>
       <div className={styles.filter_forms}>
         <FilterForms
           showCustomFilter={show}
           onHide={function () {
             setShow(false);
           }}
+          filterLengthArray={filterLengthArray}
           customFilters={customFilters}
-          filterTagsArray={filterTagsArray}
+          filterDisplayArray={filterDisplayArray}
           inputData={inputData}
           handleFilterToCreate={handleFilterToCreate}
           handleDisableButton={handleDisableButton}
@@ -253,7 +295,7 @@ function CreateSegments(props) {
 
       {/* <SavedSegments handleCreateToSavedSegments={segmentData} /> */}
       <div className={styles.server_pagination_table_div}>
-        <Datatable filters={filterTagsArray} shop={shop}/>
+        <Datatable filters={customFilters} shop={shop} />
       </div>
     </div>
   );

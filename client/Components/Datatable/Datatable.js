@@ -232,21 +232,27 @@ function Datatable(props) {
 
     setTotal(parseInt(result_total.data.total));
 
-    let result_customers = await axios.post("http://localhost:8081/api/sync_data_customers", {
+    let result_customers = await axios.post(
+      "http://localhost:8081/api/sync_data_customers",
+      {
         shop: shop,
       }
     );
     console.log(result_customers);
 
     if (result_customers.status === 200) {
-      let result_orders = await axios.post("http://localhost:8081/api/sync_data_orders", {
+      let result_orders = await axios.post(
+        "http://localhost:8081/api/sync_data_orders",
+        {
           shop: shop,
         }
       );
       console.log(result_orders);
 
       if (result_orders.status === 200) {
-        let result_orderItems = await axios.post("http://localhost:8081/api/sync_data_order_items", {
+        let result_orderItems = await axios.post(
+          "http://localhost:8081/api/sync_data_order_items",
+          {
             shop: shop,
           }
         );
@@ -282,7 +288,7 @@ function Datatable(props) {
     console.log("CUSTOMER COUNT ", countCustomers);
     console.log("ORDER COUNT ", countOrders);
     console.log("ORDER ITEM COUNT", countOrderItems);
-    
+
     let totalCount = countCustomers + countOrders + countOrderItems;
     console.log("TOTAL COUNT ", totalCount);
     setCount(totalCount);
@@ -291,7 +297,6 @@ function Datatable(props) {
       let current_progress = parseInt((count / total) * 100);
       setProgress(current_progress);
     }
-
   }, [countCustomers, countOrders, countOrderItems]);
 
   useEffect(
@@ -451,7 +456,7 @@ function Datatable(props) {
         >
           <Modal.Body>
             <div className={styles.syncModal_progress_icon}>
-            <Progress_bar bgcolor="orange" progress={progress}/>
+              <Progress_bar bgcolor="orange" progress={progress} />
             </div>
             <div className={styles.syncModal_progress_text}>
               Please wait, syncing data...

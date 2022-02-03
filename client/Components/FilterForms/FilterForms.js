@@ -4,8 +4,8 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Row, Modal, Container } from "react-bootstrap";
-// import "react-date-range/dist/styles.css"; // main style file
-// import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 import { TabPanel, a11yProps } from "./TabPanel.js";
 import styles from "../../styles/filter_forms.module.css";
@@ -14,8 +14,9 @@ export default function FilterForms(props) {
   const {
     showCustomFilter,
     onHide,
+    filterLengthArray,
     customFilters,
-    filterTagsArray,
+    filterDisplayArray,
     inputData,
     handleFilterToCreate,
     handleDisableButton,
@@ -31,30 +32,12 @@ export default function FilterForms(props) {
   }
 
   //Our Code
-  const [dataFromFilters, setDataFromFilters] = React.useState({
-    aov_min: "",
-    aov_max: "",
-    acceptsMarketing: "",
-    account_state_declined: false,
-    account_state_disabled: false,
-    account_state_enabled: false,
-    account_state_invited: false,
-    last_ordered_days: "",
-    min_spend_total: "",
-    signed_up_start_date: "",
-    signed_up_end_date: "",
-    country_India: false,
-    country_Sri_Lanka: false,
-    country_United_States: false,
-    payment_status_paid: "",
-    payment_gateway_cod: false,
-    payment_gateway_paytm: false,
-  });
 
-  let filters = [];
   let aov_min = "Yahallo",
     aov_max = "Halo Halo";
   let declined,
+    last_ordered,
+    min_spend,
     disabled,
     enabled,
     invited,
@@ -65,74 +48,16 @@ export default function FilterForms(props) {
     payment_gateway_paytm,
     signed_up_start_date,
     signed_up_end_date;
-  let country = ["Yahallo"];
 
-  function radioButtonHandleInput(set) {
+  let declinedCounter = 0,
+    disabledCounter = 0,
+    enabledCounter = 0,
+    invitedCounter = 0;
+
+  const [AOV, setAOV] = React.useState([]);
+  function handelAOV(set) {
     let setName = set.target.name;
 
-    //Customer Acceptance
-    if (setName === "customer_acceptance") {
-      if (set.target.value !== "") {
-        if (set.target.value === "accepted") {
-          for (let i = 0; i < customFilters.length; i++) {
-            if (customFilters[i].display === "Does Not Acccept Marketing") {
-              customFilters.splice(i, 1);
-            }
-          }
-          inputData.push({
-            name: "acceptsMarketing",
-            data: true,
-            display: "Accepts Marketing",
-          });
-        }
-        if (set.target.value === "notAccepted") {
-          for (i = 0; i < customFilters.length; i++) {
-            if (customFilters[i].display === "Accepts Marketing") {
-              customFilters.splice(i, 1);
-            }
-          }
-          inputData.push({
-            name: "acceptsMarketing",
-            data: false,
-            display: "Does Not Acccept Marketing",
-          });
-        }
-      }
-    }
-
-    //Payment Status
-    if (setName === "payment_status_paid") {
-      if (set.target.value !== "") {
-        if (set.target.value === "fullyPaid") {
-          for (let i = 0; i < customFilters.length; i++) {
-            if (customFilters[i].display === "Not Fully Paid") {
-              customFilters.splice(i, 1);
-            }
-          }
-          inputData.push({
-            query: "payment_status_paid = true",
-            display: "Fully Paid",
-          });
-        }
-        if (set.target.value === "notFullyPaid") {
-          for (i = 0; i < customFilters.length; i++) {
-            if (customFilters[i].display === "Fully Paid") {
-              customFilters.splice(i, 1);
-            }
-          }
-          inputData.push({
-            query: "payment_status_paid = false",
-            display: "Not Fully Paid",
-          });
-        }
-      }
-    }
-  }
-
-  function handleTextBoxInput(set) {
-    let setName = set.target.name;
-
-    //AOV
     if (setName === "aov_min") {
       if (set.target.value !== "") {
         aov_min = set.target.value;
@@ -145,7 +70,7 @@ export default function FilterForms(props) {
       }
     }
     if (aov_min !== "Yahallo" && aov_max !== "Halo Halo") {
-      inputData.push({
+      AOV.push({
         name: "AOV",
         data: {
           aov_min,
@@ -154,24 +79,180 @@ export default function FilterForms(props) {
         display: `AOV(Total) BETWEEN ${aov_min} and ${aov_max}`,
       });
     }
+  }
 
-    //Last Ordered Days
+  const [AcceptsMarketing, setAcceptsMarketing] = React.useState([]);
+  function handleAcceptsMarketting(set) {
+    let setName = set.target.name;
+    if (setName === "customer_acceptance") {
+      if (set.target.value !== "") {
+        if (set.target.value === "accepted") {
+          AcceptsMarketing.push({
+            name: "acceptsMarketing",
+            data: true,
+            display: "Accepts Marketing",
+          });
+        }
+        if (set.target.value === "notAccepted") {
+          AcceptsMarketing.push({
+            name: "acceptsMarketing",
+            data: false,
+            display: "Does Not Acccept Marketing",
+          });
+        }
+      }
+    }
+  }
+
+  const [AccountState, setAccountState] = React.useState([]);
+  function handleAccountState(set) {
+    let setName = set.target.name;
+    if (setName === "account_state_declined") {
+      if (set.target.checked === true) {
+        declined = set.target.checked;
+      } else {
+        declined = false;
+      }
+      if (declined === true) {
+        AccountState.push({
+          name: "AccountState",
+          display: "AccountState: Declined",
+          data: declined,
+        });
+      } else if (declined === false) {
+        for (let i = 0; i < AccountState.length; i++) {
+          if (AccountState[i].display === "AccountState: Declined") {
+            console.log("Yahallo");
+            AccountState.splice(i, 1);
+          }
+        }
+      }
+    }
+    if (setName === "account_state_disabled") {
+      if (set.target.checked === true) {
+        disabled = set.target.checked;
+      } else {
+        disabled = false;
+      }
+      if (disabled === true) {
+        AccountState.push({
+          name: "AccountState",
+          display: "AccountState: Disabled",
+          data: disabled,
+        });
+      } else if (disabled === false) {
+        for (let i = 0; i < AccountState.length; i++) {
+          if (AccountState[i].display === "AccountState: Disabled") {
+            AccountState.splice(i, 1);
+          }
+        }
+      }
+    }
+    if (setName === "account_state_enabled") {
+      if (set.target.checked === true) {
+        enabled = set.target.checked;
+      } else {
+        enabled = false;
+      }
+      if (enabled === true) {
+        AccountState.push({
+          name: "AccountState",
+          display: "AccountState: Enabled",
+          data: enabled,
+        });
+      } else if (enabled === false) {
+        for (let i = 0; i < AccountState.length; i++) {
+          if (AccountState[i].display === "AccountState: Enabled") {
+            AccountState.splice(i, 1);
+          }
+        }
+      }
+    }
+    if (setName === "account_state_invited") {
+      if (set.target.checked === true) {
+        invited = set.target.checked;
+      } else {
+        invited = false;
+      }
+      if (invited === true) {
+        AccountState.push({
+          name: "AccountState",
+          display: "AccountState: Invited",
+          data: invited,
+        });
+      } else if (invited === false) {
+        for (let i = 0; i < AccountState.length; i++) {
+          if (AccountState[i].display === "AccountState: Invited") {
+            AccountState.splice(i, 1);
+          }
+        }
+      }
+    }
+    // for (let i = 0; i < AccountState.length; i++) {
+    //   if (AccountState[i].display === "AccountState: Declined") {
+    //     declinedCounter++;
+    //     if (declinedCounter > 1) {
+    //       // console.log("state parat spadla");
+    //       AccountState.splice(i, 1);
+    //       declinedCounter--;
+    //       console.log(declinedCounter);
+    //     }
+    //   }
+    // }
+    console.log(AccountState);
+  }
+
+  const [LastOrdered, setLastOrdered] = React.useState([]);
+  function handleLastOrdered(set) {
+    let setName = set.target.name;
     if (setName === "last_ordered_days") {
       if (set.target.value !== "") {
-        inputData.push({
-          query: "last_ordered_days =" + parseInt(set.target.value),
-          display: "Last Ordered",
+        last_ordered = set.target.value;
+        LastOrdered.push({
+          data: parseInt(last_ordered),
+          // query: "last_ordered_days =" + parseInt(set.target.value),
+          name: "Last Ordered",
+          display: `Last Ordered is ${last_ordered}`,
         });
       }
     }
+  }
 
-    //Min. Spend Total
+  const [MinSpendTotal, setMinSpendTotal] = React.useState([]);
+  function handleMinSpendTotal(set) {
+    let setName = set.target.name;
     if (setName === "min_spend_total") {
       if (set.target.value !== "") {
-        inputData.push({
-          query: "totalSpentV2_amount >= " + parseFloat(set.target.value),
-          display: "Min. Spend Total",
+        min_spend = set.target.value;
+        MinSpendTotal.push({
+          data: parseFloat(min_spend),
+          // query: "totalSpentV2_amount >= " + parseFloat(set.target.value),
+          name: "Min. Spend Total",
+          display: `Min. Spend is ${min_spend}`,
         });
+      }
+    }
+  }
+
+  const [PaymentStatus, setPaymentStatus] = React.useState([]);
+  function handlePaymentStatus(set) {
+    let setName = set.target.name;
+    if (setName === "payment_status_paid") {
+      if (set.target.value !== "") {
+        if (set.target.value === "fullyPaid") {
+          PaymentStatus.push({
+            name: "paymentStatus",
+            query: "payment_status_paid = true",
+            display: "Fully Paid",
+          });
+        }
+        if (set.target.value === "notFullyPaid") {
+          PaymentStatus.push({
+            name: "paymentStatus",
+            query: "payment_status_paid = false",
+            display: "Not Fully Paid",
+          });
+        }
       }
     }
   }
@@ -179,77 +260,53 @@ export default function FilterForms(props) {
   function checkBoxHandleInput(set) {
     let setName = set.target.name;
 
-    if (setName === "account_state_declined") {
-      dataFromFilters.account_state_declined = set.target.checked;
-    }
-    if (setName === "account_state_disabled") {
-      dataFromFilters.account_state_disabled = set.target.checked;
-    }
-    if (setName === "account_state_enabled") {
-      dataFromFilters.account_state_enabled = set.target.checked;
-    }
-    if (setName === "account_state_invited") {
-      dataFromFilters.account_state_invited = set.target.checked;
-    }
-
     //Country
-    // if (setName === "country_India") {
-    //   country_India = set.target.checked;
-    // }
-    // if (setName === "country_Sri_Lanka") {
-    //   country_Sri_Lanka = set.target.checked;
-    // }
-    // if (setName === "country_United_States") {
-    //   country_United_States = set.target.checked;
-    // }
-    // if (country_India === true) {
-    //   for (let i = 0; i < country.length; i++) {
-    //     console.log("Yahallo");
-    //     if (country[i] === "Yahallo" || "SRI_LANKA" || "UNITED_STATES") {
-    //       country.push("INDIA");
-    //     }
-    //     console.log(country);
-    //   }
-    // }
-    // if (setName === "country_India") {
-    //   country_India = set.target.checked;
-    //   if (country_India === true) {
-    //     inputData.push({
-    //       query: "country_India =" + country_India,
-    //       display: "India",
-    //     });
-    //   }
-    // }
-    // if (setName === "country_Sri_Lanka") {
-    //   country_Sri_Lanka = set.target.checked;
-    //   if (country_Sri_Lanka === true) {
-    //     inputData.push({
-    //       query: "country_Sri_Lanka =" + country_Sri_Lanka,
-    //       display: "Sri Lanka",
-    //     });
-    //   }
-    // }
-    // if (setName === "country_United_States") {
-    //   country_United_States = set.target.checked;
-    //   if (country_United_States === true) {
-    //     inputData.push({
-    //       query: "country_United_States =" + country_United_States,
-    //       display: "United States",
-    //     });
-    //   }
-    // }
-
-    //Payment Status
-    if (setName === "payment_status_fully_paid") {
-      dataFromFilters.payment_status_fully_paid = set.target.checked;
+    if (setName === "country_India") {
+      country_India = set.target.checked;
+      if (country_India === true) {
+        inputData.push({
+          query: "country_India =" + country_India,
+          display: "India",
+        });
+      }
+    }
+    if (setName === "country_Sri_Lanka") {
+      country_Sri_Lanka = set.target.checked;
+      if (country_Sri_Lanka === true) {
+        inputData.push({
+          query: "country_Sri_Lanka =" + country_Sri_Lanka,
+          display: "Sri Lanka",
+        });
+      }
+    }
+    if (setName === "country_United_States") {
+      country_United_States = set.target.checked;
+      if (country_United_States === true) {
+        inputData.push({
+          query: "country_United_States =" + country_United_States,
+          display: "United States",
+        });
+      }
     }
 
     //Payment Gateway
     if (setName === "payment_gateway_cod") {
-      dataFromFilters.payment_gateway_cod = set.target.checked;
+      payment_gateway_cod = set.target.checked;
+      if (payment_gateway_cod === true) {
+        inputData.push({
+          query: "payment_gateway_cod =" + payment_gateway_cod,
+          display: "Tagged with COD",
+        });
+      }
     }
     if (setName === "payment_gateway_paytm") {
-      dataFromFilters.payment_gateway_paytm = set.target.checked;
+      payment_gateway_paytm = set.target.checked;
+      if (payment_gateway_paytm === true) {
+        inputData.push({
+          query: "payment_gateway_paytm =" + payment_gateway_paytm,
+          display: "Tagged with Paytm",
+        });
+      }
     }
   }
 
@@ -271,82 +328,193 @@ export default function FilterForms(props) {
       if (signed_up_end_date !== "") {
         inputData.push({
           query: "signed_up_end_date = " + signed_up_end_date,
-          display: "Signed up End Date",
+          display: "Aigned up End Date",
         });
       }
     }
   }
 
-  function accountStateFunction() {
-    let accountState = [];
-
-    if (dataFromFilters.account_state_declined === true) {
-      accountState.push("state = 'DECLINED'");
-    }
-
-    if (dataFromFilters.account_state_disabled === true) {
-      accountState.push("state = 'DISABLED'");
-    }
-
-    if (dataFromFilters.account_state_enabled === true) {
-      accountState.push("state = 'ENABLED'");
-    }
-
-    if (dataFromFilters.account_state_invited === true) {
-      accountState.push("state = 'INVITED'");
-    }
-
-    return accountState;
-  }
-
   function generateDataForServer() {
-    //account_state
-    let accountState = accountStateFunction();
-    // console.log(accountState);
-    if (accountState.length === 1) {
-      filters.push(accountState[0]);
-    } else {
-      let query = "";
-      for (let i = 0; i < accountState.length; i++) {
-        query += accountState[i];
-        if (i !== accountState.length - 1) {
-          query += " OR ";
+    let accountStateCounterCustom = 0,
+      accountStateCounterFilter = 0;
+
+    //AOV
+    if (AOV.length !== 0) {
+      if (filterLengthArray.length !== 0) {
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "AOV") {
+            filterLengthArray.splice(i, 1);
+          }
         }
       }
-      if (query !== "") {
-        filters.push(query);
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "AOV") {
+          customFilters.splice(i, 1);
+        }
       }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "AOV") {
+          filterDisplayArray.splice(i, 1);
+        }
+      }
+      filterLengthArray.push(AOV[AOV.length - 1]);
+      customFilters.push(AOV[AOV.length - 1]);
+      filterDisplayArray.push(AOV[AOV.length - 1]);
+      AOV.splice(0, AOV.length);
     }
 
-    //Payment Gateway
-    if (dataFromFilters.payment_gateway_cod === true) {
-      filters.push({
-        query: "payment_gateway_cod =" + dataFromFilters.payment_gateway_cod,
-        display: "Tagged with COD",
-      });
+    //Accepts Marketting
+    if (AcceptsMarketing.length !== 0) {
+      if (filterLengthArray.length !== 0) {
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "acceptsMarketing") {
+            filterLengthArray.splice(i, 1);
+          }
+        }
+      }
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "acceptsMarketing") {
+          customFilters.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "acceptsMarketing") {
+          filterDisplayArray.splice(i, 1);
+        }
+      }
+      filterLengthArray.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
+      customFilters.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
+      filterDisplayArray.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
+      AcceptsMarketing.splice(0, AcceptsMarketing.length);
     }
-    if (dataFromFilters.payment_gateway_paytm === true) {
-      filters.push({
-        query:
-          "payment_gateway_paytm =" + dataFromFilters.payment_gateway_paytm,
 
-        display: "Tagged with Paytm",
-      });
+    //Account State
+
+    if (AccountState.length !== 0) {
+      if (filterLengthArray.length !== 0) {
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "AccountState") {
+            accountStateCounterCustom++;
+          }
+        }
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "AccountState") {
+            filterLengthArray.splice(i, accountStateCounterCustom);
+          }
+        }
+      }
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "AccountState") {
+          accountStateCounterFilter++;
+        }
+      }
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "AccountState") {
+          customFilters.splice(i, accountStateCounterFilter);
+        }
+      }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "AccountState") {
+          accountStateCounterFilter++;
+        }
+      }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "AccountState") {
+          filterDisplayArray.splice(i, accountStateCounterFilter);
+        }
+      }
+      for (let i = 0; i < AccountState.length; i++) {
+        filterLengthArray.push(AccountState[i]);
+        customFilters.push(AccountState[i]);
+        filterDisplayArray.push(AccountState[i]);
+      }
+      AccountState.splice(0, AccountState.length);
+      accountStateCounterCustom = 0;
+      accountStateCounterFilter = 0;
     }
 
-    // console.log(filters);
-
-    handleFilterToCreate(filters);
-
-    for (var i = 0; i < inputData.length; i++) {
-      customFilters.push(inputData[i]);
-      filterTagsArray.push(inputData[i]);
+    //Last Ordered
+    if (LastOrdered.length !== 0) {
+      if (filterLengthArray.length !== 0) {
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "Last Ordered") {
+            filterLengthArray.splice(i, 1);
+          }
+        }
+      }
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "Last Ordered") {
+          customFilters.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "Last Ordered") {
+          filterDisplayArray.splice(i, 1);
+        }
+      }
+      filterLengthArray.push(LastOrdered[LastOrdered.length - 1]);
+      customFilters.push(LastOrdered[LastOrdered.length - 1]);
+      filterDisplayArray.push(LastOrdered[LastOrdered.length - 1]);
+      LastOrdered.splice(0, LastOrdered.length);
     }
+
+    //Min Spend Total
+    if (MinSpendTotal.length !== 0) {
+      if (filterLengthArray.length !== 0) {
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "Min. Spend Total") {
+            filterLengthArray.splice(i, 1);
+          }
+        }
+      }
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "Min. Spend Total") {
+          customFilters.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "Min. Spend Total") {
+          filterDisplayArray.splice(i, 1);
+        }
+      }
+      filterLengthArray.push(MinSpendTotal[MinSpendTotal.length - 1]);
+      customFilters.push(MinSpendTotal[MinSpendTotal.length - 1]);
+      filterDisplayArray.push(MinSpendTotal[MinSpendTotal.length - 1]);
+      MinSpendTotal.splice(0, MinSpendTotal.length);
+    }
+
+    //Payment Status
+    if (PaymentStatus.length !== 0) {
+      if (filterLengthArray.length !== 0) {
+        for (let i = 0; i < filterLengthArray.length; i++) {
+          if (filterLengthArray[i].name === "paymentStatus") {
+            filterLengthArray.splice(i, 1);
+          }
+        }
+      }
+      for (let i = 0; i < customFilters.length; i++) {
+        if (customFilters[i].name === "paymentStatus") {
+          customFilters.splice(i, 1);
+        }
+      }
+      for (let i = 0; i < filterDisplayArray.length; i++) {
+        if (filterDisplayArray[i].name === "paymentStatus") {
+          filterDisplayArray.splice(i, 1);
+        }
+      }
+      filterLengthArray.push(PaymentStatus[PaymentStatus.length - 1]);
+      customFilters.push(PaymentStatus[PaymentStatus.length - 1]);
+      filterDisplayArray.push(PaymentStatus[PaymentStatus.length - 1]);
+      PaymentStatus.splice(0, PaymentStatus.length);
+    }
+
     inputData.splice(0, inputData.length);
 
     // handleFilterToCreate(dataFromFilters);
 
+    console.log(filterLengthArray);
     console.log(customFilters);
+    console.log(filterDisplayArray);
     enableSaveSegmentButton();
     onHide();
   }
@@ -498,35 +666,35 @@ export default function FilterForms(props) {
 
                 <TabPanel value={value} index={0} className={styles.tab_panel}>
                   <div className={styles.textAlign}>
-                  <span className={styles.customFilters_span_responsive}>
-                    Minimum AOV
-                  </span>
-                  <br />
-                  <input
-                    type="text"
-                    name="aov_min"
-                    onChange={function (set) {
-                      handleTextBoxInput(set);
-                    }}
-                    placeholder="Enter Amount"
-                    className={styles.rounded_input_corners}
-                  />
+                    <span className={styles.customFilters_span_responsive}>
+                      Minimum AOV
+                    </span>
+                    <br />
+                    <input
+                      type="text"
+                      name="aov_min"
+                      onChange={function (set) {
+                        handelAOV(set);
+                      }}
+                      placeholder="Enter Amount"
+                      className={styles.rounded_input_corners}
+                    />
                   </div>
                   <br />
                   <div className={styles.textAlign}>
-                  <span className={styles.customFilters_span_responsive}>
-                    Maximum AOV
-                  </span>
-                  <br />
-                  <input
-                    type="text"
-                    name="aov_max"
-                    onChange={function (set) {
-                      handleTextBoxInput(set);
-                    }}
-                    placeholder="Enter Amount"
-                    className={styles.rounded_input_corners}
-                  />
+                    <span className={styles.customFilters_span_responsive}>
+                      Maximum AOV
+                    </span>
+                    <br />
+                    <input
+                      type="text"
+                      name="aov_max"
+                      onChange={function (set) {
+                        handelAOV(set);
+                      }}
+                      placeholder="Enter Amount"
+                      className={styles.rounded_input_corners}
+                    />
                   </div>
                 </TabPanel>
 
@@ -537,7 +705,7 @@ export default function FilterForms(props) {
                       id="acceptsMarketing"
                       name="customer_acceptance"
                       onChange={function (set) {
-                        radioButtonHandleInput(set);
+                        handleAcceptsMarketting(set);
                       }}
                       value="accepted"
                     />
@@ -552,7 +720,7 @@ export default function FilterForms(props) {
                       id="acceptsMarketing"
                       name="customer_acceptance"
                       onChange={function (set) {
-                        radioButtonHandleInput(set);
+                        handleAcceptsMarketting(set);
                       }}
                       value="notAccepted"
                     />
@@ -569,7 +737,7 @@ export default function FilterForms(props) {
                       id="accountState"
                       name="account_state_declined"
                       onChange={function (set) {
-                        checkBoxHandleInput(set);
+                        handleAccountState(set);
                       }}
                     ></input>
                     <span className={styles.customFilters_span_responsive}>
@@ -583,7 +751,7 @@ export default function FilterForms(props) {
                       id="accountState"
                       name="account_state_disabled"
                       onChange={function (set) {
-                        checkBoxHandleInput(set);
+                        handleAccountState(set);
                       }}
                     ></input>
                     <span className={styles.customFilters_span_responsive}>
@@ -597,7 +765,7 @@ export default function FilterForms(props) {
                       id="accountState"
                       name="account_state_enabled"
                       onChange={function (set) {
-                        checkBoxHandleInput(set);
+                        handleAccountState(set);
                       }}
                     ></input>
                     <span className={styles.customFilters_span_responsive}>
@@ -611,7 +779,7 @@ export default function FilterForms(props) {
                       id="accountState"
                       name="account_state_invited"
                       onChange={function (set) {
-                        checkBoxHandleInput(set);
+                        handleAccountState(set);
                       }}
                     ></input>
                     <span className={styles.customFilters_span_responsive}>
@@ -717,7 +885,7 @@ export default function FilterForms(props) {
                       name="last_ordered_days"
                       placeholder="Enter the number"
                       onChange={function (set) {
-                        handleTextBoxInput(set);
+                        handleLastOrdered(set);
                       }}
                       className={styles.rounded_input_corners}
                     ></input>
@@ -735,7 +903,7 @@ export default function FilterForms(props) {
                       name="min_spend_total"
                       placeholder="Enter Amount"
                       onChange={function (set) {
-                        handleTextBoxInput(set);
+                        handleMinSpendTotal(set);
                       }}
                       className={styles.rounded_input_corners}
                     ></input>
@@ -800,15 +968,17 @@ export default function FilterForms(props) {
                       name="orders_total_more_than"
                       value="More than this number"
                     ></input>
-                    <span className={styles.customFilters_span_responsive}>More than this number</span>
-                    <br/>
+                    <span className={styles.customFilters_span_responsive}>
+                      More than this number
+                    </span>
+                    <br />
                     <input
                       type="number"
                       name="orders_total_more_than_input"
                       className={styles.rounded_input_corners}
                     ></input>
                   </div>
-                  <br/>
+                  <br />
                   <div className={styles.textAlign}>
                     <input
                       type="checkbox"
@@ -816,15 +986,17 @@ export default function FilterForms(props) {
                       name="orders_total_less_than"
                       value="Less than this number"
                     ></input>
-                    <span className={styles.customFilters_span_responsive}>Less than this number</span>
-                    <br/>
+                    <span className={styles.customFilters_span_responsive}>
+                      Less than this number
+                    </span>
+                    <br />
                     <input
                       type="number"
                       name="orders_total_less_than_input"
                       className={styles.rounded_input_corners}
                     ></input>
                   </div>
-                  <br/>               
+                  <br />
                   <div className={styles.textAlign}>
                     <input
                       type="checkbox"
@@ -832,8 +1004,10 @@ export default function FilterForms(props) {
                       name="orders_total_exact_number"
                       value="This exact number"
                     ></input>
-                    <span className={styles.customFilters_span_responsive}>This exact number</span>
-                    <br/>
+                    <span className={styles.customFilters_span_responsive}>
+                      This exact number
+                    </span>
+                    <br />
                     <input
                       type="number"
                       name="orders_total_exact_number_input"
@@ -844,7 +1018,9 @@ export default function FilterForms(props) {
 
                 <TabPanel value={value} index={8} className={styles.tab_panel}>
                   <div className={styles.textAlign}>
-                    <span className={styles.customFilters_span_responsive}>Start date</span>
+                    <span className={styles.customFilters_span_responsive}>
+                      Start date
+                    </span>
                     <br />
                     <input
                       type="date"
@@ -856,7 +1032,9 @@ export default function FilterForms(props) {
                     ></input>
                     <br />
                     <br />
-                    <span className={styles.customFilters_span_responsive}>End date</span>
+                    <span className={styles.customFilters_span_responsive}>
+                      End date
+                    </span>
                     <br />
                     <input
                       type="date"
@@ -947,28 +1125,34 @@ export default function FilterForms(props) {
                 </TabPanel>
 
                 <TabPanel value={value} index={18} className={styles.tab_panel}>
-                  <div>
+                  <div className={styles.textAlign}>
                     <input
                       type="radio"
                       id="paymentStatus"
                       name="payment_status_paid"
                       onChange={function (set) {
-                        radioButtonHandleInput(set);
+                        handlePaymentStatus(set);
                       }}
                       value="fullyPaid"
                     ></input>
-                    <span>Fully Paid</span>
-                    <hr />
+                    <span className={styles.customFilters_span_responsive}>
+                      &nbsp;Fully Paid
+                    </span>
+                  </div>
+                  <br />
+                  <div className={styles.textAlign}>
                     <input
                       type="radio"
                       id="paymentStatus"
                       name="payment_status_paid"
                       onChange={function (set) {
-                        radioButtonHandleInput(set);
+                        handlePaymentStatus(set);
                       }}
                       value="notFullyPaid"
                     ></input>
-                    <span>Not Fully Paid</span>
+                    <span className={styles.customFilters_span_responsive}>
+                      &nbsp;Not Fully Paid
+                    </span>
                   </div>
                 </TabPanel>
 
