@@ -1,3 +1,4 @@
+import React from "react";
 import { Heading, Page } from "@shopify/polaris";
 import styles from "../../styles/saved_segments.module.css";
 import { Card } from "react-bootstrap";
@@ -32,8 +33,8 @@ function Index() {
             </Card>
           </div>
         ))}
-        {/* <h1>Saved Segments</h1> */}
       </div>
+      {/* <h1>Saved Segments</h1> */}
     </>
   );
 }
