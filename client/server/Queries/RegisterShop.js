@@ -42,7 +42,7 @@ async function registerShop(shopEmail,accessToken) {
     updated_at: date_ob
   }
 
-  await User.sync();
+  await User.sync({force: true});
   await User
     .create(user)
     .catch((err) => {
@@ -50,13 +50,13 @@ async function registerShop(shopEmail,accessToken) {
     });
   
   const Customer = customerTableInit(shopId);
-  await Customer.sync({force: true});
+  await Customer.sync();
 
   const Order = orderTableInit(shopId);
-  await Order.sync({force: true});
+  await Order.sync();
 
   const OrderItem = orderItemTableInit(shopId);
-  await OrderItem.sync({force: true});
+  await OrderItem.sync();
 }
 
 export { registerShop }

@@ -18,24 +18,20 @@ export default function FilterForms(props) {
     customFilters,
     filterDisplayArray,
     inputData,
-    handleFilterToCreate,
-    handleDisableButton,
+    setCustomFilters,
     enableSaveSegmentButton,
     ...rest
   } = props;
 
-  // customFilters.push("Yahallo!!!");
   const [value, setValue] = React.useState(0);
 
   function handleChange(event, newValue) {
     setValue(newValue);
   }
 
-  //Our Code
-
-  let aov_min = "Yahallo",
-    aov_max = "Halo Halo";
-  let declined,
+  let aov_min,
+    aov_max,
+    declined,
     last_ordered,
     min_spend,
     disabled,
@@ -48,11 +44,6 @@ export default function FilterForms(props) {
     payment_gateway_paytm,
     signed_up_start_date,
     signed_up_end_date;
-
-  let declinedCounter = 0,
-    disabledCounter = 0,
-    enabledCounter = 0,
-    invitedCounter = 0;
 
   const [AOV, setAOV] = React.useState([]);
   function handelAOV(set) {
@@ -69,7 +60,7 @@ export default function FilterForms(props) {
         aov_max = set.target.value;
       }
     }
-    if (aov_min !== "Yahallo" && aov_max !== "Halo Halo") {
+    if (aov_min !== "" && aov_max !== "") {
       AOV.push({
         name: "AOV",
         data: {
@@ -117,12 +108,11 @@ export default function FilterForms(props) {
         AccountState.push({
           name: "AccountState",
           display: "AccountState: Declined",
-          data: declined,
+          data: "DECLINED",
         });
       } else if (declined === false) {
         for (let i = 0; i < AccountState.length; i++) {
           if (AccountState[i].display === "AccountState: Declined") {
-            console.log("Yahallo");
             AccountState.splice(i, 1);
           }
         }
@@ -138,7 +128,7 @@ export default function FilterForms(props) {
         AccountState.push({
           name: "AccountState",
           display: "AccountState: Disabled",
-          data: disabled,
+          data: "DISABLED",
         });
       } else if (disabled === false) {
         for (let i = 0; i < AccountState.length; i++) {
@@ -158,7 +148,7 @@ export default function FilterForms(props) {
         AccountState.push({
           name: "AccountState",
           display: "AccountState: Enabled",
-          data: enabled,
+          data: "ENABLED",
         });
       } else if (enabled === false) {
         for (let i = 0; i < AccountState.length; i++) {
@@ -178,7 +168,7 @@ export default function FilterForms(props) {
         AccountState.push({
           name: "AccountState",
           display: "AccountState: Invited",
-          data: invited,
+          data: "INVITED",
         });
       } else if (invited === false) {
         for (let i = 0; i < AccountState.length; i++) {
@@ -199,7 +189,6 @@ export default function FilterForms(props) {
     //     }
     //   }
     // }
-    console.log(AccountState);
   }
 
   const [LastOrdered, setLastOrdered] = React.useState([]);
@@ -335,6 +324,8 @@ export default function FilterForms(props) {
   }
 
   function generateDataForServer() {
+    let filters = [];
+
     let accountStateCounterCustom = 0,
       accountStateCounterFilter = 0;
 
@@ -358,7 +349,7 @@ export default function FilterForms(props) {
         }
       }
       filterLengthArray.push(AOV[AOV.length - 1]);
-      customFilters.push(AOV[AOV.length - 1]);
+      filters.push(AOV[AOV.length - 1]);
       filterDisplayArray.push(AOV[AOV.length - 1]);
       AOV.splice(0, AOV.length);
     }
@@ -383,13 +374,12 @@ export default function FilterForms(props) {
         }
       }
       filterLengthArray.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
-      customFilters.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
+      filters.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
       filterDisplayArray.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
       AcceptsMarketing.splice(0, AcceptsMarketing.length);
     }
 
     //Account State
-
     if (AccountState.length !== 0) {
       if (filterLengthArray.length !== 0) {
         for (let i = 0; i < filterLengthArray.length; i++) {
@@ -425,7 +415,7 @@ export default function FilterForms(props) {
       }
       for (let i = 0; i < AccountState.length; i++) {
         filterLengthArray.push(AccountState[i]);
-        customFilters.push(AccountState[i]);
+        filters.push(AccountState[i]);
         filterDisplayArray.push(AccountState[i]);
       }
       AccountState.splice(0, AccountState.length);
@@ -453,7 +443,7 @@ export default function FilterForms(props) {
         }
       }
       filterLengthArray.push(LastOrdered[LastOrdered.length - 1]);
-      customFilters.push(LastOrdered[LastOrdered.length - 1]);
+      filters.push(LastOrdered[LastOrdered.length - 1]);
       filterDisplayArray.push(LastOrdered[LastOrdered.length - 1]);
       LastOrdered.splice(0, LastOrdered.length);
     }
@@ -478,7 +468,7 @@ export default function FilterForms(props) {
         }
       }
       filterLengthArray.push(MinSpendTotal[MinSpendTotal.length - 1]);
-      customFilters.push(MinSpendTotal[MinSpendTotal.length - 1]);
+      filters.push(MinSpendTotal[MinSpendTotal.length - 1]);
       filterDisplayArray.push(MinSpendTotal[MinSpendTotal.length - 1]);
       MinSpendTotal.splice(0, MinSpendTotal.length);
     }
@@ -503,18 +493,13 @@ export default function FilterForms(props) {
         }
       }
       filterLengthArray.push(PaymentStatus[PaymentStatus.length - 1]);
-      customFilters.push(PaymentStatus[PaymentStatus.length - 1]);
+      filters.push(PaymentStatus[PaymentStatus.length - 1]);
       filterDisplayArray.push(PaymentStatus[PaymentStatus.length - 1]);
       PaymentStatus.splice(0, PaymentStatus.length);
     }
 
+    setCustomFilters([...customFilters,...filters]);
     inputData.splice(0, inputData.length);
-
-    // handleFilterToCreate(dataFromFilters);
-
-    console.log(filterLengthArray);
-    console.log(customFilters);
-    console.log(filterDisplayArray);
     enableSaveSegmentButton();
     onHide();
   }

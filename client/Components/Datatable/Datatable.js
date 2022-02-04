@@ -285,12 +285,7 @@ function Datatable(props) {
   });
 
   useEffect(() => {
-    console.log("CUSTOMER COUNT ", countCustomers);
-    console.log("ORDER COUNT ", countOrders);
-    console.log("ORDER ITEM COUNT", countOrderItems);
-
     let totalCount = countCustomers + countOrders + countOrderItems;
-    console.log("TOTAL COUNT ", totalCount);
     setCount(totalCount);
 
     if (total != 0) {

@@ -195,7 +195,6 @@ app.prepare().then(async () => {
         }
       }
     });
-    console.log(result);
     let shop_id = result.shop_id;
 
     let customers = await fetch_customers_all(filters, columnFilters, shop_id);

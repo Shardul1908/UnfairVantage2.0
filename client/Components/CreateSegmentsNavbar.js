@@ -25,18 +25,8 @@ function CreateSegments(props) {
   const [filterDisplayArray, setFilterDisplayArray] = React.useState([]);
 
   const [inputData, setInputData] = React.useState([]);
-  function handleFilterToCreate() {}
-
-  React.useEffect(() => {
-    console.log(filterLengthArray);
-    console.log(customFilters);
-    console.log(filterDisplayArray);
-  }, [filterLengthArray, customFilters, filterDisplayArray]);
 
   function ResetFilter() {
-    console.log(filterLengthArray);
-    // filterLengthArray.splice(0, filterLengthArray.length);
-    // customFilters.splice(0, customFilters.length);
     setFilterLengthArray([]);
     setCustomFilters([]);
     setFilterDisplayArray([]);
@@ -287,8 +277,7 @@ function CreateSegments(props) {
           customFilters={customFilters}
           filterDisplayArray={filterDisplayArray}
           inputData={inputData}
-          handleFilterToCreate={handleFilterToCreate}
-          handleDisableButton={handleDisableButton}
+          setCustomFilters={setCustomFilters}
           enableSaveSegmentButton={enableSaveSegmentButton}
         />
       </div>

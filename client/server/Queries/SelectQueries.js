@@ -31,6 +31,7 @@ export async function fetch_customers_all(filters, columnFilters, shop_id) {
 }
 
 function createConditions(filters,columnFilters) {
+    console.log(filters);
     let conditions = {};
 
     //column conditions
@@ -68,6 +69,7 @@ function createConditions(filters,columnFilters) {
         }
     }
 
+    let accountstates = [];
     for(let i = 0;i<filters.length;i++) {
         if(filters[i].name === "AOV") {
             conditions["averageOrderAmountV2_amount"] = {
@@ -78,6 +80,15 @@ function createConditions(filters,columnFilters) {
             conditions["acceptsMarketing"] = {
                 [Op.eq]: [filters[i].data]
             }
+        }
+        if(filters[i].name === "AccountState") {
+            accountstates.push({[Op.eq]: filters[i].data});
+        }
+    }
+    
+    for(let i = 0;i<accountstates.length;i++) {
+        conditions["state"] = {
+            [Op.or]: accountstates
         }
     }
 
