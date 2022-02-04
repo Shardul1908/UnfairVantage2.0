@@ -84,8 +84,13 @@ function createConditions(filters,columnFilters) {
         if(filters[i].name === "AccountState") {
             accountstates.push({[Op.eq]: filters[i].data});
         }
+        if(filters[i].name === "MinSpend") {
+            conditions["totalSpent"] = {
+                [Op.gte]: [filters[i].data]
+            }
+        }
     }
-    
+
     for(let i = 0;i<accountstates.length;i++) {
         conditions["state"] = {
             [Op.or]: accountstates

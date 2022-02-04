@@ -216,8 +216,8 @@ export default function FilterForms(props) {
         MinSpendTotal.push({
           data: parseFloat(min_spend),
           // query: "totalSpentV2_amount >= " + parseFloat(set.target.value),
-          name: "Min. Spend Total",
-          display: `Min. Spend is ${min_spend}`,
+          name: "MinSpend",
+          display: `Minimum Spend ${min_spend} INR`,
         });
       }
     }
@@ -452,18 +452,18 @@ export default function FilterForms(props) {
     if (MinSpendTotal.length !== 0) {
       if (filterLengthArray.length !== 0) {
         for (let i = 0; i < filterLengthArray.length; i++) {
-          if (filterLengthArray[i].name === "Min. Spend Total") {
+          if (filterLengthArray[i].name === "MinSpend") {
             filterLengthArray.splice(i, 1);
           }
         }
       }
       for (let i = 0; i < customFilters.length; i++) {
-        if (customFilters[i].name === "Min. Spend Total") {
+        if (customFilters[i].name === "MinSpend") {
           customFilters.splice(i, 1);
         }
       }
       for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "Min. Spend Total") {
+        if (filterDisplayArray[i].name === "MinSpend") {
           filterDisplayArray.splice(i, 1);
         }
       }
