@@ -17,17 +17,14 @@ function CreateSegments(props) {
   //Custom Filter Modal show
   const [show, setShow] = React.useState(false);
 
-  // filterLengthArray is for Save Segment enable disable
   // customFilters is the array for data tables
   // filterDisplayArray is to display applied filters except DateRange
-  const [filterLengthArray, setFilterLengthArray] = React.useState([]);
   const [customFilters, setCustomFilters] = React.useState([]);
   const [filterDisplayArray, setFilterDisplayArray] = React.useState([]);
 
   const [inputData, setInputData] = React.useState([]);
 
   function ResetFilter() {
-    setFilterLengthArray([]);
     setCustomFilters([]);
     setFilterDisplayArray([]);
     if (disabledButton === false) {
@@ -37,25 +34,10 @@ function CreateSegments(props) {
 
   const [disabledButton, setDisableButton] = React.useState(true);
   function handleDisableButton() {
-    filterLengthArray.splice(0, filterLengthArray.length);
-    console.log("After SaveSegments Filter Length Array is:- ");
-    console.log(filterLengthArray);
     setDisableButton(true);
-    console.log("customFilters");
-    console.log(customFilters);
-  }
-
-  function enableSaveSegmentButton() {
-    if (filterLengthArray.length !== 0) {
-      setDisableButton(false);
-    }
-    if (filterLengthArray.length === 0) {
-      setDisableButton(true);
-    }
   }
 
   //FilterTags Code
-
   function handleFilterTags(indexToRemove) {
     setCustomFilters(
       customFilters.filter((_, index) => index !== indexToRemove)
@@ -66,19 +48,6 @@ function CreateSegments(props) {
       filterDisplayArray.filter((_, index) => index !== indexToRemove)
     );
     filterDisplayArray.splice(indexToRemove, 1);
-
-    if (filterLengthArray.length !== 0) {
-      setFilterLengthArray(
-        filterLengthArray.filter((_, index) => index !== indexToRemove)
-      );
-      filterLengthArray.splice(indexToRemove, 1);
-    }
-    if (filterLengthArray.length === 0) {
-      for (let i = 0; i < customFilters.length; i++) {
-        filterLengthArray.push(customFilters[i]);
-      }
-    }
-    enableSaveSegmentButton();
   }
 
   function filterTagsPop() {
@@ -179,39 +148,34 @@ function CreateSegments(props) {
       end = endYear.concat("-", endMonth, "-", endDate);
       console.log("Start Date: " + start);
       console.log("End Date: " + end);
-      filterLengthArray.push({
+      setCustomFilters([...customFilters,{
         name: "Date Range",
         data: { start, end },
         display: `Start: ${start}, End: ${end}`,
-      });
-      customFilters.push({
-        name: "Date Range",
-        data: { start, end },
-        display: `Start: ${start}, End: ${end}`,
-      });
-      enableSaveSegmentButton();
-      console.log(filterLengthArray);
+      }]);
       console.log(customFilters);
-      // let newStardDate = startDate.replace(/\s/g, "-");
     }
   }
 
   function handleCloseDateRange() {
-    console.log("On Colse Date Range");
-    for (let i = 0; i < filterLengthArray.length; i++) {
-      if (filterLengthArray[i].name === "Date Range") {
-        filterLengthArray.splice(i, 1);
-      }
-    }
+    console.log("On Close Date Range");
     for (let i = 0; i < customFilters.length; i++) {
       if (customFilters[i].name === "Date Range") {
         customFilters.splice(i, 1);
       }
     }
-    console.log(filterLengthArray);
     console.log(customFilters);
-    enableSaveSegmentButton();
   }
+
+  React.useEffect(() => {
+    let len = customFilters.length;
+    if(len !== 0) {
+      setDisableButton(false);
+    }
+    if(len === 0) {
+      setDisableButton(true);
+    }
+  }, [customFilters]);
 
   return (
     <div className={styles.createSegments_main_div}>
@@ -273,12 +237,10 @@ function CreateSegments(props) {
           onHide={function () {
             setShow(false);
           }}
-          filterLengthArray={filterLengthArray}
           customFilters={customFilters}
           filterDisplayArray={filterDisplayArray}
           inputData={inputData}
           setCustomFilters={setCustomFilters}
-          enableSaveSegmentButton={enableSaveSegmentButton}
         />
       </div>
 
