@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../styles/create_segments.module.css";
-import { Button } from "react-bootstrap";
+import { Button, Modal, Container, Col } from "react-bootstrap";
 import Link from "next/link";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import { FaBars } from "react-icons/fa";
@@ -16,6 +16,16 @@ function CreateSegments(props) {
   const { shop } = props;
   //Custom Filter Modal show
   const [show, setShow] = React.useState(false);
+
+  //SaveSegments Modal
+  const [showModal, setShowModal] = React.useState(false);
+  function handleShowModal() {
+    setShowModal(true);
+  }
+
+  function handleCloseModal() {
+    setShowModal(false);
+  }
 
   // customFilters is the array for data tables
   // filterDisplayArray is to display applied filters except DateRange
@@ -34,6 +44,7 @@ function CreateSegments(props) {
 
   const [disabledButton, setDisableButton] = React.useState(true);
   function handleDisableButton() {
+    handleShowModal();
     setDisableButton(true);
   }
 
@@ -148,11 +159,14 @@ function CreateSegments(props) {
       end = endYear.concat("-", endMonth, "-", endDate);
       console.log("Start Date: " + start);
       console.log("End Date: " + end);
-      setCustomFilters([...customFilters,{
-        name: "Date Range",
-        data: { start, end },
-        display: `Start: ${start}, End: ${end}`,
-      }]);
+      setCustomFilters([
+        ...customFilters,
+        {
+          name: "Date Range",
+          data: { start, end },
+          display: `Start: ${start}, End: ${end}`,
+        },
+      ]);
       console.log(customFilters);
     }
   }
@@ -169,10 +183,10 @@ function CreateSegments(props) {
 
   React.useEffect(() => {
     let len = customFilters.length;
-    if(len !== 0) {
+    if (len !== 0) {
       setDisableButton(false);
     }
-    if(len === 0) {
+    if (len === 0) {
       setDisableButton(true);
     }
   }, [customFilters]);
@@ -231,6 +245,36 @@ function CreateSegments(props) {
         </div>
       </div>
       <div>{filterTagsPop()}</div>
+      <div>
+        <Modal show={showModal} onHide={handleCloseModal} animation={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>Save Your Segment</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Container>
+              <Col>
+                <div className={styles.segments_modal_span}>
+                  <span>Title </span>
+                </div>
+                <div className={styles.segments_modal_span}>
+                  <span>Date Range </span>
+                </div>
+                <div className={styles.segments_modal_span}>
+                  <span>No. of Customers </span>
+                </div>
+              </Col>
+            </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleCloseModal}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
       <div className={styles.filter_forms}>
         <FilterForms
           showCustomFilter={show}
