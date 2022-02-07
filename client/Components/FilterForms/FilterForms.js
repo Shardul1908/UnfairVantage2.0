@@ -334,13 +334,7 @@ export default function FilterForms(props) {
           customFilters.splice(i, 1);
         }
       }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "AOV") {
-          filterDisplayArray.splice(i, 1);
-        }
-      }
       filters.push(AOV[AOV.length - 1]);
-      filterDisplayArray.push(AOV[AOV.length - 1]);
       AOV.splice(0, AOV.length);
     }
 
@@ -351,13 +345,7 @@ export default function FilterForms(props) {
           customFilters.splice(i, 1);
         }
       }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "acceptsMarketing") {
-          filterDisplayArray.splice(i, 1);
-        }
-      }
       filters.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
-      filterDisplayArray.push(AcceptsMarketing[AcceptsMarketing.length - 1]);
       AcceptsMarketing.splice(0, AcceptsMarketing.length);
     }
 
@@ -373,20 +361,6 @@ export default function FilterForms(props) {
           customFilters.splice(i, accountStateCounterFilter);
         }
       }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "AccountState") {
-          accountStateCounterFilter++;
-        }
-      }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "AccountState") {
-          filterDisplayArray.splice(i, accountStateCounterFilter);
-        }
-      }
-      for (let i = 0; i < AccountState.length; i++) {
-        filters.push(AccountState[i]);
-        filterDisplayArray.push(AccountState[i]);
-      }
       AccountState.splice(0, AccountState.length);
       accountStateCounterCustom = 0;
       accountStateCounterFilter = 0;
@@ -399,13 +373,7 @@ export default function FilterForms(props) {
           customFilters.splice(i, 1);
         }
       }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "Last Ordered") {
-          filterDisplayArray.splice(i, 1);
-        }
-      }
       filters.push(LastOrdered[LastOrdered.length - 1]);
-      filterDisplayArray.push(LastOrdered[LastOrdered.length - 1]);
       LastOrdered.splice(0, LastOrdered.length);
     }
 
@@ -416,13 +384,7 @@ export default function FilterForms(props) {
           customFilters.splice(i, 1);
         }
       }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "MinSpend") {
-          filterDisplayArray.splice(i, 1);
-        }
-      }
       filters.push(MinSpendTotal[MinSpendTotal.length - 1]);
-      filterDisplayArray.push(MinSpendTotal[MinSpendTotal.length - 1]);
       MinSpendTotal.splice(0, MinSpendTotal.length);
     }
 
@@ -433,13 +395,7 @@ export default function FilterForms(props) {
           customFilters.splice(i, 1);
         }
       }
-      for (let i = 0; i < filterDisplayArray.length; i++) {
-        if (filterDisplayArray[i].name === "paymentStatus") {
-          filterDisplayArray.splice(i, 1);
-        }
-      }
       filters.push(PaymentStatus[PaymentStatus.length - 1]);
-      filterDisplayArray.push(PaymentStatus[PaymentStatus.length - 1]);
       PaymentStatus.splice(0, PaymentStatus.length);
     }
 

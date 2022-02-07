@@ -310,6 +310,7 @@ function Datatable(props) {
             setTableData(res.data);
             setProgressPending(false);
             console.log("Recieved data from server");
+            // console.log(new Date(tableData.pageData[0].createdAt));
           })
           .catch(function (err) {
             setTableData({});
