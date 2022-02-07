@@ -14,15 +14,13 @@ import axios from "axios";
 import { queryCustomersGRAPHQL } from "./Queries/CustomerQueries.js";
 import { queryOrdersGRAPHQL } from "./Queries/OrderQueries.js";
 import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
-import { fetch_customers_using_filters, fetch_customers_all } from "./Queries/SelectQueries.js";
+import {
+  fetch_customers_using_filters,
+  fetch_customers_all,
+} from "./Queries/SelectQueries.js";
 import { registerShop } from "./Queries/RegisterShop.js";
 import { createShopifyObject } from "./global.js";
-// import Charges from "./Models/Charges/charges.js";
-// import Datasync_Status from "./Models/Datasync_Status/Datasync_Status.js";
-// import Failed_Jobs from "./Models/Failed_Jobs/Failed_Jobs.js";
 import Migration from "./Models/Migrations/Migrations.js";
-// import Password_Resets from "./Models/Password_Resets/Password_Reset.js";
-// import Plan from "./Models/Plans/plans.js";
 import User from "./Models/Users/user.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -40,7 +38,7 @@ const handle = app.getRequestHandler();
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
-  SCOPES: ['read_products', 'read_customers', 'read_orders'],
+  SCOPES: ["read_products", "read_customers", "read_orders"],
   HOST_NAME: process.env.HOST.replace(/https:\/\/|\/$/g, ""),
   API_VERSION: ApiVersion.October20,
   IS_EMBEDDED_APP: true,
@@ -63,21 +61,18 @@ app.prepare().then(async () => {
   app.use(koaBody());
 
   const server = createServer(app.callback());
-  const io = new Server(server,
-    {
-      cors:
-      {
-        origin: "*"
-      }
-    }
-  );
+  const io = new Server(server, {
+    cors: {
+      origin: "*",
+    },
+  });
 
   io.on("connection", (socket) => {
     console.log("Connected with socket id " + socket.id);
-  
+
     socket.on("testevent", (payload) => {
       console.log("This is the payload: ", payload);
-    })
+    });
   });
 
   app.use(
@@ -144,21 +139,38 @@ app.prepare().then(async () => {
     ctx.body = { body: "API Ready!!!" };
   });
 
+  router.post("/api/save_segments", async (ctx) => {
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop,
+        },
+      },
+    });
+    let shop_id = result.shop_id;
+
+    let saved_segments = fetch_save_segments(shop_id);
+
+    ctx.status = 200;
+    ctx.body = saved_segments;
+  });
+
   router.post("/api/count_data", async (ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
       where: {
         shop_email: {
-          [Op.eq]: shop
-        }
-      }
+          [Op.eq]: shop,
+        },
+      },
     });
-  
+
     const shopify = createShopifyObject(shop, result.password);
     const total_count = await queryTotalCount(shopify);
-    
+
     ctx.status = 200;
-    ctx.body = { total: total_count + ""};
+    ctx.body = { total: total_count + "" };
   });
 
   router.post("/api/customers/fetch/with_filters", async (ctx) => {
@@ -171,13 +183,19 @@ app.prepare().then(async () => {
     const result = await User.findOne({
       where: {
         shop_email: {
-          [Op.eq]: shop
-        }
-      }
+          [Op.eq]: shop,
+        },
+      },
     });
     let shop_id = result.shop_id;
 
-    let customers = await fetch_customers_using_filters(filters, columnFilters, pageSize, pageIndex, shop_id);
+    let customers = await fetch_customers_using_filters(
+      filters,
+      columnFilters,
+      pageSize,
+      pageIndex,
+      shop_id
+    );
 
     ctx.status = 200;
     ctx.body = customers;
@@ -191,9 +209,9 @@ app.prepare().then(async () => {
     const result = await User.findOne({
       where: {
         shop_email: {
-          [Op.eq]: shop
-        }
-      }
+          [Op.eq]: shop,
+        },
+      },
     });
     let shop_id = result.shop_id;
 
@@ -205,17 +223,17 @@ app.prepare().then(async () => {
 
   router.post("/api/sync_data_customers", async (ctx) => {
     Migration.create({
-      "migration": `customers_data_synced`,
-      "batch": 1
+      migration: `customers_data_synced`,
+      batch: 1,
     });
 
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
       where: {
         shop_email: {
-          [Op.eq]: shop
-        }
-      }
+          [Op.eq]: shop,
+        },
+      },
     });
 
     const shopify = createShopifyObject(shop, result.password);
@@ -227,17 +245,17 @@ app.prepare().then(async () => {
 
   router.post("/api/sync_data_orders", async (ctx) => {
     Migration.create({
-      "migration": `orders_data_synced`,
-      "batch": 1
+      migration: `orders_data_synced`,
+      batch: 1,
     });
 
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
       where: {
         shop_email: {
-          [Op.eq]: shop
-        }
-      }
+          [Op.eq]: shop,
+        },
+      },
     });
 
     const shopify = createShopifyObject(shop, result.password);
@@ -249,17 +267,17 @@ app.prepare().then(async () => {
 
   router.post("/api/sync_data_order_items", async (ctx) => {
     Migration.create({
-      "migration": `orderItems_data_synced`,
-      "batch": 1
+      migration: `orderItems_data_synced`,
+      batch: 1,
     });
 
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
       where: {
         shop_email: {
-          [Op.eq]: shop
-        }
-      }
+          [Op.eq]: shop,
+        },
+      },
     });
 
     const shopify = createShopifyObject(shop, result.password);
