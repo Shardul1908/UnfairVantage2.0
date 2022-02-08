@@ -32,6 +32,9 @@ async function queryCustomersGRAPHQL(shopify, shop_id, io) {
           amount
           currencyCode
         }
+        lastOrder {
+          createdAt
+        }
         tags
         defaultAddress {
           city
@@ -85,6 +88,9 @@ async function queryCustomersGRAPHQL(shopify, shop_id, io) {
             totalSpentV2 {
               amount
               currencyCode
+            }
+            lastOrder {
+              createdAt
             }
             tags
             defaultAddress {
@@ -175,6 +181,12 @@ async function queryCustomersGRAPHQL(shopify, shop_id, io) {
         }
         if (isString(resultSet.customers.edges[i].node.totalSpentV2.currencyCode)) {
           customer["totalSpentV2_currencyCode"] = resultSet.customers.edges[i].node.totalSpentV2.currencyCode;
+        }
+      }
+
+      if(isObj(resultSet.customers.edges[i].node.lastOrder)) {
+        if(isString(resultSet.customers.edges[i].node.lastOrder.createdAt)) {
+          customer['lastPurchasedDate'] = resultSet.customers.edges[i].node.lastOrder.createdAt;
         }
       }
 

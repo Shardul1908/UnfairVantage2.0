@@ -67,6 +67,10 @@ function customerTableInit(shopId) {
       type: Sequelize.STRING,
       defaultValue: null,
     },
+    lastPurchasedDate: {
+      type: Sequelize.DATE,
+      defaultValue: null,
+    },
     tags: {
       type: Sequelize.STRING,
       defaultValue: null,

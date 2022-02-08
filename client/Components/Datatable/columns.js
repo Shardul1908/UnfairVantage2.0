@@ -241,6 +241,23 @@ export const COLUMNS = [
     ],
   },
   {
+    name: "Last Purchase",
+    sortable: true,
+    selector: (row) => `${row.lastPurchasedDate}`,
+    conditionalCellStyles: [
+      {
+        when: (row) => row.sr_no % 2 === 0,
+        style: {
+          backgroundColor: "#f1f1f1",
+          color: "black",
+          "&:hover": {
+            cursor: "pointer",
+          },
+        },
+      },
+    ],
+  },
+  {
     name: "Tags",
     sortable: true,
     selector: (row) => `${row.tags}`,

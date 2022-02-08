@@ -24,7 +24,6 @@ function CreateSegments(props) {
   // customFilters is the array for data tables
   const [customFilters, setCustomFilters] = React.useState([]);
   const [dateRange, setDateRange] = React.useState([null, null]);
-  const [filterDisplayArray, setFilterDisplayArray] = React.useState([]);
 
   const [inputData, setInputData] = React.useState([]);
 
@@ -104,16 +103,8 @@ function CreateSegments(props) {
           <Button className={styles.reset_filters_button} onClick={ResetFilter}>
             Reset Filters
           </Button>
-          <Button
-            className={styles.save_segments_button}
-            onClick={handleDisableButton}
-            disabled={disabledButton}
-          >
-            <img
-              src={SaveSegments}
-              className={styles.saveSegments_logo}
-              alt="star-icon"
-            />
+          <Button className={styles.save_segments_button} onClick={handleDisableButton} disabled={disabledButton} >
+            <img src={SaveSegments} className={styles.saveSegments_logo} alt="star-icon" />
             <span className={styles.save_segment_span}>Save Segments</span>
           </Button>
           <div className={styles.menu_icon}>
