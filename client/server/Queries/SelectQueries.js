@@ -138,6 +138,15 @@ function createConditions(filters, columnFilters) {
   return conditions;
 }
 
+export async function create_rfm_scorecard(shop_id) {
+  const Customer = customerTableInit(shop_id);
+  await Customer.sync();
+
+  const customers = await Customer.findAll();
+
+  // let recency = customers.
+}
+
 export async function fetch_save_segments(shop_id) {
   const Segments = SavedSegmentsInit(shop_id);
   await Segments.sync();

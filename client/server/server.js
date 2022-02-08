@@ -17,6 +17,7 @@ import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
 import {
   fetch_customers_using_filters,
   fetch_customers_all,
+  create_rfm_scorecard,
 } from "./Queries/SelectQueries.js";
 import { registerShop } from "./Queries/RegisterShop.js";
 import { createShopifyObject } from "./global.js";
@@ -139,6 +140,23 @@ app.prepare().then(async () => {
     ctx.body = { body: "API Ready!!!" };
   });
 
+  router.post("/api/rfm", async (ctx) => {
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop,
+        },
+      },
+    });
+    let shop_id = result.shop_id;
+
+    let rfm_score = await create_rfm_scorecard(shop_id);
+    
+    ctx.status = 200;
+    ctx.body = { body: "RFM Endpoint"};
+  });
+
   router.post("/api/save_segments", async (ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
@@ -150,7 +168,7 @@ app.prepare().then(async () => {
     });
     let shop_id = result.shop_id;
 
-    let saved_segments = fetch_save_segments(shop_id);
+    let saved_segments = await fetch_save_segments(shop_id);
 
     ctx.status = 200;
     ctx.body = saved_segments;
