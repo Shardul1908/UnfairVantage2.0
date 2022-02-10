@@ -154,7 +154,7 @@ app.prepare().then(async () => {
     let rfm_score = await create_rfm_scorecard(shop_id);
     
     ctx.status = 200;
-    ctx.body = { body: "RFM Endpoint"};
+    ctx.body = rfm_score;
   });
 
   router.post("/api/save_segments", async (ctx) => {

@@ -67,4 +67,32 @@ const getId = function (id) {
   return id;
 }
 
-export { isString, isInt, isFloat, isObj, isBool, getId, createShopifyObject, sequelize, Color };
+const getNoOfDays = function(date1, date2) {
+  let difference_in_time = date2.getTime() - date1.getTime();
+  let difference_in_days = difference_in_time / (1000 * 3600 * 24);
+
+  return parseInt(difference_in_days);
+}
+
+const get_ranked_array = function(arr,ascending) {
+  let sorted;
+  if(ascending) {
+    sorted = arr.slice().sort(function(a,b) {
+      return a-b;
+    });
+  }else {
+    sorted = arr.slice().sort(function(a,b) {
+      return b-a;
+    });
+  }
+  let ranks = arr.map(function(v){ 
+    if(v === 0 || v === "0.00") {
+      return 0;
+    }
+    return sorted.indexOf(v)+1 
+  });
+
+  return ranks;
+}
+
+export { isString, isInt, isFloat, isObj, isBool, getId, getNoOfDays, get_ranked_array, createShopifyObject, sequelize, Color };

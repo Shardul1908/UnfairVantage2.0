@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import CreateSegmentsNavbar from "../Components/CreateSegmentsNavbar.js";
 // import Datatable from "../Components/Datatable/Datatable.js"
@@ -9,17 +10,20 @@ const Index = (props) => {
 
   useEffect(() => {
     const ping = async () => {
-      const response = await fetch('http://localhost:8081/api/ping');
-      const data = await response.json();
-      
-      console.log(data);
+      axios.post("http://localhost:8081/api/rfm", {
+        shop: shop,
+      }).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
     }
     
     ping();
   }, []);
 
   return (
-      <CreateSegmentsNavbar shop={shop} />
+    <CreateSegmentsNavbar shop={shop} />
   )
 };
 
