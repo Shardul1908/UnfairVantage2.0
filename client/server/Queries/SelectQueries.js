@@ -145,6 +145,8 @@ export async function create_rfm_scorecard(shop_id) {
 
   const customers = await Customer.findAll();
 
+  let customer_ids = [];
+
   const today = new Date();
   const recency = [];
   const frequency = [];
@@ -163,6 +165,8 @@ export async function create_rfm_scorecard(shop_id) {
 
     frequency.push(customers[i].ordersCount);
     monetary.push(customers[i].totalSpent);
+
+    customer_ids.push(customers[i].customer_id);
   }
 
   let ranked_recency;
@@ -221,6 +225,13 @@ export async function create_rfm_scorecard(shop_id) {
     }else {
       segments.push("Lost Customer");
     }
+  }
+
+  for(let i = 0;i<n;i++) {
+    Customer.update(
+    { segment: segments[i] },
+    { where: { customer_id: customer_ids[i] } }
+    );
   }
 
   const toSend = {
