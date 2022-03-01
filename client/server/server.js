@@ -152,12 +152,12 @@ app.prepare().then(async () => {
     let shop_id = result.shop_id;
 
     let rfm_score = await create_rfm_scorecard(shop_id);
-    
+
     ctx.status = 200;
-    ctx.body = { body: "RFM Endpoint"};
+    ctx.body = { body: "RFM Endpoint" };
   });
 
-  router.post("/api/save_segments", async (ctx) => {
+  router.post("/api/fetch_saved_segments", async (ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
       where: {
@@ -172,6 +172,35 @@ app.prepare().then(async () => {
 
     ctx.status = 200;
     ctx.body = saved_segments;
+  });
+
+  router.post("/api/save_segment", async (ctx) => {
+    const shop = ctx.request.body.shop;
+    const title = ctx.request.body.title;
+    const startDate = ctx.request.body.start_date;
+    const endDate = ctx.request.body.end_date;
+    const noOfCustomers = ctx.request.body.noOfCustomers;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop,
+        },
+      },
+    });
+    let shop_id = result.shop_id;
+
+    console.log("Server.js segment title");
+    console.log(ctx.request.body.title);
+
+    let save_new_segment = await saveTheSegment(
+      shop_id,
+      startDate,
+      endDate,
+      title,
+      noOfCustomers
+    );
+    ctx.status = 200;
+    ctx.body = save_new_segment;
   });
 
   router.post("/api/count_data", async (ctx) => {

@@ -361,6 +361,9 @@ export default function FilterForms(props) {
           customFilters.splice(i, accountStateCounterFilter);
         }
       }
+      for (let i = 0; i < AccountState.length; i++) {
+        filters.push(AccountState[i]);
+      }
       AccountState.splice(0, AccountState.length);
       accountStateCounterCustom = 0;
       accountStateCounterFilter = 0;
@@ -399,7 +402,7 @@ export default function FilterForms(props) {
       PaymentStatus.splice(0, PaymentStatus.length);
     }
 
-    setCustomFilters([...customFilters,...filters]);
+    setCustomFilters([...customFilters, ...filters]);
     inputData.splice(0, inputData.length);
     onHide();
   }

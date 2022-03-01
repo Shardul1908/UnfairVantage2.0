@@ -154,6 +154,13 @@
   text-align: left !important;
 }
 
+.input_field_text {
+  font-size: 1.3rem !important;
+  border-radius: 5px;
+  border: solid #929191;
+  border-width: thin;
+}
+
 .menu_icon {
   display: none;
 }

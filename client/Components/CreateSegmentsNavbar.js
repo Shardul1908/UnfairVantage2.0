@@ -26,6 +26,7 @@ function CreateSegments(props) {
   const [dateRange, setDateRange] = React.useState([null, null]);
 
   const [inputData, setInputData] = React.useState([]);
+  const [customersCount, setCustomersCount] = React.useState();
 
   function ResetFilter() {
     setCustomFilters([]);
@@ -76,7 +77,7 @@ function CreateSegments(props) {
     if (filterLength !== 0 || (startDate !== null && endDate !== null)) {
       setDisableButton(false);
     }
-    if (filterLength === 0 && (startDate === null && endDate === null)) {
+    if (filterLength === 0 && startDate === null && endDate === null) {
       setDisableButton(true);
     }
   }, [customFilters, dateRange]);
@@ -85,26 +86,35 @@ function CreateSegments(props) {
     <div className={styles.createSegments_main_div}>
       <div className={styles.createSegments_navBar_div}>
         <div className={styles.nav_left}>
-
-          <Button onClick={function () {
-            setShowFilterForms(true);
-          }}
-            className={styles.customFilter_button}>
+          <Button
+            onClick={function () {
+              setShowFilterForms(true);
+            }}
+            className={styles.customFilter_button}
+          >
             Custom Filters
           </Button>
 
           <div className={styles.vertical_line}></div>
 
           <div className={styles.date_dynamic_and_static}>
-            <DateRange dateRange={dateRange} setDateRange={setDateRange}/>
+            <DateRange dateRange={dateRange} setDateRange={setDateRange} />
           </div>
         </div>
         <div className={styles.nav_right}>
           <Button className={styles.reset_filters_button} onClick={ResetFilter}>
             Reset Filters
           </Button>
-          <Button className={styles.save_segments_button} onClick={handleDisableButton} disabled={disabledButton} >
-            <img src={SaveSegments} className={styles.saveSegments_logo} alt="star-icon" />
+          <Button
+            className={styles.save_segments_button}
+            onClick={handleDisableButton}
+            disabled={disabledButton}
+          >
+            <img
+              src={SaveSegments}
+              className={styles.saveSegments_logo}
+              alt="star-icon"
+            />
             <span className={styles.save_segment_span}>Save Segments</span>
           </Button>
           <div className={styles.menu_icon}>
@@ -119,11 +129,16 @@ function CreateSegments(props) {
       </div>
       <div>{filterTagsPop()}</div>
       <div>
-        <SaveSegmentsModel showModal={showSaveSegments} handleCloseModal={
-          () => {
+        <SaveSegmentsModel
+          showModal={showSaveSegments}
+          handleCloseModal={() => {
             setShowSaveSegments(false);
-          }
-        } />
+          }}
+          dateRange={dateRange}
+          customersCount={customersCount}
+          customFilters={customFilters}
+          shop={shop}
+        />
       </div>
       <div className={styles.filter_forms}>
         <FilterForms
@@ -139,7 +154,11 @@ function CreateSegments(props) {
 
       {/* <SavedSegments handleCreateToSavedSegments={segmentData} /> */}
       <div className={styles.server_pagination_table_div}>
-        <Datatable filters={customFilters} shop={shop} />
+        <Datatable
+          filters={customFilters}
+          shop={shop}
+          setCustomersCount={setCustomersCount}
+        />
       </div>
     </div>
   );

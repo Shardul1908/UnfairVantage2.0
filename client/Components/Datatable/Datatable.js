@@ -25,7 +25,7 @@ const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
 
 function Datatable(props) {
-  const { filters, shop } = props;
+  const { filters, shop, setCustomersCount } = props;
   const [tableData, setTableData] = useState({});
   const [exportData, setExportData] = useState({});
   const [page, setPage] = useState(1);
@@ -344,6 +344,10 @@ function Datatable(props) {
     },
     [filters, columnFilters]
   );
+
+  useEffect(() => {
+    setCustomersCount(tableData.total);
+  }, [tableData]);
 
   createTheme("solarized", {
     rdt_TableFotter: "10px",
