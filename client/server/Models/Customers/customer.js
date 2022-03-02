@@ -95,6 +95,10 @@ function customerTableInit(shopId) {
       type: "VARCHAR(250) COLLATE utf8mb4_unicode_ci",
       defaultValue: null,
     },
+    segment: {
+      type: "VARCHAR(250) COLLATE utf8mb4_unicode_ci",
+      defaultValue: null,
+    },
     createdAt: {
       type: Sequelize.DATE,
       defaultValue: null,

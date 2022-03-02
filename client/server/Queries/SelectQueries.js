@@ -1,6 +1,7 @@
 import customerTableInit from "../Models/Customers/customer.js";
 import { Op } from "sequelize";
 import SavedSegmentsInit from "../Models/Saved_Segments/Saved_Segments.js";
+import { getNoOfDays, get_ranked_array } from "../global.js";
 
 export async function fetch_customers_using_filters(
   filters,
@@ -144,7 +145,104 @@ export async function create_rfm_scorecard(shop_id) {
 
   const customers = await Customer.findAll();
 
-  // let recency = customers.
+  let customer_ids = [];
+
+  const today = new Date();
+  const recency = [];
+  const frequency = [];
+  const monetary = [];
+
+  let n = customers.length;
+
+  for(let i = 0;i<n;i++) {
+    if((customers[i].lastPurchasedDate) !== null) {
+      const cust_lastPurchase = new Date(customers[i].lastPurchasedDate);
+      let days = getNoOfDays(cust_lastPurchase, today);
+      recency.push(days);
+    }else {
+      recency.push(0);
+    } 
+
+    frequency.push(customers[i].ordersCount);
+    monetary.push(customers[i].totalSpent);
+
+    customer_ids.push(customers[i].customer_id);
+  }
+
+  let ranked_recency;
+  for(let i = 0;i<n;i++) {
+    ranked_recency = get_ranked_array(recency,false);
+  }
+
+  let ranked_frequency;
+  for(let i = 0;i<n;i++) {
+    ranked_frequency = get_ranked_array(frequency,true);
+  }
+
+  let ranked_monetary;
+  for(let i = 0;i<n;i++) {
+    ranked_monetary = get_ranked_array(monetary,true);
+  }
+
+  let ranked_norm_recency = [];
+  let recency_rank_max = Math.max(...ranked_recency);
+  for(let i = 0;i<n;i++) {
+    ranked_norm_recency.push((ranked_recency[i]/recency_rank_max)*100);
+  }
+
+  let ranked_norm_frequency = [];
+  let frequency_rank_max = Math.max(...ranked_frequency);
+  for(let i = 0;i<n;i++) {
+    ranked_norm_frequency.push((ranked_frequency[i]/frequency_rank_max)*100);
+  }
+
+  let ranked_norm_monetary = [];
+  let monetary_rank_max = Math.max(...ranked_monetary);
+  for(let i = 0;i<n;i++) {
+    ranked_norm_monetary.push((ranked_monetary[i]/monetary_rank_max)*100);
+  }
+
+  let rfm_score = [];
+  for(let i = 0;i<n;i++) {
+    rfm_score.push((0.15 * ranked_norm_recency[i]) + (0.28 * ranked_norm_frequency[i]) + (0.57 * ranked_norm_monetary[i]));
+  }
+
+  for(let i = 0;i<n;i++) {
+    rfm_score[i] = rfm_score[i]*0.05;
+    rfm_score[i] = round(rfm_score[i],2);
+  }
+
+  let segments = [];
+  for(let i = 0;i<n;i++) {
+    if(rfm_score[i] > 4.50) {
+      segments.push("Top Customer");
+    }else if(rfm_score[i] <= 4.50 && rfm_score[i] > 4.00) {
+      segments.push("High Value Customer");
+    }else if(rfm_score[i] <= 4.00 && rfm_score[i] > 3.00) {
+      segments.push("Medium Value Customer");
+    }else if(rfm_score[i] <= 3.00 && rfm_score[i] > 1.60) {
+      segments.push("Low Value Customer");
+    }else {
+      segments.push("Lost Customer");
+    }
+  }
+
+  for(let i = 0;i<n;i++) {
+    Customer.update(
+    { segment: segments[i] },
+    { where: { customer_id: customer_ids[i] } }
+    );
+  }
+
+  const toSend = {
+    rfm_score,segments
+  }
+
+  return toSend;
+}
+
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 
 export async function fetch_save_segments(shop_id) {
