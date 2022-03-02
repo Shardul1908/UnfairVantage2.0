@@ -26,6 +26,7 @@ import User from "./Models/Users/user.js";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { queryTotalCount } from "./Queries/TotalCount.js";
+import { saveTheSegment } from "./Queries/SaveSegment.js";
 import { Op } from "sequelize";
 
 dotenv.config();
@@ -177,9 +178,10 @@ app.prepare().then(async () => {
   router.post("/api/save_segment", async (ctx) => {
     const shop = ctx.request.body.shop;
     const title = ctx.request.body.title;
-    const startDate = ctx.request.body.start_date;
-    const endDate = ctx.request.body.end_date;
+    const dateRange = ctx.request.body.dateRange;
     const noOfCustomers = ctx.request.body.noOfCustomers;
+    const customFilters = ctx.request.body.customFilters;
+
     const result = await User.findOne({
       where: {
         shop_email: {
@@ -189,18 +191,20 @@ app.prepare().then(async () => {
     });
     let shop_id = result.shop_id;
 
-    console.log("Server.js segment title");
-    console.log(ctx.request.body.title);
+    let startDate = dateRange[0];
+    let endDate = dateRange[1];
 
     let save_new_segment = await saveTheSegment(
       shop_id,
       startDate,
       endDate,
       title,
-      noOfCustomers
+      noOfCustomers,
+      customFilters
     );
+
     ctx.status = 200;
-    ctx.body = save_new_segment;
+    ctx.body = { body: "Saved The Segment" };
   });
 
   router.post("/api/count_data", async (ctx) => {

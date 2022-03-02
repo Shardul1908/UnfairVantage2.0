@@ -4,8 +4,8 @@ import { sequelize } from "../../global";
 function SavedSegmentsInit(shopId) {
   const Segment = sequelize.define(`${shopId}_Saved_Segments`, {
     id: {
-      type: Sequelize.INTEGER(5).UNSIGNED,
-      autoIncreament: true,
+      type: Sequelize.INTEGER(10).UNSIGNED,
+      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
@@ -28,7 +28,6 @@ function SavedSegmentsInit(shopId) {
     },
     filters: {
       type: Sequelize.STRING,
-      allowNull: false,
       defaultValue: null,
     },
   });

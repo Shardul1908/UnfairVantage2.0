@@ -14,13 +14,11 @@ function SaveSegmentsModel(props) {
     shop,
   } = props;
 
-  let segment_title,
-    title_to_Sent,
-    titleArray = [];
+  let segment_title, titleToSend, titleArray = [];
 
   const [start, setStart] = React.useState();
   const [end, setEnd] = React.useState();
-  const [title, setTitle] = React.useState();
+  // const [title, setTitle] = React.useState();
 
   function handleTitle(set) {
     let setName = set.target.name;
@@ -30,22 +28,21 @@ function SaveSegmentsModel(props) {
         titleArray.push(segment_title);
       }
     }
-    console.log(titleArray);
   }
 
   function save() {
     if (titleArray.length !== 0) {
-      title_to_Sent = titleArray[titleArray.length - 1];
+      titleToSend = titleArray[titleArray.length - 1];
     }
-    console.log(title_to_Sent);
+
     titleArray.splice(0, titleArray.length);
     axios
       .post("http://localhost:8081/api/save_segment", {
         shop: shop,
-        title: title_to_Sent,
-        start_date: start,
-        end_date: end,
+        title: titleToSend,
+        dateRange: dateRange,
         noOfCustomers: customersCount,
+        customFilters: customFilters
       })
       .then(function (res) {
         console.log("Saved Segment Successfulllllyy");
@@ -74,7 +71,7 @@ function SaveSegmentsModel(props) {
       setStart("Date Range was not mentioned");
       setEnd("");
     }
-    console.log(start);
+    // console.log(start);
   }, [dateRange]);
 
   return (
@@ -108,12 +105,13 @@ function SaveSegmentsModel(props) {
                     />
                   </div>
                   <div className={styles.segments_modal_span}>
+                    <span>Date Range: </span>&nbsp;
                     <span>{start} </span>&nbsp;
-                    <span>-</span>&nbsp;
+                    <span>To</span>&nbsp;
                     <span>{end}</span>
                   </div>
                   <div className={styles.segments_modal_span}>
-                    <span>No. of Cutomers:- {customersCount} </span>
+                    <span>No. of Cutomers: {customersCount} </span>
                   </div>
                 </Col>
               </Row>
