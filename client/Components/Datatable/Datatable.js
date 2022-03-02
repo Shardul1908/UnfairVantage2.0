@@ -19,7 +19,6 @@ import { COLUMNS } from "./columns.js";
 import styles from "../../styles/datatable.module.css";
 import io from "socket.io-client";
 import Progress_bar from "../ProgressBar/ProgressBar.js";
-import { deepOrange, orange } from "@material-ui/core/colors";
 
 const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
@@ -31,6 +30,8 @@ function Datatable(props) {
   const [page, setPage] = useState(1);
   const [progressPending, setProgressPending] = useState(true);
   const [show, setShow] = React.useState(false);
+  const [refresh, setRefresh] = React.useState(false);
+  const [initShow, setInitShow] = React.useState(false);
   let result_total = 0;
 
   function handleOpenModal() {
@@ -39,6 +40,14 @@ function Datatable(props) {
 
   function handleCloseModal() {
     setShow(false);
+  }
+
+  function initHandleOpenModal() {
+    setInitShow(true);
+  }
+
+  function initHandleCloseModal() {
+    setInitShow(false);
   }
 
   function handleApplyButtonClicked() {
@@ -222,7 +231,7 @@ function Datatable(props) {
 
   async function syncData() {
     //show popup
-    handleOpenModal();
+    initHandleOpenModal();
     console.log("Sync Data Clicked");
 
     result_total = await axios.post("http://localhost:8081/api/count_data", {
@@ -231,6 +240,8 @@ function Datatable(props) {
     console.log(result_total);
 
     setTotal(parseInt(result_total.data.total));
+    initHandleCloseModal();
+    handleOpenModal();
 
     let result_customers = await axios.post(
       "http://localhost:8081/api/sync_data_customers",
@@ -258,6 +269,7 @@ function Datatable(props) {
         );
         console.log(result_orderItems);
       }
+      setRefresh(!refresh);
     }
 
     //hide popup
@@ -319,7 +331,7 @@ function Datatable(props) {
       }
       getTableList();
     },
-    [page, filters, columnFilters]
+    [page, filters, columnFilters, refresh]
   );
 
   //For Exporting CSV
@@ -342,7 +354,7 @@ function Datatable(props) {
       }
       getExportList();
     },
-    [filters, columnFilters]
+    [filters, columnFilters, refresh]
   );
 
   useEffect(() => {
@@ -460,6 +472,22 @@ function Datatable(props) {
             </div>
             <div className={styles.syncModal_progress_text}>
               Please wait, syncing data...
+            </div>
+          </Modal.Body>
+        </Modal>
+
+        <Modal
+          show={initShow}
+          onHide={initHandleCloseModal}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Body>
+            <div className={styles.syncModal_progress_icon}>
+              <CircularProgress></CircularProgress>
+            </div>
+            <div className={styles.syncModal_progress_text}>
+              Initializing...
             </div>
           </Modal.Body>
         </Modal>
