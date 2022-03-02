@@ -1,29 +1,33 @@
-import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import CreateSegmentsNavbar from "../Components/CreateSegmentsNavbar.js";
-// import Datatable from "../Components/Datatable/Datatable.js"
-// import FilterForms from "../Components/FilterForms/FilterForms.js";
-// import styles from "../styles/create_segments.module.css";
+import PieChart from "../Components/PieChart/PieChart.js"
+import styles from "../styles/homepage.module.css";
 
 const Index = (props) => {
   const { shop } = props;
 
-  useEffect(() => {
-    const ping = async () => {
-      axios.post("http://localhost:8081/api/rfm", {
-        shop: shop,
-      }).then(res => {
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-      });
-    }
-    
-    ping();
-  }, []);
-
   return (
-    <CreateSegmentsNavbar shop={shop} />
+    <>
+      <div className={styles.navbar_home}>
+
+      </div>
+
+      <div className={styles.analytics}>
+        {/* <div className={styles.analytics_pie}>
+          
+        </div> */}
+        <PieChart shop={shop} />
+        <div className={styles.analytics_nos}>
+          <h3>Total Customers</h3>
+          <h3>Top Customers</h3>
+          <h3>High Customers</h3>
+          <h3>Medium Customers</h3>
+          <h3>Low Customers</h3>
+          <h3>Lost Customers</h3>
+        </div>
+      </div>
+    </>
+    // <CreateSegmentsNavbar shop={shop} />
   )
 };
 

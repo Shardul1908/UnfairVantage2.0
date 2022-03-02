@@ -1,0 +1,24 @@
+.navbar_home {
+  background-color: red;
+  height: 50px;
+}
+
+.analytics {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: max-content;
+}
+
+.analytics_pie {
+  display: flex;
+  background-color: aquamarine;
+  height: 400px;
+  width: 600px;
+  justify-content: center;
+  align-items: center;
+}
+
+.analytics_nos {
+  background-color: green;
+}
