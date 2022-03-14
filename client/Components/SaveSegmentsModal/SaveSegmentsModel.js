@@ -39,20 +39,20 @@ function SaveSegmentsModel(props) {
     }
     console.log(title_to_Sent);
     titleArray.splice(0, titleArray.length);
-    axios
-      .post("http://localhost:8081/api/save_segment", {
-        shop: shop,
-        title: title_to_Sent,
-        start_date: start,
-        end_date: end,
-        noOfCustomers: customersCount,
-      })
-      .then(function (res) {
-        console.log("Saved Segment Successfulllllyy");
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
+    // axios
+    //   .post("http://localhost:8081/api/save_segment", {
+    //     shop: shop,
+    //     title: title_to_Sent,
+    //     start_date: start,
+    //     end_date: end,
+    //     noOfCustomers: customersCount,
+    //   })
+    //   .then(function (res) {
+    //     console.log("Saved Segment Successfulllllyy");
+    //   })
+    //   .catch(function (err) {
+    //     console.log(err);
+    //   });
 
     handleCloseModal();
   }
