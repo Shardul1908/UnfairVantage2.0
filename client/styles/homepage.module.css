@@ -1,24 +1,34 @@
-.navbar_home {
-  background-color: red;
-  height: 50px;
-}
-
-.analytics {
+.homepage_div{
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: max-content;
+  /* width:100%;
+  height:100vh; */
+  /* flex-direction: row; */
 }
 
-.analytics_pie {
-  display: flex;
-  background-color: aquamarine;
-  height: 400px;
-  width: 600px;
-  justify-content: center;
-  align-items: center;
+.homepage_div_piechart{
+  width:40%;
 }
 
-.analytics_nos {
-  background-color: green;
+.homepage_title{
+  font-size: 1.7rem;
+  /* align-self: flex-start; */
+  /* width:100vh; */
+}
+
+/* .homepage_div_stats{
+  width: 500px;
+  display:flex;
+  height: 500px;
+  font-size: larger;
+  flex-direction: row-reverse;
+  padding: 8%;
+} */
+/* 
+.homepage_ol{
+  list-style: none;
+  align-items:inherit;
+} */
+
+.homepage_outer_div{
+  background-color: beige;
 }

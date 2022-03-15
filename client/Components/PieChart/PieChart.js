@@ -19,7 +19,7 @@ function PieChart(props) {
                 'rgba(255, 159, 64, 1)',
             ],
             borderColor: "black",
-            borderWidth: 2,
+            borderWidth: 1,
         }],
     });
 
@@ -58,7 +58,7 @@ function PieChart(props) {
                             "red",
                         ],
                         borderColor: "black",
-                        borderWidth: 2,
+                        borderWidth: 1,
                     }],
                 };
                 setRfmScoreCard(data);
