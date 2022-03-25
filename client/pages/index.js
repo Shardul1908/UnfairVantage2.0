@@ -8,22 +8,24 @@ const Index = (props) => {
   const { shop } = props;
 
   return (
-    <div className={styles.homepage_outer_div}>
+    <div className={styles.homepage}>
       <div className={styles.homepage_title}>
-        <p>Store Insights</p>
+        <h3>Home Page</h3>
       </div>
-      {/* <div className={styles.homepage_div}>
+      <div className={styles.flex_container}>
         <div className={styles.homepage_div_piechart}>
           <PieChart shop={shop} />
         </div>
-        <div className={styles.homepage_div_stats}>
+        {/* <div className={styles.homepage_div_stats}>
           <ol className={styles.homepage_ol}>
             <li>Shop Customer Count: 3160</li>
             <li>Shop Order Count: 4060</li>
             <li>Shop Product Count: 5567</li>
           </ol>
-        </div>
-      </div> */}
+        </div> */}
+        {/* <div className={styles.box1}></div> */}
+        <div className={styles.box2}></div>
+      </div>
     </div>
   );
 };
