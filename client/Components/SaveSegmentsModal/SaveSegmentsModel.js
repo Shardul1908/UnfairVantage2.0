@@ -11,6 +11,7 @@ function SaveSegmentsModel(props) {
     dateRange,
     customersCount,
     customFilters,
+    handleDisableButton,
     shop,
   } = props;
 
@@ -51,6 +52,7 @@ function SaveSegmentsModel(props) {
         console.log(err);
       });
 
+    handleDisableButton();
     handleCloseModal();
   }
 
@@ -59,7 +61,6 @@ function SaveSegmentsModel(props) {
     let endDate = dateRange[1];
 
     if (startDate !== null && endDate !== null) {
-      console.log(startDate);
       let startMonth = startDate.getMonth() + 1;
       let endMonth = endDate.getMonth() + 1;
       setStart(
