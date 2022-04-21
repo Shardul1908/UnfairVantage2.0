@@ -3,8 +3,11 @@ import { Heading, Page } from "@shopify/polaris";
 import styles from "../../styles/saved_segments.module.css";
 import { Card } from "react-bootstrap";
 import Link from "next/link";
+import axios from "axios";
 
-function Index() {
+function Index(props) {
+  const { shop } = props;
+
   const data = [
     { no: 1, name: "Teju" },
     { no: 2, name: "tejusss" },
@@ -12,6 +15,13 @@ function Index() {
     { no: 4, name: "tejyo!" },
     { no: 5, name: "bhaula!" },
   ];
+
+  React.useEffect(() => {
+    // axios.post("http://localhost:8081/api/fetch_saved_segments", {
+    //   shop: shop
+    // })
+    console.log(shop);
+  },[]);
 
   const [segment, setSegment] = React.useState([]);
 
@@ -38,4 +48,15 @@ function Index() {
     </>
   );
 }
+
+export const getServerSideProps = async ({ ctx }) => {
+  console.log(ctx);
+  
+  return {
+    props : {
+      message: "Yashya Chutiya Ahe",
+    }
+  };
+};
+
 export default Index;

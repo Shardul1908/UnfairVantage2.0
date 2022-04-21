@@ -36,7 +36,7 @@ function CreateSegments(props) {
   }
 
   const [disabledButton, setDisableButton] = React.useState(true);
-  function handleDisableButton() {
+  function handleSaveSegment() {
     setShowSaveSegments(true);
     // setDisableButton(true);
   }
@@ -107,7 +107,7 @@ function CreateSegments(props) {
           </Button>
           <Button
             className={styles.save_segments_button}
-            onClick={handleDisableButton}
+            onClick={handleSaveSegment}
             disabled={disabledButton}
           >
             <img
@@ -120,7 +120,7 @@ function CreateSegments(props) {
           <div className={styles.menu_icon}>
             <FaBars />
           </div>
-          <Link href="/SavedSegments">
+          <Link href={{ pathname: '/SavedSegments', query: { data: shop }}}>
             <Button className={styles.show_segments_button}>
               View Saved Segments
             </Button>
@@ -137,6 +137,9 @@ function CreateSegments(props) {
           dateRange={dateRange}
           customersCount={customersCount}
           customFilters={customFilters}
+          handleDisableButton={() => {
+            setDisableButton(true);
+          }}
           shop={shop}
         />
       </div>
