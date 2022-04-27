@@ -8,6 +8,8 @@ import axios from "axios";
 import { fontWeight } from "@mui/system";
 import Link from "next/link";
 import AnimatedNumber from "react-animated-number";
+import { Select } from "@mui/material";
+import { MenuItem } from "@mui/material";
 
 const Index = (props) => {
   const { shop } = props;
@@ -15,6 +17,12 @@ const Index = (props) => {
   const [customerCount, setCustomerCount] = React.useState(0);
   const [orderCount, setOrderCount] = React.useState(0);
   const [orderItemCount, setOrderItemCount] = React.useState(0);
+
+  const [rfmSegment, setRfmSegment] = React.useState("all");
+
+  const handleRfmSegment = (event) => {
+    setRfmSegment(event.target.value);
+  };
 
   useEffect(() => {
     axios
@@ -48,14 +56,20 @@ const Index = (props) => {
             Category
           </label>
           &nbsp;
-          <select name="Categories" id="categories">
-            <option value="all">All Customers</option>
-            <option value="top">Top Valued Customers</option>
-            <option value="high">High Valued Customers</option>
-            <option value="med">Medium Valued Customers</option>
-            <option value="low">Low Valued Customers</option>
-            <option value="lost">Lost Customers</option>
-          </select>
+          <Select
+            labelId="simple-select-label1"
+            id="simple-select1"
+            value={rfmSegment}
+            label="rfmSegment"
+            onChange={handleRfmSegment}
+          >
+            <MenuItem value="all">All Customers</MenuItem>
+            <MenuItem value="top">Top Valued Customers</MenuItem>
+            <MenuItem value="high">High Valued Customers</MenuItem>
+            <MenuItem value="med">Medium Valued Customers</MenuItem>
+            <MenuItem value="low">Low Valued Customers</MenuItem>
+            <MenuItem value="lost">Lost Customers</MenuItem>
+          </Select>
           &nbsp;&nbsp;
         </div>
       </div>
