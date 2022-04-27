@@ -6,6 +6,10 @@ import styles from "../styles/homepage.module.css";
 import { Button } from "react-bootstrap";
 import { fontWeight } from "@mui/system";
 
+
+
+
+
 const Index = (props) => {
   const { shop } = props;
 
@@ -49,15 +53,11 @@ const Index = (props) => {
         <div className={styles.homepage_div_piechart}>
           <PieChart shop={shop} />
         </div>
-        {/* <div className={styles.homepage_div_stats}>
-          <ol className={styles.homepage_ol}>
-            <li>Shop Customer Count: 3160</li>
-            <li>Shop Order Count: 4060</li>
-            <li>Shop Product Count: 5567</li>
-          </ol>
-        </div> */}
-        {/* <div className={styles.box1}></div> */}
-        <div className={styles.box2}></div>
+        <div className={styles.stats}>
+          <h3 className={styles.customer_count}>3434 Customers </h3>
+          <h3 className={styles.order_count}>5673 Orders So Far</h3>
+          <h3 className={styles.inventory}>68 Products </h3>
+        </div>
       </div>
     </div>
   );
