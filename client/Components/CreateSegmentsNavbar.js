@@ -13,9 +13,9 @@ import DateRange from "./DateRange/DateRange";
 // import Image from "next/image";
 
 function CreateSegments(props) {
-  const { shop, shop_id, segment } = props;
+  const { shop, segment } = props;
 
-  console.log(shop_id);
+  console.log(shop);
   console.log(segment);
 
   //Custom Filter Modal show
@@ -113,17 +113,17 @@ function CreateSegments(props) {
             onClick={handleSaveSegment}
             disabled={disabledButton}
           >
-            <img
+            {/* <img
               src={SaveSegments}
               className={styles.saveSegments_logo}
               alt="star-icon"
-            />
+            /> */}
             <span className={styles.save_segment_span}>Save Segments</span>
           </Button>
           <div className={styles.menu_icon}>
             <FaBars />
           </div>
-          <Link href={{ pathname: '/SavedSegments', query: { data: shop }}}>
+          <Link href={`/SavedSegments/${shop}`}>
             <Button className={styles.show_segments_button}>
               View Saved Segments
             </Button>
