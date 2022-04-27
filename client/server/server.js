@@ -18,6 +18,7 @@ import {
   fetch_customers_using_filters,
   fetch_customers_all,
   create_rfm_scorecard,
+  table_sizes,
 } from "./Queries/SelectQueries.js";
 import { registerShop } from "./Queries/RegisterShop.js";
 import { createShopifyObject } from "./global.js";
@@ -156,6 +157,23 @@ app.prepare().then(async () => {
 
     ctx.status = 200;
     ctx.body = rfm_score;
+  });
+
+  router.post("/api/initialize_app", async(ctx) => {
+    const shop = ctx.request.body.shop;
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop,
+        },
+      },
+    });
+    let shop_id = result.shop_id;
+
+    let table_size = await table_sizes(shop_id);
+
+    ctx.status = 200;
+    ctx.body = table_size;
   });
 
   router.post("/api/fetch_saved_segments", async (ctx) => {

@@ -1,4 +1,6 @@
 import customerTableInit from "../Models/Customers/customer.js";
+import orderTableInit from "../Models/Orders/order.js";
+import orderItemTableInit from "../Models/Order_Items/order_item.js";
 import { Op } from "sequelize";
 import SavedSegmentsInit from "../Models/Saved_Segments/Saved_Segments.js";
 import { getNoOfDays, get_ranked_array } from "../global.js";
@@ -137,6 +139,29 @@ function createConditions(filters, columnFilters) {
     };
   }
   return conditions;
+}
+
+export async function table_sizes(shop_id) {
+  const Customer = customerTableInit(shop_id);
+  await Customer.sync();
+
+  const Order = orderTableInit(shop_id);
+  Order.sync();
+
+  const OrderItem = orderItemTableInit(shop_id);
+  OrderItem.sync();
+
+  let customer_count = await Customer.count();
+  let order_count = await Order.count();
+  let orderItem_count = await OrderItem.count();
+
+  let toSend = {
+    customer_count,
+    order_count,
+    orderItem_count
+  }
+
+  return toSend;
 }
 
 export async function create_rfm_scorecard(shop_id) {
