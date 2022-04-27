@@ -39,10 +39,7 @@ const Index = (props) => {
         </Link>
         
         <div className={styles.dropdown}>
-          <label
-            for="cars"
-            style={{ color: "#ffffff", fontWeight: "bold", fontSize: "18px" }}
-          >
+          <label style={{ color: "#ffffff", fontWeight: "bold", fontSize: "18px" }}>
             Category
           </label>
           &nbsp;
