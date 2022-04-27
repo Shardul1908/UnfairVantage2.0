@@ -4,29 +4,32 @@ import CreateSegmentsNavbar from "../Components/CreateSegmentsNavbar.js";
 import PieChart from "../Components/PieChart/PieChart.js";
 import styles from "../styles/homepage.module.css";
 import { Button } from "react-bootstrap";
-import axios from 'axios';
+import axios from "axios";
 import { fontWeight } from "@mui/system";
 import Link from "next/link";
-
+import AnimatedNumber from "react-animated-number";
 
 const Index = (props) => {
   const { shop } = props;
 
   const [customerCount, setCustomerCount] = React.useState(0);
   const [orderCount, setOrderCount] = React.useState(0);
-  const [orderItemCount, setOrderItemCount] = React.useState(0); 
+  const [orderItemCount, setOrderItemCount] = React.useState(0);
 
   useEffect(() => {
-    axios.post("http://localhost:8081/api/initialize_app", {
-      shop: shop,
-    }).then(res => {
-      setCustomerCount(res.data.customer_count);
-      setOrderCount(res.data.order_count);
-      setOrderItemCount(res.data.orderItem_count);
-    }).catch(err => {
-      console.log(err);
-    });
-  },[]);
+    axios
+      .post("http://localhost:8081/api/initialize_app", {
+        shop: shop,
+      })
+      .then((res) => {
+        setCustomerCount(res.data.customer_count);
+        setOrderCount(res.data.order_count);
+        setOrderItemCount(res.data.orderItem_count);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className={styles.homepage}>
@@ -35,15 +38,18 @@ const Index = (props) => {
           <h3>Home Page</h3>
         </div>
         <Link href={`/CreateSegments/all/${shop}`}>
-          <Button className={styles.create_segments}>Create Segments</Button>
+          <Button className={styles.create_segments}>View Customers</Button>
         </Link>
-        
+
         <div className={styles.dropdown}>
-          <label style={{ color: "#ffffff", fontWeight: "bold", fontSize: "18px" }}>
+          <label
+            style={{ color: "#ffffff", fontWeight: "bold", fontSize: "18px" }}
+          >
             Category
           </label>
           &nbsp;
           <select name="Categories" id="categories">
+            <option value="all">All Customers</option>
             <option value="top">Top Valued Customers</option>
             <option value="high">High Valued Customers</option>
             <option value="med">Medium Valued Customers</option>
@@ -51,17 +57,6 @@ const Index = (props) => {
             <option value="lost">Lost Customers</option>
           </select>
           &nbsp;&nbsp;
-          <Button
-            style={{
-              backgroundColor: "#fdfdfd",
-              marginBottom: "4px",
-              color: "#000000",
-              fontSize: "11px",
-              border: "none",
-            }}
-          >
-            Show
-          </Button>
         </div>
       </div>
       <div className={styles.flex_container}>
@@ -69,9 +64,15 @@ const Index = (props) => {
           <PieChart shop={shop} />
         </div>
         <div className={styles.stats}>
-          <h3 className={styles.customer_count}>Total Customers: {customerCount} </h3>
-          <h3 className={styles.order_count}>Total Orders: {orderCount}</h3>
-          <h3 className={styles.inventory}>Told Products Sold: {orderItemCount} </h3>
+          <h3 className={styles.customer_count}>
+            Total Customers: <AnimatedNumber value={customerCount} />
+          </h3>
+          <h3 className={styles.order_count}>
+            Total Orders: <AnimatedNumber value={orderCount} />
+          </h3>
+          <h3 className={styles.inventory}>
+            Told Products Sold: <AnimatedNumber value={orderItemCount} />{" "}
+          </h3>
         </div>
       </div>
     </div>

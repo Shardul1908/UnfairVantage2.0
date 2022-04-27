@@ -56,6 +56,7 @@
     "next-fetch": "^1.0.1",
     "react": "^17.0.2",
     "react-addons-update": "^15.6.3",
+    "react-animated-number": "^0.4.4",
     "react-apollo": "^3.1.5",
     "react-bootstrap": "^2.1.0",
     "react-chartjs-2": "^4.0.1",
