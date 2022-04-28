@@ -24,7 +24,7 @@ const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
 
 function Datatable(props) {
-  const { filters, shop, setCustomersCount } = props;
+  const { filters, shop, setCustomersCount, segment } = props;
   const [tableData, setTableData] = useState({});
   const [exportData, setExportData] = useState({});
   const [page, setPage] = useState(1);
@@ -33,6 +33,8 @@ function Datatable(props) {
   const [refresh, setRefresh] = React.useState(false);
   const [initShow, setInitShow] = React.useState(false);
   let result_total = 0;
+
+  // console.log(segment);
 
   function handleOpenModal() {
     setShow(true);
@@ -232,12 +234,10 @@ function Datatable(props) {
   async function syncData() {
     //show popup
     initHandleOpenModal();
-    console.log("Sync Data Clicked");
 
     result_total = await axios.post("http://localhost:8081/api/count_data", {
       shop: shop,
     });
-    console.log(result_total);
 
     setTotal(parseInt(result_total.data.total));
     initHandleCloseModal();
@@ -249,7 +249,6 @@ function Datatable(props) {
         shop: shop,
       }
     );
-    console.log(result_customers);
 
     if (result_customers.status === 200) {
       let result_orders = await axios.post(
@@ -258,7 +257,6 @@ function Datatable(props) {
           shop: shop,
         }
       );
-      console.log(result_orders);
 
       if (result_orders.status === 200) {
         let result_orderItems = await axios.post(
@@ -267,7 +265,6 @@ function Datatable(props) {
             shop: shop,
           }
         );
-        console.log(result_orderItems);
       }
       setRefresh(!refresh);
     }
@@ -317,16 +314,16 @@ function Datatable(props) {
             pageSize: countPerPage,
             pageIndex: page,
             shop: shop,
+            segment: segment,
           })
           .then(function (res) {
             setTableData(res.data);
             setProgressPending(false);
-            console.log("Recieved data from server");
           })
           .catch(function (err) {
             setTableData({});
             setProgressPending(false);
-            console.log(err);
+            console.err(err);
           });
       }
       getTableList();
@@ -343,13 +340,14 @@ function Datatable(props) {
             filters: filters,
             columnFilters: columnFilters,
             shop: shop,
+            segment: segment
           })
           .then(function (res) {
             setExportData(res.data);
-            console.log("Received export data from server");
           })
           .catch(function (err) {
             setExportData({});
+            console.err(err);
           });
       }
       getExportList();

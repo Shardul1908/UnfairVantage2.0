@@ -10,9 +10,10 @@ export async function fetch_customers_using_filters(
   columnFilters,
   pageSize,
   pageIndex,
-  shop_id
+  shop_id,
+  segment
 ) {
-  let conditions = createConditions(filters, columnFilters);
+  let conditions = createConditions(filters, columnFilters,segment);
 
   const Customer = customerTableInit(shop_id);
   await Customer.sync();
@@ -30,8 +31,8 @@ export async function fetch_customers_using_filters(
   return toSend;
 }
 
-export async function fetch_customers_all(filters, columnFilters, shop_id) {
-  let conditions = createConditions(filters, columnFilters);
+export async function fetch_customers_all(filters, columnFilters, shop_id, segment) {
+  let conditions = createConditions(filters, columnFilters, segment);
 
   const Customer = customerTableInit(shop_id);
   await Customer.sync();
@@ -40,9 +41,31 @@ export async function fetch_customers_all(filters, columnFilters, shop_id) {
   return customers;
 }
 
-function createConditions(filters, columnFilters) {
+function createConditions(filters, columnFilters, segment) {
   let conditions = {};
 
+  if(segment === "top") {
+    conditions["segment"] = {
+      [Op.eq]: "Top Customer"
+    }
+  }else if(segment === "high") {
+    conditions["segment"] = {
+      [Op.eq]: "High Value Customer"
+    }
+  }else if(segment === "med") {
+    conditions["segment"] = {
+      [Op.eq]: "Medium Value Customer"
+    }
+  }else if(segment === "low") {
+    conditions["segment"] = {
+      [Op.eq]: "Low Value Customer"
+    }
+  }else if(segment === "lost") {
+    conditions["segment"] = {
+      [Op.eq]: "Lost Customer"
+    }
+  }
+  
   //column conditions
   let names = [
     "firstName",

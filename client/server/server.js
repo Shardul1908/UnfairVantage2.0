@@ -17,6 +17,7 @@ import { queryOrderItemsGRAPHQL } from "./Queries/OrderItemsQueries.js";
 import {
   fetch_customers_using_filters,
   fetch_customers_all,
+  fetch_save_segments,
   create_rfm_scorecard,
   table_sizes,
 } from "./Queries/SelectQueries.js";
@@ -248,6 +249,7 @@ app.prepare().then(async () => {
     const pageSize = ctx.request.body.pageSize;
     const pageIndex = ctx.request.body.pageIndex;
     const shop = ctx.request.body.shop;
+    const segment = ctx.request.body.segment;
 
     const result = await User.findOne({
       where: {
@@ -263,7 +265,8 @@ app.prepare().then(async () => {
       columnFilters,
       pageSize,
       pageIndex,
-      shop_id
+      shop_id,
+      segment
     );
 
     ctx.status = 200;
@@ -274,6 +277,7 @@ app.prepare().then(async () => {
     const filters = ctx.request.body.filters;
     const columnFilters = ctx.request.body.columnFilters;
     const shop = ctx.request.body.shop;
+    const segment = ctx.request.body.segment;
 
     const result = await User.findOne({
       where: {
@@ -284,7 +288,7 @@ app.prepare().then(async () => {
     });
     let shop_id = result.shop_id;
 
-    let customers = await fetch_customers_all(filters, columnFilters, shop_id);
+    let customers = await fetch_customers_all(filters, columnFilters, shop_id,segment);
 
     ctx.status = 200;
     ctx.body = customers;

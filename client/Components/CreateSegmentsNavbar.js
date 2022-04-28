@@ -15,9 +15,6 @@ import DateRange from "./DateRange/DateRange";
 function CreateSegments(props) {
   const { shop, segment } = props;
 
-  console.log(shop);
-  console.log(segment);
-
   //Custom Filter Modal show
   const [showFilterForms, setShowFilterForms] = React.useState(false);
 
@@ -164,6 +161,7 @@ function CreateSegments(props) {
           filters={customFilters}
           shop={shop}
           setCustomersCount={setCustomersCount}
+          segment={segment}
         />
       </div>
     </div>

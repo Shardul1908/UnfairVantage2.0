@@ -8,8 +8,6 @@ import axios from "axios";
 import { fontWeight } from "@mui/system";
 import Link from "next/link";
 import AnimatedNumber from "react-animated-number";
-import { Select } from "@mui/material";
-import { MenuItem } from "@mui/material";
 
 const Index = (props) => {
   const { shop } = props;
@@ -17,12 +15,7 @@ const Index = (props) => {
   const [customerCount, setCustomerCount] = React.useState(0);
   const [orderCount, setOrderCount] = React.useState(0);
   const [orderItemCount, setOrderItemCount] = React.useState(0);
-
   const [rfmSegment, setRfmSegment] = React.useState("all");
-
-  const handleRfmSegment = (event) => {
-    setRfmSegment(event.target.value);
-  };
 
   useEffect(() => {
     axios
@@ -45,7 +38,7 @@ const Index = (props) => {
         <div className={styles.homepage_title}>
           <h3>Home Page</h3>
         </div>
-        <Link href={`/CreateSegments/all/${shop}`}>
+        <Link href={`/CreateSegments/${rfmSegment}/${shop}`}>
           <Button className={styles.create_segments}>View Customers</Button>
         </Link>
 
@@ -56,20 +49,14 @@ const Index = (props) => {
             Category
           </label>
           &nbsp;
-          <Select
-            labelId="simple-select-label1"
-            id="simple-select1"
-            value={rfmSegment}
-            label="rfmSegment"
-            onChange={handleRfmSegment}
-          >
-            <MenuItem value="all">All Customers</MenuItem>
-            <MenuItem value="top">Top Valued Customers</MenuItem>
-            <MenuItem value="high">High Valued Customers</MenuItem>
-            <MenuItem value="med">Medium Valued Customers</MenuItem>
-            <MenuItem value="low">Low Valued Customers</MenuItem>
-            <MenuItem value="lost">Lost Customers</MenuItem>
-          </Select>
+          <select value={rfmSegment} onChange={e=>setRfmSegment(e.target.value)} name="Categories" id="categories">
+            <option value="all">All Customers</option>
+            <option value="top">Top Valued Customers</option>
+            <option value="high">High Valued Customers</option>
+            <option value="med">Medium Valued Customers</option>
+            <option value="low">Low Valued Customers</option>
+            <option value="lost">Lost Customers</option>
+          </select>
           &nbsp;&nbsp;
         </div>
       </div>
@@ -79,13 +66,13 @@ const Index = (props) => {
         </div>
         <div className={styles.stats}>
           <h3 className={styles.customer_count}>
-            Total Customers: <AnimatedNumber value={customerCount} />
+            Total Customers: {customerCount}
           </h3>
           <h3 className={styles.order_count}>
-            Total Orders: <AnimatedNumber value={orderCount} />
+            Total Orders: {orderCount}
           </h3>
           <h3 className={styles.inventory}>
-            Told Products Sold: <AnimatedNumber value={orderItemCount} />{" "}
+            Told Products Sold: {orderItemCount}
           </h3>
         </div>
       </div>
