@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 
+//function for handing vertical tabs in custom filters modal
 export function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -15,7 +16,7 @@ export function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography component={'span'}>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>

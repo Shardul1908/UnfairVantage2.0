@@ -4,6 +4,7 @@ import { Button, Modal, Container, Col, Row } from "react-bootstrap";
 import styles from "../../styles/create_segments.module.css";
 import axios from "axios";
 
+//function to save created segment
 function SaveSegmentsModel(props) {
   const {
     showModal,
@@ -15,12 +16,15 @@ function SaveSegmentsModel(props) {
     shop,
   } = props;
 
-  let segment_title, titleToSend, titleArray = [];
+  let segment_title,
+    titleToSend,
+    titleArray = [];
 
   const [start, setStart] = React.useState();
   const [end, setEnd] = React.useState();
   // const [title, setTitle] = React.useState();
 
+  //function to get the value of title of segment
   function handleTitle(set) {
     let setName = set.target.name;
     if (setName === "title") {
@@ -31,6 +35,7 @@ function SaveSegmentsModel(props) {
     }
   }
 
+  //funtion to save the segment in database using api
   function save() {
     if (titleArray.length !== 0) {
       titleToSend = titleArray[titleArray.length - 1];
@@ -43,7 +48,7 @@ function SaveSegmentsModel(props) {
         title: titleToSend,
         dateRange: dateRange,
         noOfCustomers: customersCount,
-        customFilters: customFilters
+        customFilters: customFilters,
       })
       .then(function (res) {
         console.log("Saved Segment Successfulllllyy");

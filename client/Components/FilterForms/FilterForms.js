@@ -6,10 +6,10 @@ import Button from "@mui/material/Button";
 import { Row, Modal, Container } from "react-bootstrap";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-
 import { TabPanel, a11yProps } from "./TabPanel.js";
 import styles from "../../styles/filter_forms.module.css";
 
+//function to handle filters in custom filters
 export default function FilterForms(props) {
   const {
     showCustomFilter,
@@ -44,6 +44,8 @@ export default function FilterForms(props) {
     signed_up_end_date;
 
   const [AOV, setAOV] = React.useState([]);
+
+  //function to set value in AOV field
   function handelAOV(set) {
     let setName = set.target.name;
 
@@ -71,6 +73,8 @@ export default function FilterForms(props) {
   }
 
   const [AcceptsMarketing, setAcceptsMarketing] = React.useState([]);
+
+  //function to set value in Accepts Marketting field
   function handleAcceptsMarketting(set) {
     let setName = set.target.name;
     if (setName === "customer_acceptance") {
@@ -94,6 +98,8 @@ export default function FilterForms(props) {
   }
 
   const [AccountState, setAccountState] = React.useState([]);
+
+  //function to set value in Account State field
   function handleAccountState(set) {
     let setName = set.target.name;
     if (setName === "account_state_declined") {
@@ -190,6 +196,8 @@ export default function FilterForms(props) {
   }
 
   const [LastOrdered, setLastOrdered] = React.useState([]);
+
+  //function to set value in Last Ordered field
   function handleLastOrdered(set) {
     let setName = set.target.name;
     if (setName === "last_ordered_days") {
@@ -206,6 +214,8 @@ export default function FilterForms(props) {
   }
 
   const [MinSpendTotal, setMinSpendTotal] = React.useState([]);
+
+  //function to set value in Minimum Spend Total field
   function handleMinSpendTotal(set) {
     let setName = set.target.name;
     if (setName === "min_spend_total") {
@@ -222,6 +232,8 @@ export default function FilterForms(props) {
   }
 
   const [PaymentStatus, setPaymentStatus] = React.useState([]);
+
+  //function to set value in Payment Status field
   function handlePaymentStatus(set) {
     let setName = set.target.name;
     if (setName === "payment_status_paid") {
@@ -244,6 +256,7 @@ export default function FilterForms(props) {
     }
   }
 
+  //function to set value of checkbox input
   function checkBoxHandleInput(set) {
     let setName = set.target.name;
 
@@ -297,6 +310,7 @@ export default function FilterForms(props) {
     }
   }
 
+  //function to set value of Date type input
   function dateHandleInput(set) {
     let setName = set.target.name;
 
@@ -321,6 +335,7 @@ export default function FilterForms(props) {
     }
   }
 
+  //function to store the input data in array which will be passed to server
   function generateDataForServer() {
     let filters = [];
 

@@ -28,6 +28,7 @@ function CreateSegments(props) {
   const [inputData, setInputData] = React.useState([]);
   const [customersCount, setCustomersCount] = React.useState();
 
+  //function will remove all the applied custom filters
   function ResetFilter() {
     setCustomFilters([]);
     if (disabledButton === false) {
@@ -49,6 +50,7 @@ function CreateSegments(props) {
     customFilters.splice(indexToRemove, 1);
   }
 
+  //function to show applied custom filters in form of tags
   function filterTagsPop() {
     return (
       <div className={styles.filterTag_main_div}>
