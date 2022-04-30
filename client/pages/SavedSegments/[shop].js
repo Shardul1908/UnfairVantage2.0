@@ -16,20 +16,24 @@ function Index() {
   const [endDate, setEndDate] = React.useState(false);
 
   function checkStartDate(){
-    if (segment.start_date == null){
-      setStartDate(false);
-    }
-    else{
-      setStartDate(true);
+    for(let i = 0;i<segment.length;i++) {
+      if (segment.start_date == null) {
+        setStartDate(false);
+      }
+      else {
+        setStartDate(true);
+      }
     }
   }
 
   function checkEndDate(){
-    if (segment.end_date == null){
-      setEndDate(false);
-    }
-    else{
-      setEndDate(true);
+    for(let i = 0;i<segment.length;i++) {
+      if (segment.end_date == null) {
+        setEndDate(false);
+      }
+      else {
+        setEndDate(true);
+      }
     }
   }
 
@@ -44,7 +48,14 @@ function Index() {
   },[]);
 
   React.useEffect(() => {
-    console.log(segment);
+    // checkStartDate();
+    // checkEndDate();
+    // for(let i = 0;i<segment.length;i++) {
+    //   setStartDate(segment[i].start_date);
+    //   setEndDate(segment[i].end_date);
+    // }
+    console.table(segment);
+
   },[segment])
 
   return (
@@ -57,10 +68,18 @@ function Index() {
               <Card.Header style={{backgroundColor: "#484848"}}>
                 <Card.Title style={{color: "#FDC500", fontWeight: "bold", fontSize: "16px"}}>{card.title}</Card.Title>
               </Card.Header>
-              <Card.Body style={{color: "white", fontSize: "13px"}}><span>CUSTOMER COUNT: {card.number_of_customers}</span><br/><br/>
-              {startDate?<div><span>START DATE: {card.start_date}</span><br/><br/></div>:<span></span>}
-              {endDate?<div><span>END DATE: {card.end_date}</span><br/><br/></div>:<span></span>}</Card.Body>
-              <Card.Footer><Button className={styles.customFilter_button}>OPEN</Button></Card.Footer>
+              <Card.Body style={{color: "white", fontSize: "13px"}}>
+                <span>CUSTOMER COUNT: {card.number_of_customers}</span><br/><br/>
+                {/* {card.start_date?<div><span>START DATE: {card.start_date}</span><br/><br/></div>:<div><span>START DATE: Not Mentioned</span><br/><br/></div>}
+                {card.end_date==null}?<div><span>END DATE: {card.end_date}</span><br/><br/></div>:<div><span>START DATE: Not Mentioned</span><br/><br/></div>} */}
+                <div><span>START DATE: {card.start_date}</span><br/><br/></div>
+                <div><span>END DATE: {card.end_date}</span><br/><br/></div>
+              </Card.Body>
+              <Card.Footer>
+                <Link href={`/CreateSegments/${segment.id}/${shop}`}>
+                  <Button className={styles.customFilter_button}>OPEN</Button>
+                </Link>
+              </Card.Footer>
             </Card>
           </div>
         ))}

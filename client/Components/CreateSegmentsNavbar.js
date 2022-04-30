@@ -13,7 +13,7 @@ import DateRange from "./DateRange/DateRange";
 // import Image from "next/image";
 
 function CreateSegments(props) {
-  const { shop, segment } = props;
+  const { shop, segment, filters } = props;
 
   //Custom Filter Modal show
   const [showFilterForms, setShowFilterForms] = React.useState(false);

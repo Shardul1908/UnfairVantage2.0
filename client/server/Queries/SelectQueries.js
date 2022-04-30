@@ -48,19 +48,19 @@ function createConditions(filters, columnFilters, segment) {
     conditions["segment"] = {
       [Op.eq]: "Top Customer"
     }
-  }else if(segment === "high") {
+  } else if(segment === "high") {
     conditions["segment"] = {
       [Op.eq]: "High Value Customer"
     }
-  }else if(segment === "med") {
+  } else if(segment === "med") {
     conditions["segment"] = {
       [Op.eq]: "Medium Value Customer"
     }
-  }else if(segment === "low") {
+  } else if(segment === "low") {
     conditions["segment"] = {
       [Op.eq]: "Low Value Customer"
     }
-  }else if(segment === "lost") {
+  } else if(segment === "lost") {
     conditions["segment"] = {
       [Op.eq]: "Lost Customer"
     }
