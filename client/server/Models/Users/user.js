@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
-
+//user class
 const User = sequelize.define('users', {
   id: {
     type: Sequelize.BIGINT(20).UNSIGNED,

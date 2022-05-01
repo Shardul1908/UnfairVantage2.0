@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global";
-
+//initialize saved segments
 function SavedSegmentsInit(shopId) {
   const Segment = sequelize.define(`${shopId}_Saved_Segments`, {
     id: {

@@ -22,7 +22,7 @@ import Progress_bar from "../ProgressBar/ProgressBar.js";
 
 const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
-
+//datatable
 function Datatable(props) {
   const { filters, shop, setCustomersCount, segment } = props;
   const [tableData, setTableData] = useState({});
@@ -230,7 +230,7 @@ function Datatable(props) {
   }, [inputName, handleApplyButtonClicked]);
 
   const countPerPage = 10;
-
+//sync store data
   async function syncData() {
     //show popup
     initHandleOpenModal();

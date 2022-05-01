@@ -4,7 +4,7 @@ import orderTableInit from "../Models/Orders/order.js";
 import orderItemTableInit from "../Models/Order_Items/order_item.js";
 import User from "../Models/Users/user.js";
 import { createShopifyObject } from "../global.js";
-
+//register shop into databse using email and access token
 async function registerShop(shopEmail,accessToken) {
   const shopify = createShopifyObject(shopEmail,accessToken);
 

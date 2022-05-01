@@ -4,7 +4,7 @@ import orderItemTableInit from "../Models/Order_Items/order_item.js";
 import { Op } from "sequelize";
 import SavedSegmentsInit from "../Models/Saved_Segments/Saved_Segments.js";
 import { getNoOfDays, get_ranked_array } from "../global.js";
-
+//fetch customers based on filters
 export async function fetch_customers_using_filters(
   filters,
   columnFilters,
@@ -30,7 +30,7 @@ export async function fetch_customers_using_filters(
 
   return toSend;
 }
-
+//fetching all customers without any filters
 export async function fetch_customers_all(filters, columnFilters, shop_id, segment) {
   let conditions = createConditions(filters, columnFilters, segment);
 
@@ -40,7 +40,7 @@ export async function fetch_customers_all(filters, columnFilters, shop_id, segme
   const customers = await Customer.findAll({ where: conditions });
   return customers;
 }
-
+//creating conditions for rfm
 function createConditions(filters, columnFilters, segment) {
   let conditions = {};
 
@@ -163,7 +163,7 @@ function createConditions(filters, columnFilters, segment) {
   }
   return conditions;
 }
-
+//fetch respective entry count
 export async function table_sizes(shop_id) {
   const Customer = customerTableInit(shop_id);
   await Customer.sync();
@@ -186,7 +186,7 @@ export async function table_sizes(shop_id) {
 
   return toSend;
 }
-
+//creating rfm score
 export async function create_rfm_scorecard(shop_id) {
   const Customer = customerTableInit(shop_id);
   await Customer.sync();
@@ -292,7 +292,7 @@ export async function create_rfm_scorecard(shop_id) {
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
-
+//fetch segment
 export async function fetch_save_segments(shop_id) {
   const Segments = SavedSegmentsInit(shop_id);
   await Segments.sync();

@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
-
+//order items/products table init
 function orderItemTableInit(shopId) {
 
   const OrderItem = sequelize.define(`${shopId}_order_items`, {

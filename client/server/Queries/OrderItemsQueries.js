@@ -5,7 +5,7 @@ import {
   isString,
   isObj,
 } from "../global.js";
-
+//graphql products query
 async function queryOrderItemsGRAPHQL(shopify, shop_id, io) {
   let counter_orderItems = 0;
   let graphql_orders_query = `query {

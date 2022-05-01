@@ -1,3 +1,4 @@
+//columns for respective datatable fields
 export const COLUMNS = [
   {
     name: "Sr.No",

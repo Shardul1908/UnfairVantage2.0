@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
-
+//orm
 const Plan = sequelize.define('plans', {
     id: {
         type: Sequelize.INTEGER(10).UNSIGNED,

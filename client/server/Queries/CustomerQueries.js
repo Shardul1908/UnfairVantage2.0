@@ -7,7 +7,7 @@ import {
   isString,
   isBool,
 } from "../global.js";
-
+//graphql customers query
 async function queryCustomersGRAPHQL(shopify, shop_id, io) {
   let counter_customers = 0;
   let graphql_customers_query = `query {

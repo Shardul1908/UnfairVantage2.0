@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 import { gql } from "apollo-boost";
-
+//recurring subscription plan
 export function RECURRING_CREATE(url) {
   return gql`
     mutation {
