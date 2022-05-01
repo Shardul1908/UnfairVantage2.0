@@ -24,7 +24,7 @@ const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
 
 function Datatable(props) {
-  const { filters, shop, setCustomersCount, segment } = props;
+  const { filters, shop, setCustomersCount, segment, dateRange } = props;
   const [tableData, setTableData] = useState({});
   const [exportData, setExportData] = useState({});
   const [page, setPage] = useState(1);
@@ -33,8 +33,6 @@ function Datatable(props) {
   const [refresh, setRefresh] = React.useState(false);
   const [initShow, setInitShow] = React.useState(false);
   let result_total = 0;
-
-  // console.log(segment);
 
   function handleOpenModal() {
     setShow(true);
@@ -315,6 +313,7 @@ function Datatable(props) {
             pageIndex: page,
             shop: shop,
             segment: segment,
+            dateRange: dateRange,
           })
           .then(function (res) {
             setTableData(res.data);
@@ -340,7 +339,8 @@ function Datatable(props) {
             filters: filters,
             columnFilters: columnFilters,
             shop: shop,
-            segment: segment
+            segment: segment,
+            dateRange: dateRange,
           })
           .then(function (res) {
             setExportData(res.data);

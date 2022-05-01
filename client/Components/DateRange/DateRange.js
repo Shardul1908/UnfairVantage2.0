@@ -40,16 +40,17 @@ function DateRange(props) {
     ];
 
     function handleDateChange(set) {
-        setDateRange(
-            update(dateRange, {
-                [0]: {
-                    $set: set[0]
-                },
-                [1]: {
-                    $set: set[1]
-                }
-            })
-        );
+        setDateRange(set);
+        // setDateRange(
+        //     update(dateRange, {
+        //         [0]: {
+        //             $set: set[0]
+        //         },
+        //         [1]: {
+        //             $set: set[1]
+        //         }
+        //     })
+        // );
     }
 
     function handleCloseDateRange() {

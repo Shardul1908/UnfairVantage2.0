@@ -5,6 +5,7 @@ import styles from "../../styles/saved_segments.module.css";
 import { Button, Card } from "react-bootstrap";
 import Link from "next/link";
 import axios from "axios";
+import CardDate from "../../Components/CardDate/CardDate";
 
 
 function Index() {
@@ -72,8 +73,12 @@ function Index() {
                 <span>CUSTOMER COUNT: {card.number_of_customers}</span><br/><br/>
                 {/* {card.start_date?<div><span>START DATE: {card.start_date}</span><br/><br/></div>:<div><span>START DATE: Not Mentioned</span><br/><br/></div>}
                 {card.end_date==null}?<div><span>END DATE: {card.end_date}</span><br/><br/></div>:<div><span>START DATE: Not Mentioned</span><br/><br/></div>} */}
-                <div><span>START DATE: {card.start_date}</span><br/><br/></div>
-                <div><span>END DATE: {card.end_date}</span><br/><br/></div>
+
+                Start Date:<CardDate date={card.start_date}></CardDate>
+                End Date:<CardDate date={card.end_date}></CardDate>
+
+                {/* <div><span>START DATE: {card.start_date}</span><br/><br/></div> */}
+                {/* <div><span>END DATE: {card.end_date}</span><br/><br/></div> */}
               </Card.Body>
               <Card.Footer>
                 <Link href={`/CreateSegments/${card.id}/${shop}`}>

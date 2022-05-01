@@ -90,7 +90,6 @@ async function queryTotalCount(shopify){
       .graphql(counter_graphql_query_customers)
       .catch((err) => console.log(err));
 
-
     counter_hasNextPage_customers = resultSet.customers.pageInfo.hasNextPage;
 
     if (limit < 50) {
@@ -111,7 +110,8 @@ async function queryTotalCount(shopify){
     total_count_customers = total_count_customers + nc;
     console.log("Total count customers: " + total_count_customers);
   }
-//ORDERS
+  
+  //ORDERS
   while (counter_hasNextPage_orders) {
     if (counter_isFirstPage_orders) {
       counter_isFirstPage_orders = false;
@@ -149,12 +149,17 @@ async function queryTotalCount(shopify){
     }
 
     let no = resultSet.orders.edges.length;
+    // console.log("############################################################################################################");
+    // console.log("############################################################################################################");
+    // console.log(no);
+    // console.log("############################################################################################################");
+    // console.log("############################################################################################################");
     counter_cursor_orders = resultSet.orders.edges[no - 1].cursor;
     total_count_orders = total_count_orders + no;
     console.log("Total count orders: ", total_count_orders);
   }
-//ORDER ITEMS
 
+  // ORDER ITEMS
   while (counter_hasNextPage_order_items) {
     if (counter_isFirstPage_order_items) {
       counter_isFirstPage_order_items = false;

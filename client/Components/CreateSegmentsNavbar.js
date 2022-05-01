@@ -39,7 +39,6 @@ function CreateSegments(props) {
   const [disabledButton, setDisableButton] = React.useState(true);
   function handleSaveSegment() {
     setShowSaveSegments(true);
-    // setDisableButton(true);
   }
 
   //FilterTags Code
@@ -71,9 +70,9 @@ function CreateSegments(props) {
 
   useEffect(() => {
     if(segment === "all" || segment === "top" || segment === "high" || segment === "med" || segment === "low" || segment === "lost") {
-      console.log("Not From Saved Segments with segment number ", segment);
+      // console.log("Not From Saved Segments with segment number ", segment);
     }else {
-      console.log("From Saved Segments with segment number ", segment);
+      // console.log("From Saved Segments with segment number ", segment);
       axios.post("http://localhost:8081/api/fetch_saved_segments_with_id", {
         shop: shop,
         segment: segment,
@@ -84,8 +83,10 @@ function CreateSegments(props) {
         start_date = new Date(start_date);
         end_date = new Date(end_date);
 
-        setCustomFilters([filters]);
-
+        let json_filters = JSON.parse(filters);
+        console.log(json_filters);
+        setCustomFilters([...customFilters, ...json_filters]);
+        
       }).catch(err => {
         console.error(err);
       });
@@ -186,6 +187,7 @@ function CreateSegments(props) {
           shop={shop}
           setCustomersCount={setCustomersCount}
           segment={segment}
+          dateRange={dateRange}
         />
       </div>
     </div>

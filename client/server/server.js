@@ -270,7 +270,14 @@ app.prepare().then(async () => {
     const pageIndex = ctx.request.body.pageIndex;
     const shop = ctx.request.body.shop;
     const segment = ctx.request.body.segment;
+    const dateRange = ctx.request.body.dateRange;
 
+    console.log("######################################################################################################################");
+    console.log("######################################################################################################################");
+    console.log(dateRange);
+    console.log("######################################################################################################################");
+    console.log("######################################################################################################################");
+    
     const result = await User.findOne({
       where: {
         shop_email: {
@@ -298,6 +305,13 @@ app.prepare().then(async () => {
     const columnFilters = ctx.request.body.columnFilters;
     const shop = ctx.request.body.shop;
     const segment = ctx.request.body.segment;
+    const dateRange = ctx.request.body.dateRange;
+
+    console.log("######################################################################################################################");
+    console.log("######################################################################################################################");
+    console.log(dateRange);
+    console.log("######################################################################################################################");
+    console.log("######################################################################################################################");
 
     const result = await User.findOne({
       where: {
