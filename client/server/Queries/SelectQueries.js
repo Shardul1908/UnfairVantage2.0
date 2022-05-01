@@ -44,6 +44,7 @@ export async function fetch_customers_all(filters, columnFilters, shop_id, segme
 function createConditions(filters, columnFilters, segment) {
   let conditions = {};
 
+  let savedFilters = [];
   if(segment === "top") {
     conditions["segment"] = {
       [Op.eq]: "Top Customer"
@@ -64,6 +65,10 @@ function createConditions(filters, columnFilters, segment) {
     conditions["segment"] = {
       [Op.eq]: "Lost Customer"
     }
+  } else if(segment === "all") {
+    // nothing to do
+  } else {
+
   }
   
   //column conditions
@@ -298,5 +303,16 @@ export async function fetch_save_segments(shop_id) {
   await Segments.sync();
 
   const segments = await Segments.findAll();
+  return segments;
+}
+
+export async function fetch_save_segments_with_id(shop_id, segment) {
+  const Segments = SavedSegmentsInit(shop_id);
+  await Segments.sync();
+
+  const segments = await Segments.findAll({ where: {
+    "id": segment,
+  }});
+
   return segments;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../styles/create_segments.module.css";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
@@ -9,12 +9,13 @@ import FilterForms from "./FilterForms/FilterForms.js";
 import SaveSegments from "../public/SaveSegments.svg";
 import SaveSegmentsModel from "./SaveSegmentsModal/SaveSegmentsModel";
 import DateRange from "./DateRange/DateRange";
+import axios from "axios";
 
 // import Image from "next/image";
 
 function CreateSegments(props) {
   const { shop, segment, filters } = props;
-
+ 
   //Custom Filter Modal show
   const [showFilterForms, setShowFilterForms] = React.useState(false);
 
@@ -67,6 +68,29 @@ function CreateSegments(props) {
       </div>
     );
   }
+
+  useEffect(() => {
+    if(segment === "all" || segment === "top" || segment === "high" || segment === "med" || segment === "low" || segment === "lost") {
+      console.log("Not From Saved Segments with segment number ", segment);
+    }else {
+      console.log("From Saved Segments with segment number ", segment);
+      axios.post("http://localhost:8081/api/fetch_saved_segments_with_id", {
+        shop: shop,
+        segment: segment,
+      }).then(res => {
+        let filters = res.data[0].filters;
+        let start_date = res.data[0].start_date;
+        let end_date = res.data[0].end_date;
+        start_date = new Date(start_date);
+        end_date = new Date(end_date);
+
+        setCustomFilters([filters]);
+
+      }).catch(err => {
+        console.error(err);
+      });
+    }
+  },[]);
 
   React.useEffect(() => {
     let filterLength = customFilters.length;

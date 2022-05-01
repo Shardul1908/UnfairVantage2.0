@@ -76,7 +76,7 @@ function Index() {
                 <div><span>END DATE: {card.end_date}</span><br/><br/></div>
               </Card.Body>
               <Card.Footer>
-                <Link href={`/CreateSegments/${segment.id}/${shop}`}>
+                <Link href={`/CreateSegments/${card.id}/${shop}`}>
                   <Button className={styles.customFilter_button}>OPEN</Button>
                 </Link>
               </Card.Footer>

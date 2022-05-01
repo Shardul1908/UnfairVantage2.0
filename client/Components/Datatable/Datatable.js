@@ -323,7 +323,7 @@ function Datatable(props) {
           .catch(function (err) {
             setTableData({});
             setProgressPending(false);
-            console.err(err);
+            console.error(err);
           });
       }
       getTableList();
@@ -347,7 +347,7 @@ function Datatable(props) {
           })
           .catch(function (err) {
             setExportData({});
-            console.err(err);
+            console.error(err);
           });
       }
       getExportList();

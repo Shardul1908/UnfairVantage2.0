@@ -18,6 +18,7 @@ import {
   fetch_customers_using_filters,
   fetch_customers_all,
   fetch_save_segments,
+  fetch_save_segments_with_id,
   create_rfm_scorecard,
   table_sizes,
 } from "./Queries/SelectQueries.js";
@@ -192,6 +193,25 @@ app.prepare().then(async () => {
 
     ctx.status = 200;
     ctx.body = saved_segments;
+  });
+
+  router.post("/api/fetch_saved_segments_with_id", async (ctx) => {
+    const shop = ctx.request.body.shop;
+    const segment = ctx.request.body.segment;
+
+    const result = await User.findOne({
+      where: {
+        shop_email: {
+          [Op.eq]: shop,
+        },
+      },
+    });
+    let shop_id = result.shop_id;
+
+    let segments = await fetch_save_segments_with_id(shop_id, segment);
+
+    ctx.status = 200;
+    ctx.body = segments;
   });
 
   router.post("/api/save_segment", async (ctx) => {
