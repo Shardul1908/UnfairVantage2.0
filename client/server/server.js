@@ -271,12 +271,6 @@ app.prepare().then(async () => {
     const shop = ctx.request.body.shop;
     const segment = ctx.request.body.segment;
     const dateRange = ctx.request.body.dateRange;
-
-    console.log("######################################################################################################################");
-    console.log("######################################################################################################################");
-    console.log(dateRange);
-    console.log("######################################################################################################################");
-    console.log("######################################################################################################################");
     
     const result = await User.findOne({
       where: {
@@ -293,7 +287,8 @@ app.prepare().then(async () => {
       pageSize,
       pageIndex,
       shop_id,
-      segment
+      segment,
+      dateRange
     );
 
     ctx.status = 200;
@@ -307,12 +302,6 @@ app.prepare().then(async () => {
     const segment = ctx.request.body.segment;
     const dateRange = ctx.request.body.dateRange;
 
-    console.log("######################################################################################################################");
-    console.log("######################################################################################################################");
-    console.log(dateRange);
-    console.log("######################################################################################################################");
-    console.log("######################################################################################################################");
-
     const result = await User.findOne({
       where: {
         shop_email: {
@@ -322,7 +311,7 @@ app.prepare().then(async () => {
     });
     let shop_id = result.shop_id;
 
-    let customers = await fetch_customers_all(filters, columnFilters, shop_id,segment);
+    let customers = await fetch_customers_all(filters, columnFilters, shop_id,segment, dateRange);
 
     ctx.status = 200;
     ctx.body = customers;

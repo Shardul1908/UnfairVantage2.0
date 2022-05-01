@@ -11,9 +11,10 @@ export async function fetch_customers_using_filters(
   pageSize,
   pageIndex,
   shop_id,
-  segment
+  segment,
+  dateRange
 ) {
-  let conditions = createConditions(filters, columnFilters,segment);
+  let conditions = createConditions(filters, columnFilters,segment,dateRange);
 
   const Customer = customerTableInit(shop_id);
   await Customer.sync();
@@ -31,8 +32,8 @@ export async function fetch_customers_using_filters(
   return toSend;
 }
 
-export async function fetch_customers_all(filters, columnFilters, shop_id, segment) {
-  let conditions = createConditions(filters, columnFilters, segment);
+export async function fetch_customers_all(filters, columnFilters, shop_id, segment, dateRange) {
+  let conditions = createConditions(filters, columnFilters, segment,dateRange);
 
   const Customer = customerTableInit(shop_id);
   await Customer.sync();
@@ -41,10 +42,9 @@ export async function fetch_customers_all(filters, columnFilters, shop_id, segme
   return customers;
 }
 
-function createConditions(filters, columnFilters, segment) {
+function createConditions(filters, columnFilters, segment, dateRange) {
   let conditions = {};
 
-  let savedFilters = [];
   if(segment === "top") {
     conditions["segment"] = {
       [Op.eq]: "Top Customer"
@@ -69,6 +69,15 @@ function createConditions(filters, columnFilters, segment) {
     // nothing to do
   } else {
 
+  }
+
+  if(dateRange[0] !== null && dateRange[1] !== null) {
+    let startDate = new Date(dateRange[0]);
+    let endDate = new Date(dateRange[1]);
+    
+    conditions["createdAt"] = {
+      [Op.between]: [startDate, endDate],
+    };
   }
   
   //column conditions

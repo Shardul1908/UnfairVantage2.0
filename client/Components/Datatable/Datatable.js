@@ -327,7 +327,7 @@ function Datatable(props) {
       }
       getTableList();
     },
-    [page, filters, columnFilters, refresh]
+    [page, filters, columnFilters, refresh, dateRange]
   );
 
   //For Exporting CSV
@@ -352,7 +352,7 @@ function Datatable(props) {
       }
       getExportList();
     },
-    [filters, columnFilters, refresh]
+    [filters, columnFilters, refresh, dateRange]
   );
 
   useEffect(() => {
