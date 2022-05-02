@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+//Date Field on save segment card
 function CardDate(props) {
   const { date } = props;
   

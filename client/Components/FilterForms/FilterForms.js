@@ -10,6 +10,7 @@ import "react-date-range/dist/theme/default.css"; // theme css file
 import { TabPanel, a11yProps } from "./TabPanel.js";
 import styles from "../../styles/filter_forms.module.css";
 
+// Filter Forms Modal
 export default function FilterForms(props) {
   const {
     showCustomFilter,
@@ -43,6 +44,7 @@ export default function FilterForms(props) {
     signed_up_start_date,
     signed_up_end_date;
 
+  //Handling Data in the Modal
   const [AOV, setAOV] = React.useState([]);
   function handelAOV(set) {
     let setName = set.target.name;

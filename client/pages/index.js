@@ -9,6 +9,7 @@ import { fontWeight } from "@mui/system";
 import Link from "next/link";
 import AnimatedNumber from "react-animated-number";
 
+//Home Page for the application 
 const Index = (props) => {
   const { shop } = props;
 
@@ -17,6 +18,7 @@ const Index = (props) => {
   const [orderItemCount, setOrderItemCount] = React.useState(0);
   const [rfmSegment, setRfmSegment] = React.useState("all");
 
+  //Inits the application and fetches required data for the home page.
   useEffect(() => {
     axios
       .post("http://localhost:8081/api/initialize_app", {
@@ -38,6 +40,7 @@ const Index = (props) => {
         <div className={styles.homepage_title}>
           <h3>Home Page</h3>
         </div>
+        {/* Create Segments linked button */}
         <Link href={`/CreateSegments/${rfmSegment}/${shop}`}>
           <Button className={styles.create_segments}>View Customers</Button>
         </Link>
@@ -61,9 +64,11 @@ const Index = (props) => {
         </div>
       </div>
       <div className={styles.flex_container}>
+        {/* RFM piechart */}
         <div className={styles.homepage_div_piechart}>
           <PieChart shop={shop} />
         </div>
+        {/* Shop Analytics */}
         <div className={styles.stats}>
           <h3 className={styles.customer_count}>
             Total Customers: {customerCount}

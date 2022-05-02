@@ -1,5 +1,6 @@
 import React from 'react'
 
+// Progress Bar while Syncing Data
 const Progress_bar = ({bgcolor, progress}) => {
 	
 	const Parentdiv = {

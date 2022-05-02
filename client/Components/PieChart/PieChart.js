@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from "axios"
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS } from 'chart.js/auto';
 
+// Pie Chart For RFM analysis
 function PieChart(props) {
     const { shop } = props;
     const [rfmScoreCard, setRfmScoreCard] = React.useState({

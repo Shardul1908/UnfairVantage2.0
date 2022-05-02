@@ -1,3 +1,5 @@
+//Columns for datatable
+
 export const COLUMNS = [
   {
     name: "Sr.No",

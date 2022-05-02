@@ -4,6 +4,7 @@ import { Button, Modal, Container, Col, Row } from "react-bootstrap";
 import styles from "../../styles/create_segments.module.css";
 import axios from "axios";
 
+// Save Segment Modal Design Component
 function SaveSegmentsModel(props) {
   const {
     showModal,

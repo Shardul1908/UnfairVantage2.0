@@ -7,36 +7,12 @@ import Link from "next/link";
 import axios from "axios";
 import CardDate from "../../Components/CardDate/CardDate";
 
-
+// Dynamic link to /SavedSegments/[shop]
 function Index() {
   const router = useRouter();
   const { shop } = router.query;
 
   const [segment, setSegment] = React.useState([]);
-  const [startDate, setStartDate] = React.useState(false);
-  const [endDate, setEndDate] = React.useState(false);
-
-  function checkStartDate(){
-    for(let i = 0;i<segment.length;i++) {
-      if (segment.start_date == null) {
-        setStartDate(false);
-      }
-      else {
-        setStartDate(true);
-      }
-    }
-  }
-
-  function checkEndDate(){
-    for(let i = 0;i<segment.length;i++) {
-      if (segment.end_date == null) {
-        setEndDate(false);
-      }
-      else {
-        setEndDate(true);
-      }
-    }
-  }
 
   React.useEffect(() => {
     axios.post("http://localhost:8081/api/fetch_saved_segments", {
@@ -47,17 +23,6 @@ function Index() {
       console.log(err);
     });
   },[]);
-
-  React.useEffect(() => {
-    // checkStartDate();
-    // checkEndDate();
-    // for(let i = 0;i<segment.length;i++) {
-    //   setStartDate(segment[i].start_date);
-    //   setEndDate(segment[i].end_date);
-    // }
-    console.table(segment);
-
-  },[segment])
 
   return (
     <div>
@@ -71,14 +36,10 @@ function Index() {
               </Card.Header>
               <Card.Body style={{color: "white", fontSize: "13px"}}>
                 <span>CUSTOMER COUNT: {card.number_of_customers}</span><br/><br/>
-                {/* {card.start_date?<div><span>START DATE: {card.start_date}</span><br/><br/></div>:<div><span>START DATE: Not Mentioned</span><br/><br/></div>}
-                {card.end_date==null}?<div><span>END DATE: {card.end_date}</span><br/><br/></div>:<div><span>START DATE: Not Mentioned</span><br/><br/></div>} */}
 
                 Start Date:<CardDate date={card.start_date}></CardDate>
                 End Date:<CardDate date={card.end_date}></CardDate>
-
-                {/* <div><span>START DATE: {card.start_date}</span><br/><br/></div> */}
-                {/* <div><span>END DATE: {card.end_date}</span><br/><br/></div> */}
+                
               </Card.Body>
               <Card.Footer>
                 <Link href={`/CreateSegments/${card.id}/${shop}`}>

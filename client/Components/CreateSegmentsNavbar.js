@@ -11,8 +11,7 @@ import SaveSegmentsModel from "./SaveSegmentsModal/SaveSegmentsModel";
 import DateRange from "./DateRange/DateRange";
 import axios from "axios";
 
-// import Image from "next/image";
-
+//Create Segment page
 function CreateSegments(props) {
   const { shop, segment, filters } = props;
  
@@ -36,6 +35,7 @@ function CreateSegments(props) {
     }
   }
 
+  //Save the Segment
   const [disabledButton, setDisableButton] = React.useState(true);
   function handleSaveSegment() {
     setShowSaveSegments(true);
@@ -49,6 +49,7 @@ function CreateSegments(props) {
     customFilters.splice(indexToRemove, 1);
   }
 
+  //Click the x on the filter tag to remove filter
   function filterTagsPop() {
     return (
       <div className={styles.filterTag_main_div}>
@@ -68,6 +69,7 @@ function CreateSegments(props) {
     );
   }
 
+  //Apply the RFM filter or the filters saved as a segment
   useEffect(() => {
     if(segment === "all" || segment === "top" || segment === "high" || segment === "med" || segment === "low" || segment === "lost") {
       // console.log("Not From Saved Segments with segment number ", segment);
@@ -86,13 +88,14 @@ function CreateSegments(props) {
         let json_filters = JSON.parse(filters);
         console.log(json_filters);
         setCustomFilters([...customFilters, ...json_filters]);
-        
+        setDateRange([start_date, end_date]);
       }).catch(err => {
         console.error(err);
       });
     }
   },[]);
 
+  //Disable Enable Save Segment button
   React.useEffect(() => {
     let filterLength = customFilters.length;
 
@@ -111,6 +114,7 @@ function CreateSegments(props) {
     <div className={styles.createSegments_main_div}>
       <div className={styles.createSegments_navBar_div}>
         <div className={styles.nav_left}>
+          {/* Open Custom Filters Modal */}
           <Button
             onClick={function () {
               setShowFilterForms(true);
@@ -127,9 +131,11 @@ function CreateSegments(props) {
           </div>
         </div>
         <div className={styles.nav_right}>
+          {/* Reset Filters Button */}
           <Button className={styles.reset_filters_button} onClick={ResetFilter}>
             Reset Filters
           </Button>
+          {/* Save Segment Button */}
           <Button
             className={styles.save_segments_button}
             onClick={handleSaveSegment}
@@ -145,6 +151,7 @@ function CreateSegments(props) {
           <div className={styles.menu_icon}>
             <FaBars />
           </div>
+          {/* Link to Saved Segments */}
           <Link href={`/SavedSegments/${shop}`}>
             <Button className={styles.show_segments_button}>
               View Saved Segments
@@ -152,7 +159,11 @@ function CreateSegments(props) {
           </Link>
         </div>
       </div>
+
+      {/* Filter Tags Div */}
       <div>{filterTagsPop()}</div>
+
+      {/* Save Segments Modal */}
       <div>
         <SaveSegmentsModel
           showModal={showSaveSegments}
@@ -168,6 +179,8 @@ function CreateSegments(props) {
           shop={shop}
         />
       </div>
+
+      {/* Filter Forms Modal */}
       <div className={styles.filter_forms}>
         <FilterForms
           showCustomFilter={showFilterForms}
@@ -181,6 +194,7 @@ function CreateSegments(props) {
       </div>
 
       {/* <SavedSegments handleCreateToSavedSegments={segmentData} /> */}
+      {/* DataTable div */}
       <div className={styles.server_pagination_table_div}>
         <Datatable
           filters={customFilters}

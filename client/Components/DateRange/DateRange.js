@@ -2,7 +2,6 @@ import React from 'react';
 
 import { DateRangePicker } from "rsuite";
 import * as dateFns from "date-fns";
-import update from "react-addons-update";
 import "rsuite/dist/rsuite.min.css";
 
 function DateRange(props) {
@@ -41,16 +40,6 @@ function DateRange(props) {
 
     function handleDateChange(set) {
         setDateRange(set);
-        // setDateRange(
-        //     update(dateRange, {
-        //         [0]: {
-        //             $set: set[0]
-        //         },
-        //         [1]: {
-        //             $set: set[1]
-        //         }
-        //     })
-        // );
     }
 
     function handleCloseDateRange() {
@@ -68,6 +57,7 @@ function DateRange(props) {
             format="d MMM yyyy"
             style={{ color: "#ffffff" }}
             onClean={handleCloseDateRange}
+            value={dateRange}
         />
     </>;
 }

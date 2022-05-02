@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import translations from "@shopify/polaris/locales/en.json";
 import "../styles/globals.css"
 
+//Handles Authentication and logs the user into the application
 function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
 
@@ -32,6 +33,7 @@ function userLoggedInFetch(app) {
   };
 }
 
+//Base Component for the application
 function MyProvider(props) {
   const app = useAppBridge();
 
@@ -72,6 +74,7 @@ class MyApp extends App {
   }
 }
 
+//Initial props provides shop id to the application to make app user specific
 MyApp.getInitialProps = async ({ ctx }) => {
   return {
     host: ctx.query.host,

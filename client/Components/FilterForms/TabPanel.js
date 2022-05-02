@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 
+// Tab Clicks change the panel shown in the modal
 export function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

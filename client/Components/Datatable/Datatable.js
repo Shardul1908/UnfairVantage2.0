@@ -23,6 +23,7 @@ import Progress_bar from "../ProgressBar/ProgressBar.js";
 const ENDPOINT = "http://localhost:8081/";
 const socket = io(ENDPOINT);
 
+// Entire Datatable and fetching endpoints called Here
 function Datatable(props) {
   const { filters, shop, setCustomersCount, segment, dateRange } = props;
   const [tableData, setTableData] = useState({});
@@ -34,6 +35,7 @@ function Datatable(props) {
   const [initShow, setInitShow] = React.useState(false);
   let result_total = 0;
 
+  //Modals for progress Bar
   function handleOpenModal() {
     setShow(true);
   }
@@ -50,6 +52,7 @@ function Datatable(props) {
     setInitShow(false);
   }
 
+  //Apply column filters
   function handleApplyButtonClicked() {
     const newFilters = fillQuery();
 
@@ -92,6 +95,7 @@ function Datatable(props) {
     setColumnFilters(res);
   }
 
+  //Reset Column filters 
   function handleResetButtonClicked() {
     setColumnFilters({});
   }
@@ -121,6 +125,7 @@ function Datatable(props) {
     setInputName(event.target.value);
   };
 
+  //Take input in the column filters field
   function InputTextField() {
     if (inputName !== "") {
       return (
@@ -138,6 +143,7 @@ function Datatable(props) {
     }
   }
 
+  //Select Menu for column filters
   const subHeaderComponentMemo = React.useMemo(() => {
     return (
       <div className={styles.column_filters}>
@@ -229,6 +235,7 @@ function Datatable(props) {
 
   const countPerPage = 10;
 
+  //Sync Data
   async function syncData() {
     //show popup
     initHandleOpenModal();
@@ -279,6 +286,7 @@ function Datatable(props) {
   const [countOrderItems, setCountOrderItems] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  //sockets for getting realtime counts of fetched data for the progress bar
   socket.on("CustomerCount", (data) => {
     setCountCustomers(data);
   });
@@ -301,6 +309,7 @@ function Datatable(props) {
     }
   }, [countCustomers, countOrders, countOrderItems]);
 
+  //Get Paginated Data
   useEffect(
     function () {
       function getTableList() {
@@ -359,6 +368,7 @@ function Datatable(props) {
     setCustomersCount(tableData.total);
   }, [tableData]);
 
+  // Datatable theme
   createTheme("solarized", {
     rdt_TableFotter: "10px",
     text: {
@@ -418,6 +428,7 @@ function Datatable(props) {
     );
   };
 
+  //Datatable design
   return (
     <div className={styles.datatable_main_div}>
       <div className={styles.datatable_buttons}>
