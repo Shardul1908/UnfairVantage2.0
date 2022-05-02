@@ -32,6 +32,7 @@ import { queryTotalCount } from "./Queries/TotalCount.js";
 import { saveTheSegment } from "./Queries/SaveSegment.js";
 import { Op } from "sequelize";
 
+//Next App Configuration
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== "production";
@@ -40,6 +41,7 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+//Init Shopify Application
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
@@ -55,6 +57,7 @@ Shopify.Context.initialize({
 // persist this object in your app.
 const ACTIVE_SHOPIFY_SHOPS = {};
 
+// Start Router
 app.prepare().then(async () => {
   const app = new Koa();
   const router = new Router();
@@ -65,13 +68,13 @@ app.prepare().then(async () => {
   app.use(json());
   app.use(koaBody());
 
+  //Create Socket on top of the koa server
   const server = createServer(app.callback());
   const io = new Server(server, {
     cors: {
       origin: "*",
     },
   });
-
   io.on("connection", (socket) => {
     console.log("Connected with socket id " + socket.id);
 
@@ -80,6 +83,7 @@ app.prepare().then(async () => {
     });
   });
 
+  //For defining endpoints and registering the app when opened
   app.use(
     createShopifyAuth({
       async afterAuth(ctx) {
@@ -139,11 +143,13 @@ app.prepare().then(async () => {
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
 
+  //Dummy endpoint for testing
   router.get("/api/ping", async (ctx) => {
     ctx.status = 200;
     ctx.body = { body: "API Ready!!!" };
   });
 
+  //Endpoint to get RFM scorecard
   router.post("/api/rfm", async (ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
@@ -161,6 +167,7 @@ app.prepare().then(async () => {
     ctx.body = rfm_score;
   });
 
+  //Endpoint called when App is opened everytime
   router.post("/api/initialize_app", async(ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
@@ -178,6 +185,7 @@ app.prepare().then(async () => {
     ctx.body = table_size;
   });
 
+  //Fetch All Saved Segments for a shop
   router.post("/api/fetch_saved_segments", async (ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
@@ -195,6 +203,7 @@ app.prepare().then(async () => {
     ctx.body = saved_segments;
   });
 
+  //Fetch Segment with id and shop
   router.post("/api/fetch_saved_segments_with_id", async (ctx) => {
     const shop = ctx.request.body.shop;
     const segment = ctx.request.body.segment;
@@ -214,6 +223,7 @@ app.prepare().then(async () => {
     ctx.body = segments;
   });
 
+  //Save the Segment in the database
   router.post("/api/save_segment", async (ctx) => {
     const shop = ctx.request.body.shop;
     const title = ctx.request.body.title;
@@ -246,6 +256,7 @@ app.prepare().then(async () => {
     ctx.body = { body: "Saved The Segment" };
   });
 
+  //Count Data in the Admin API before Fetching
   router.post("/api/count_data", async (ctx) => {
     const shop = ctx.request.body.shop;
     const result = await User.findOne({
@@ -263,6 +274,7 @@ app.prepare().then(async () => {
     ctx.body = { total: total_count + "" };
   });
 
+  //Fetch Customers with filters with pagination
   router.post("/api/customers/fetch/with_filters", async (ctx) => {
     const filters = ctx.request.body.filters;
     const columnFilters = ctx.request.body.columnFilters;
@@ -295,6 +307,7 @@ app.prepare().then(async () => {
     ctx.body = customers;
   });
 
+  //Fetch pagination with filters without pagination
   router.post("/api/customers/fetch/all", async (ctx) => {
     const filters = ctx.request.body.filters;
     const columnFilters = ctx.request.body.columnFilters;
@@ -317,6 +330,7 @@ app.prepare().then(async () => {
     ctx.body = customers;
   });
 
+  //Sync Customers
   router.post("/api/sync_data_customers", async (ctx) => {
     Migration.create({
       migration: `customers_data_synced`,
@@ -339,6 +353,7 @@ app.prepare().then(async () => {
     ctx.body = { body: "Customers Data Synced." };
   });
 
+  //Sync Orders
   router.post("/api/sync_data_orders", async (ctx) => {
     Migration.create({
       migration: `orders_data_synced`,
@@ -361,6 +376,7 @@ app.prepare().then(async () => {
     ctx.body = { body: "Orders Data Synced." };
   });
 
+  //Sync Order Items
   router.post("/api/sync_data_order_items", async (ctx) => {
     Migration.create({
       migration: `orderItems_data_synced`,
@@ -382,6 +398,7 @@ app.prepare().then(async () => {
     ctx.body = { body: "Order Items Data Synced." };
   });
 
+  //All other requests
   router.get("(.*)", async (ctx) => {
     const shop = ctx.query.shop;
 
@@ -396,6 +413,7 @@ app.prepare().then(async () => {
   app.use(router.allowedMethods());
   app.use(router.routes());
 
+  //Server Starts Listening at port
   server.listen(port, () => {
     console.log(`> Client Ready on http://localhost:${port}`);
   });

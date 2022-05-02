@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
+//Migration Table Defination
 const Migration = sequelize.define('migrations', {
     id: {
         type: Sequelize.INTEGER(10).UNSIGNED,

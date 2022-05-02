@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
+//Failed Jobs Table Defination
 const Failed_Jobs = sequelize.define('failed_job', {
     id: {
         type: Sequelize.BIGINT(20).UNSIGNED,

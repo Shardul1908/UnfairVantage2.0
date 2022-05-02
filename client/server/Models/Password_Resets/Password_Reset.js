@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
+//Password Reset Table Defination
 const Password_Resets = sequelize.define('password_resets', {
     email: {
         type: Sequelize.STRING,

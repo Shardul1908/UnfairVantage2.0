@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
+//Customers Table Defination
 function customerTableInit(shopId) {
 
   const Customer = sequelize.define(`${shopId}_customers`, {

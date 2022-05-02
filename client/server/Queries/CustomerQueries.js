@@ -8,6 +8,7 @@ import {
   isBool,
 } from "../global.js";
 
+//Fetching Customers from Shopify Admin API
 async function queryCustomersGRAPHQL(shopify, shop_id, io) {
   let counter_customers = 0;
   let graphql_customers_query = `query {

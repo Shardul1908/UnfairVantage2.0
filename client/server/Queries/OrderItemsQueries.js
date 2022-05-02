@@ -6,6 +6,7 @@ import {
   isObj,
 } from "../global.js";
 
+//Fetching Order Items from Shopify Admin API
 async function queryOrderItemsGRAPHQL(shopify, shop_id, io) {
   let counter_orderItems = 0;
   let graphql_orders_query = `query {

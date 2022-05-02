@@ -1,3 +1,6 @@
+//THIS FILE CONTAINS ALL THE REQUIRED SELECT QUERIES THAT THE APP TRIGGERS
+//FETCHING CUSTOMERS, CREATING CONDITIONS FOR CUSTOMERS, GETTING TABLE SIZES AND ALSO CREATING THE RFM SCORECARD
+
 import customerTableInit from "../Models/Customers/customer.js";
 import orderTableInit from "../Models/Orders/order.js";
 import orderItemTableInit from "../Models/Order_Items/order_item.js";

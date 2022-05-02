@@ -7,6 +7,7 @@ import {
   isString,
 } from "../global.js";
 
+//Fetching Orders from Shopify Admin API
 async function queryOrdersGRAPHQL(shopify, shop_id, io) {
   let counter_orders = 0;
   //graphql orders query

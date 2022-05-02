@@ -5,6 +5,7 @@ import orderItemTableInit from "../Models/Order_Items/order_item.js";
 import User from "../Models/Users/user.js";
 import { createShopifyObject } from "../global.js";
 
+//Registers the shop into our app and enters its detials into the database
 async function registerShop(shopEmail,accessToken) {
   const shopify = createShopifyObject(shopEmail,accessToken);
 

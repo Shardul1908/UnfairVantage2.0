@@ -1,5 +1,6 @@
 import SavedSegmentsInit from "../Models/Saved_Segments/Saved_Segments";
 
+//Saves the segment in the database
 export async function saveTheSegment(shopId, startDate, endDate, title, noOfCustomers, customFilters) {
   
   let savedSegments = SavedSegmentsInit(shopId);

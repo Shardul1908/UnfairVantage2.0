@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global";
 
+//Saved Segments Table Defination
 function SavedSegmentsInit(shopId) {
   const Segment = sequelize.define(`${shopId}_Saved_Segments`, {
     id: {

@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { sequelize } from "../../global.js";
 
+//DataSync Table Defination
 const Datasync_Status = sequelize.define('datasync_status', {
     id: {
         type: Sequelize.INTEGER(11),

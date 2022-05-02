@@ -6,6 +6,7 @@ import Sequelize from 'sequelize';
 
 dotenv.config("../.env");
 
+//Init Sequelize
 const sequelize = new Sequelize(process.env.DB_SCHEMA, process.env.DB_USER, process.env.DB_PASSWORD, {
   dialect: process.env.DB_DIALECT,
   host: process.env.DB_HOST,
@@ -15,6 +16,7 @@ const sequelize = new Sequelize(process.env.DB_SCHEMA, process.env.DB_USER, proc
   }
 });
 
+//Create Shopify Object
 function createShopifyObject(name, accessToken) {
   return new Shopify({
     shopName: name,
@@ -23,6 +25,7 @@ function createShopifyObject(name, accessToken) {
   });
 };
 
+//Check Null or not
 const isString = function (dataField) {
   if (dataField != null) {
     return true;
@@ -30,6 +33,7 @@ const isString = function (dataField) {
   return false;
 }
 
+//Check Null or not
 const isInt = function (number) {
   if (number != null) {
     return true;
@@ -37,6 +41,7 @@ const isInt = function (number) {
   return false;
 }
 
+//Check Null or not
 const isFloat = function (number) {
   if (number != null) {
     return true;
@@ -44,6 +49,7 @@ const isFloat = function (number) {
   return false;
 }
 
+//Check Null or not
 const isObj = function (obj) {
   if (obj != null) {
     return true;
@@ -51,6 +57,7 @@ const isObj = function (obj) {
   return false;
 }
 
+//Check Null or not
 const isBool = function (value) {
   if (value != null) {
     return true;
@@ -58,6 +65,7 @@ const isBool = function (value) {
   return false;
 }
 
+//Splice ID from the ID link
 const getId = function (id) {
   let start = id.indexOf("/", 14);
   let end = id.length;
@@ -67,6 +75,7 @@ const getId = function (id) {
   return id;
 }
 
+//Days in betweeen two dates
 const getNoOfDays = function(date1, date2) {
   let difference_in_time = date2.getTime() - date1.getTime();
   let difference_in_days = difference_in_time / (1000 * 3600 * 24);
@@ -74,6 +83,7 @@ const getNoOfDays = function(date1, date2) {
   return parseInt(difference_in_days);
 }
 
+//Get ranks in the array for RFM
 const get_ranked_array = function(arr,ascending) {
   let sorted;
   if(ascending) {
