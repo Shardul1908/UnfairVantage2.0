@@ -26,22 +26,23 @@
 
 .create_segments {
   /* margin-left: 20px !important; */
-  border-radius: 10px !important;
+  /* border-radius: 10px !important; */
   background-color: #fdfdfd !important;
   color: black !important;
   border: none !important;
-  font-size: 18px !important;
+  font-size: 1.8rem !important;
   height: max-content !important;
-  width: 400px !important;
-  margin-top: 6px !important;
-  margin-bottom: 6px !important;
+  width: 32vw !important;
+  margin-top: 1.2vh !important;
+  margin-bottom: 1vh !important;
 }
 
 .dropdown {
   /* padding: 10px; */
-  margin-top: 11px;
+  margin-top: 1.8vh;
   text-align: right;
-  margin-right: 10px;
+  margin-right: 1.2vw;
+  margin-left: 1vw;
   font-size: medium;
   /* color: white; */
 }
@@ -53,8 +54,8 @@
 
 .stats {
   width: 40%;
-  height: 500px;
-  margin: 10px;
+  height: 70vh;
+  margin: 4vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -92,8 +93,29 @@
 }
 
 .homepage_div_piechart {
-  margin: 10px;
+  margin: 2vh;
   width: 40%;
+}
+
+.show_segments_button {
+  /* margin-left: 20px !important;
+  border-radius: 10px !important;
+  background-color: #fdfdfd !important;
+  color: black !important;
+  border: none !important;
+  font-size: 18px !important;
+  height: 100% !important; */
+
+  /* border-radius: 10px !important; */
+  background-color: #fdfdfd !important;
+  color: black !important;
+  border: none !important;
+  font-size: 1.8rem !important;
+  height: max-content !important;
+  width: 200px !important;
+  margin-top: 1.2vh !important;
+  margin-bottom: 1vh !important;
+  margin-right: 1.2vh;
 }
 
 /* .homepage_div_stats{

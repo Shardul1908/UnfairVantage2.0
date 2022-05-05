@@ -151,12 +151,13 @@ function CreateSegments(props) {
           <div className={styles.menu_icon}>
             <FaBars />
           </div>
-          {/* Link to Saved Segments */}
+          <div>
           <Link href={`/SavedSegments/${shop}`}>
             <Button className={styles.show_segments_button}>
               View Saved Segments
             </Button>
           </Link>
+          </div>
         </div>
       </div>
 

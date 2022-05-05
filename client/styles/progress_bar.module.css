@@ -2,7 +2,7 @@
   height: height;
 		width: 100%;
 		background-color: whitesmoke;
-		border-radius: 30px;
+		border-radius: 1.9vh;
 		margin: 20;
 }
 
@@ -10,7 +10,7 @@
   height: 100%;
 		/* width: `${progress}%`; */
 		background-color: orange;
-	  border-radius:30px;
+	  border-radius:1.9vh;
 		text-align: right;
 }
 

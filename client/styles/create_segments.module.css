@@ -2,7 +2,7 @@
   position: absolute;
   /* left: 15%; */
   width: 100%;
-  padding: 10px;
+  padding: 1.2vh;
 
   display: flex;
   flex-direction: column;
@@ -15,10 +15,10 @@
   flex-direction: row;
   justify-content: space-evenly;
   background-color: #666666;
-  margin-bottom: 10px;
+  margin-bottom: 1.2vh;
   width: 100%;
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: 1vh;
+  padding: 1.2vh;
 }
 
 .nav_left {
@@ -34,7 +34,7 @@
   align-items: center;
   display: flex;
   flex-shrink: 0;
-  height: 38px;
+  height: 6vh;
   border: 0;
   font: inherit;
   font-size: 100%;
@@ -48,7 +48,7 @@
   flex-direction: row;
   width: 100%;
   align-self: center;
-  border-radius: 10px;
+  border-radius: 1.2vh;
 }
 
 .customFilter_button {
@@ -56,7 +56,7 @@
   color: #fcd322 !important;
   border-color: #fcd322 !important;
   background-color: #666666 !important;
-  font-size: 18px !important;
+  font-size: 1.8rem !important;
 }
 
 .customFilter_button:hover {
@@ -66,9 +66,9 @@
 }
 
 .vertical_line {
-  border-left: 1px solid white;
-  height: 36px;
-  margin-left: 5px;
+  border-left: 0.1vw solid white;
+  height: 6vh;
+  margin-left: 0.5vw;
   align-self: center;
 }
 
@@ -77,7 +77,7 @@
   color: white;
   font-size: 1.1rem;
   align-self: center;
-  padding: 2px;
+  padding: 0.2vh;
 }
 
 .rs_picker_toggle {
@@ -104,12 +104,12 @@
 /*Date Range Picker Samapt*/
 
 .reset_filters_button {
-  margin-right: 20px !important;
-  border-radius: 10px !important;
+  margin-right: 1.5vw !important;
+  border-radius: 1.2vh !important;
   background-color: #fdfdfd !important;
   color: black !important;
   border: none !important;
-  font-size: 18px !important;
+  font-size: 1.8rem !important;
   height: 100% !important;
 }
 
@@ -121,8 +121,8 @@
   background-color: #fcd322 !important;
   color: black !important;
   border: none !important;
-  border-radius: 10px !important;
-  font-size: 18px !important;
+  border-radius: 1.2vh !important;
+  font-size: 1.8rem !important;
 }
 
 .save_segments_button:hover {
@@ -139,23 +139,23 @@
   } 
   */
 
-.saveSegments_logo {
+/* .saveSegments_logo {
   margin-right: 17px;
   margin-top: 3px;
   margin-bottom: 5px;
-}
+} */
 
-.save_segment_span {
+/* .save_segment_span {
   margin-top: 3px;
   margin-bottom: 3px;
-}
+} */
 
 .segments_modal_span {
   text-align: left !important;
 }
 
 .input_field_text {
-  font-size: 1.3rem !important;
+  font-size: 1.2rem !important;
   border-radius: 5px;
   border: solid #929191;
   border-width: thin;
@@ -166,12 +166,12 @@
 }
 
 .show_segments_button {
-  margin-left: 20px !important;
-  border-radius: 10px !important;
+  margin-left: 1vh !important;
+  border-radius: 1.2vh !important;
   background-color: #fdfdfd !important;
   color: black !important;
   border: none !important;
-  font-size: 18px !important;
+  font-size: 1.8rem !important;
   height: 100% !important;
 }
 
@@ -189,21 +189,21 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 5px;
+  padding: 0.2vh;
 }
 
 .filterTag_text_div {
   background-color: #cccccc;
-  padding: 5px;
-  font-size: 12px;
+  padding: 0.5vh;
+  font-size: 1.2rem;
   border: 1px solid black;
   width: fit-content;
-  border-radius: 5px;
-  margin-right: 3px;
+  border-radius: 0.8vh;
+  margin-right: 0.6vh;
 }
 
 .filterTag_Icon {
-  margin-left: 3px;
+  margin-left: 0.6vh;
   cursor: pointer;
 }
 

@@ -9,14 +9,14 @@
 .save_segments_cards {
   display: flex;
   align-items: center;
-  margin: 20px;
+  margin: 1.1vh;
 }
 
 .customFilter_button {
   color: white !important;
   border-color: white !important;
   background-color: #666666 !important;
-  font-size: 14px !important;
+  font-size: 1.2rem !important;
   width: 100%;
 }
 

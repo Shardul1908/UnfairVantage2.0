@@ -8,6 +8,7 @@ import axios from "axios";
 import { fontWeight } from "@mui/system";
 import Link from "next/link";
 import AnimatedNumber from "react-animated-number";
+import 'chart.js/auto';
 
 //Home Page for the application 
 const Index = (props) => {
@@ -38,15 +39,16 @@ const Index = (props) => {
     <div className={styles.homepage}>
       <div className={styles.navbar}>
         <div className={styles.homepage_title}>
-          <h3>Home Page</h3>
+          <h3>Home</h3>
         </div>
+       
         {/* Create Segments linked button */}
         <Link href={`/CreateSegments/${rfmSegment}/${shop}`}>
           <Button className={styles.create_segments}>View Customers</Button>
         </Link>
 
         <div className={styles.dropdown}>
-          <label
+        <label
             style={{ color: "#ffffff", fontWeight: "bold", fontSize: "18px" }}
           >
             Category
@@ -60,8 +62,13 @@ const Index = (props) => {
             <option value="low">Low Valued Customers</option>
             <option value="lost">Lost Customers</option>
           </select>
-          &nbsp;&nbsp;
         </div>
+        {/* Link to Saved Segments */}
+        {/* <Link href={`/SavedSegments/${shop}`}>
+            <Button className={styles.show_segments_button}>
+              View Saved Segments
+            </Button>
+          </Link> */}
       </div>
       <div className={styles.flex_container}>
         {/* RFM piechart */}
