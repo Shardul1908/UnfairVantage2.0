@@ -1,0 +1,21 @@
+.parent_div {
+  height: height;
+		width: 100%;
+		background-color: whitesmoke;
+		border-radius: 30px;
+		margin: 20;
+}
+
+.child_div {
+  height: 100%;
+		/* width: `${progress}%`; */
+		background-color: orange;
+	  border-radius:30px;
+		text-align: right;
+}
+
+.progress_text {
+  padding: 10;
+		color: black;
+		font-weight: 900;
+}

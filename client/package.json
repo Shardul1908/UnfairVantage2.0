@@ -1,0 +1,90 @@
+{
+  "name": "champions",
+  "version": "1.0.0",
+  "description": "Shopify's node app for CLI tool",
+  "scripts": {
+    "test": "jest",
+    "dev": "cross-env NODE_ENV=development nodemon ./server/index.js --watch ./server/index.js",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build",
+    "start": "cross-env NODE_ENV=production node ./server/index.js"
+  },
+  "author": "Shopify Inc.",
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/register": "^7.16.7",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
+    "@koa/cors": "^3.1.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@mui/material": "^5.2.6",
+    "@shopify/app-bridge-react": "^2.0.5",
+    "@shopify/app-bridge-utils": "^2.0.5",
+    "@shopify/koa-shopify-auth": "^4.1.4",
+    "@shopify/polaris": "^7.5.0",
+    "apollo-boost": "^0.4.9",
+    "axios": "^0.24.0",
+    "bootstrap": "^4.6.1",
+    "chart.js": "^3.7.1",
+    "colors": "^1.4.0",
+    "cross-env": "^7.0.3",
+    "date-fns": "^2.28.0",
+    "dotenv": "^10.0.0",
+    "graphql": "^16.2.0",
+    "isomorphic-fetch": "^3.0.0",
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-json": "^2.0.2",
+    "koa-router": "^10.1.1",
+    "koa-session": "^6.2.0",
+    "mysql2": "^2.3.3",
+    "next": "^12.0.7",
+    "next-env": "^1.1.1",
+    "next-fetch": "^1.0.1",
+    "react": "^17.0.2",
+    "react-animated-number": "^0.4.4",
+    "react-apollo": "^3.1.5",
+    "react-bootstrap": "^2.1.0",
+    "react-chartjs-2": "^4.0.1",
+    "react-data-table-component": "^7.4.6",
+    "react-date-range": "^1.4.0",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-json-to-csv": "^1.0.4",
+    "rsuite": "^5.4.3",
+    "sequelize": "^6.14.1",
+    "shopify-api-node": "^3.8.1",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.0",
+    "styled-components": "^5.3.3",
+    "webpack": "^5.65.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.16.7",
+    "@babel/preset-stage-3": "^7.8.3",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
+    "babel-jest": "^27.4.5",
+    "babel-register": "^6.26.0",
+    "enzyme": "^3.11.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.5",
+    "lint-staged": "^12.1.5",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^17.0.2"
+  }
+}
